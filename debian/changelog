@@ -1,0 +1,17 @@
+deepin-screen-recorder (6.0.1) unstable; urgency=medium
+
+  * Update tag.
+
+ -- wangcong <wangcong@uniontech.com>  Mon, 13 Jun 2022 09:48:34 +0800
+
+deepin-screen-recorder (5.11.16) unstable; urgency=low
+
+  * New version 5.11.16
+
+ -- hemingyang <hemingyang@uniontech.com>  Tues, 27 Dec 2022 16:50:05 +0800
+
+deepin-screen-recorder (0.1-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Deepin Packages Builder <packages@deepin.com>  Mon, 13 Feb 2017 16:32:34 +0800
