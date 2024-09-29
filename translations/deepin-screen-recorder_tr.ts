@@ -15,21 +15,6 @@ tepsi simgesine tıklayın ya da kısayola yeniden basın</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ekran Görüntüsü</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Kaydediyor</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Ekran Alıntısı</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ tepsi simgesine tıklayın ya da kısayola yeniden basın</translation>
     <message>
         <source>Mouse</source>
         <translation>Fare</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Ekran Alıntısı</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ekran Görüntüsü</translation>
     </message>
 </context>
 <context>

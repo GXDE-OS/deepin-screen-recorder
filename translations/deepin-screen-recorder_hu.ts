@@ -15,21 +15,6 @@ vagy nyomja le a gyorsbillentyűt ismét a felvétel megállításához</transla
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Képernyőkép</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Rögzítés</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Képernyő Rögzítő</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ vagy nyomja le a gyorsbillentyűt ismét a felvétel megállításához</transla
     <message>
         <source>Mouse</source>
         <translation>Egér</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Képernyő Rögzítő</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Képernyőkép</translation>
     </message>
 </context>
 <context>

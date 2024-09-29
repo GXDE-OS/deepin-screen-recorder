@@ -15,21 +15,6 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tangkap Layar</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Rakaman</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Tangkap Skrin</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     <message>
         <source>Mouse</source>
         <translation>Tetikus</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Tangkap Skrin</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tangkap Layar</translation>
     </message>
 </context>
 <context>

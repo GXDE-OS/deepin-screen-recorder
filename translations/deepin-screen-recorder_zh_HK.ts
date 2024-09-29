@@ -15,21 +15,6 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>截圖</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>錄屏</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">截圖錄屏</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Mouse</source>
         <translation>錄製鼠標</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>截圖錄屏</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>截圖</translation>
     </message>
 </context>
 <context>

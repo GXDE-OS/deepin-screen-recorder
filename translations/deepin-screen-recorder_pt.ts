@@ -15,21 +15,6 @@ ou pressione novamente o atalho para parar de gravar</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de ecrã</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Gravação</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Captura de ecrã</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ ou pressione novamente o atalho para parar de gravar</translation>
     <message>
         <source>Mouse</source>
         <translation>Rato</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Captura de ecrã</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de ecrã</translation>
     </message>
 </context>
 <context>

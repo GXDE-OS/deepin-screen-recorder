@@ -15,21 +15,6 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Screenshot</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Registrazione in corso</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Cattura schermo</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
     <message>
         <source>Mouse</source>
         <translation>Mouse</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Cattura schermo</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Screenshot</translation>
     </message>
 </context>
 <context>

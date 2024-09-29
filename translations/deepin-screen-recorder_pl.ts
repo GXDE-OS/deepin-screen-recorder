@@ -15,21 +15,6 @@ lub naciśnij ponownie skrót, aby zatrzymać nagrywanie</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Zrzut ekranu</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Nagrywanie</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Przechwytywanie ekranu</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ lub naciśnij ponownie skrót, aby zatrzymać nagrywanie</translation>
     <message>
         <source>Mouse</source>
         <translation>Myszka</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Przechwytywanie ekranu</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Zrzut ekranu</translation>
     </message>
 </context>
 <context>

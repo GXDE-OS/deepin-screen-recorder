@@ -15,21 +15,6 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Знімок</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Записування</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Захоплення зображення на екрані</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Mouse</source>
         <translation>Миша</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Захоплення зображення на екрані</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Знімок</translation>
     </message>
 </context>
 <context>

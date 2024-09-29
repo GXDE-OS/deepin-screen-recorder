@@ -15,21 +15,6 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Foto ekrani</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Regjistrim</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Regjistrim Ekrani</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     <message>
         <source>Mouse</source>
         <translation>Mi</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Regjistrim Ekrani</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Foto ekrani</translation>
     </message>
 </context>
 <context>

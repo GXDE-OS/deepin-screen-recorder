@@ -15,21 +15,6 @@ of druk nogmaals op de sneltoets om te stoppen</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Schermfoto</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Opname</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Schermfoto</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ of druk nogmaals op de sneltoets om te stoppen</translation>
     <message>
         <source>Mouse</source>
         <translation>Cursor</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Schermfoto</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Schermfoto</translation>
     </message>
 </context>
 <context>

@@ -15,21 +15,6 @@ tai lopeta tallennus painamalla pikakuvaketta uudelleen</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ruudunkaappaus</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Tallennus</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Ruudunkaappaus</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ tai lopeta tallennus painamalla pikakuvaketta uudelleen</translation>
     <message>
         <source>Mouse</source>
         <translation>Hiiri</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Ruudunkaappaus</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ruudunkaappaus</translation>
     </message>
 </context>
 <context>

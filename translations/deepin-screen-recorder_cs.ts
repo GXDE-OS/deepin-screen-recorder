@@ -15,21 +15,6 @@ v oznamovací oblasti panelu nebo stiskněte klávesovou zkratku</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Snímek obrazovky</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Nahrávání</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Zachytávání obrazovky</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ v oznamovací oblasti panelu nebo stiskněte klávesovou zkratku</translation>
     <message>
         <source>Mouse</source>
         <translation>Myš</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Zachytávání obrazovky</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Snímek obrazovky</translation>
     </message>
 </context>
 <context>

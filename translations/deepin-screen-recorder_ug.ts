@@ -14,21 +14,6 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>رەسىم تۇتۇش</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">ئېكراننى رەسىم تۇتۇش، سىنغا ئېلىش</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -370,17 +355,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Mouse</source>
         <translation type="unfinished">مائۇسنى سىنغا ئېلىش</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>ئېكراننى رەسىم تۇتۇش، سىنغا ئېلىش</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>رەسىم تۇتۇش</translation>
     </message>
 </context>
 <context>

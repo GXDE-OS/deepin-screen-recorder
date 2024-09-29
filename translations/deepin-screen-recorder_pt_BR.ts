@@ -15,21 +15,6 @@ clique no ícone da bandeja ou use o atalho</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capturar</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Captura de Tela</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ clique no ícone da bandeja ou use o atalho</translation>
     <message>
         <source>Mouse</source>
         <translation type="unfinished">Mouse</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Captura de Tela</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capturar</translation>
     </message>
 </context>
 <context>

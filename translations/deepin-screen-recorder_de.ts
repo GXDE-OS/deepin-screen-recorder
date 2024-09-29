@@ -15,21 +15,6 @@ oder drücken Sie die Tastenkombination erneut, um die Aufnahme zu stoppen</tran
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Bildschirmaufnahme</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Wird aufgenommen</translation>
-    </message>
-    <message>
-        <source>Screen Capture</source>
-        <translation type="unfinished">Bildschirmaufnahme</translation>
-    </message>
-</context>
-<context>
     <name>MainWindow</name>
     <message>
         <source>Screen Capture</source>
@@ -371,17 +356,6 @@ oder drücken Sie die Tastenkombination erneut, um die Aufnahme zu stoppen</tran
     <message>
         <source>Mouse</source>
         <translation>Maus</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screen Capture</source>
-        <translation>Bildschirmaufnahme</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation>Bildschirmaufnahme</translation>
     </message>
 </context>
 <context>

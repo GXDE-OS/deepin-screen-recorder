@@ -1,5 +1,5 @@
 // Copyright (C) 2020 ~ 2021 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -7,10 +7,11 @@
 #define RECORDTIME_H
 
 #include <QtDBus/QtDBus>
-#include <dde-dock/pluginsiteminterface.h>
+#include <dde-dock/pluginsiteminterface_v2.h>
 #include "timewidget.h"
 #include "dbusservice.h"
-class RecordTimePlugin : public QObject, PluginsItemInterface
+
+class RecordTimePlugin : public QObject, PluginsItemInterfaceV2
 {
     Q_OBJECT
     Q_INTERFACES(PluginsItemInterface)
@@ -30,6 +31,9 @@ public:
      * @return
      */
     const QString pluginDisplayName() const override;
+    Dock::PluginFlags flags() const override { return Dock::Type_Tool | Dock::Attribute_ForceDock | Dock::Attribute_Normal; }
+    PluginSizePolicy pluginSizePolicy() const override { return PluginsItemInterface::Custom; }
+
     //cppcheck误报：此函数从未被使用，其实这个函数由dde-dock框架调用
     /**
      * @brief init:插件初始化入口函数
@@ -42,7 +46,6 @@ public:
      * @return
      */
     bool pluginIsAllowDisable() override { return true; }
-
     bool pluginIsDisable() override;
     void pluginStateSwitched() override;
     /**
@@ -51,14 +54,8 @@ public:
      * @return
      */
     QWidget *itemWidget(const QString &itemKey) override;
+
     void clear();
-
-    PluginFlags flags() const override;
-
-    PluginSizePolicy pluginSizePolicy() const override;
-
-    void positionChanged(const Dock::Position position) override;
-
 public slots:
     /**
      * @brief onStart:启动计时服务
@@ -84,12 +81,6 @@ private:
      * @brief refresh:绕过dde-dock 2020.12版本对插件的控件大小的限制
      */
     void refresh();
-signals:
-    /**
-     * @brief positionChange dock栏位置改变时发出此信号
-     * @param postion
-     */
-    void positionChange(int postion);
 
 private:
     QTimer *m_timer;
