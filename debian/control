@@ -28,10 +28,3 @@ Replaces: deepin-screenshot
 Description: Simple recorder tools for UOS
  Package: deepin-screen-recorder
 
-Package: deepin-screen-recorder-plugin
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Conflicts: deepin-screenshot
-Replaces: deepin-screenshot
-Description: Simple recorder tools for UOS
- A simple screen shot and recorder tools for UOSA simple screen shot and recorder tools for UOS
