@@ -261,9 +261,7 @@ desktop.files = ../deepin-screen-recorder.desktop
 
 
 dbus_service.files = $$PWD/../assets/com.deepin.ScreenRecorder.service $$PWD/../assets/com.deepin.Screenshot.service
-contains(DEFINES, DDE_START_FLAGE_ON ) {
-    dbus_service.files = $$PWD/../com.deepin.ScreenRecorder.service $$PWD/../com.deepin.Screenshot.service
-}
+
 dbus_service.path = $$PREFIX/share/dbus-1/services
 
 manual_dir.files = $$PWD/../assets/deepin-screen-recorder
