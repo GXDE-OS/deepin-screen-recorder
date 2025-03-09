@@ -3,7 +3,7 @@ TEMPLATE        = lib
 CONFIG          += c++11 plugin link_pkgconfig
 QT              += dtkgui
 QT              += dtkwidget
-PKGCONFIG += dframeworkdbus
+PKGCONFIG += dframeworkdbus dde-dock
 
 #TARGET          = deepin-screen-recorder-plugin
 TARGET          = $$qtLibraryTarget(deepin-screen-recorder-plugin)

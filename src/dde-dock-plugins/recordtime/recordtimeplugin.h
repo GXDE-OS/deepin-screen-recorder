@@ -7,11 +7,11 @@
 #define RECORDTIME_H
 
 #include <QtDBus/QtDBus>
-#include <dde-dock/pluginsiteminterface_v2.h>
+#include <dde-dock/pluginsiteminterface.h>
 #include "timewidget.h"
 #include "dbusservice.h"
 
-class RecordTimePlugin : public QObject, PluginsItemInterfaceV2
+class RecordTimePlugin : public QObject, PluginsItemInterface
 {
     Q_OBJECT
     Q_INTERFACES(PluginsItemInterface)

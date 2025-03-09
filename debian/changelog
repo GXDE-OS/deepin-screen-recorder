@@ -1,3 +1,9 @@
+deepin-screen-recorder (6.0.10) UNRELEASED; urgency=medium
+
+  * 修复在 Loongnix25 无法构建的问题
+
+ -- gfdgd_xi <3025613752@qq.com>  Sun, 09 Mar 2025 22:53:42 +0800
+
 deepin-screen-recorder (6.0.9gxde1) unstable; urgency=medium
   * GXDE Update
   * fix: fix a crash
