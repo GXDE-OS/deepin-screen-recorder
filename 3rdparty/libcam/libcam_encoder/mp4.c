@@ -118,7 +118,7 @@ int mp4_write_packet(
         getLoadLibsInstance()->m_av_packet_rescale_ts(outpacket, time_base, video_time);
         getAvformat()->m_av_write_frame(mp4_ctx, outpacket);
 
-        set_video_time_capture((double)(pts)/1000/1000000);
+//        set_video_time_capture((double)(pts)/1000/1000000);
         if (first_pts == 0) {
             first_pts = pts;
         } else {
