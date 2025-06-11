@@ -1,7 +1,8 @@
-deepin-screen-recorder (6.0.11) UNRELEASED; urgency=medium
+deepin-screen-recorder (6.0.11-1) UNRELEASED; urgency=medium
 
   * 修复在 Loongnix25 无法构建的问题
   * 修复在 Debian 13 无法构建的问题
+  * 依赖修改为 libgxframeworkdbus2
 
  -- gfdgd_xi <3025613752@qq.com>  Sun, 09 Mar 2025 22:53:42 +0800
 
