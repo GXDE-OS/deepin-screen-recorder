@@ -1,10 +1,11 @@
-deepin-screen-recorder (6.0.11-2) UNRELEASED; urgency=medium
+deepin-screen-recorder (6.0.12) UNRELEASED; urgency=medium
 
   * 修复在 Loongnix25 无法构建的问题
   * 修复在 Debian 13 无法构建的问题
   * 依赖修改为 libgxframeworkdbus2
+  * 修复录制视频结束按钮图标丢失的问题（https://gitee.com/GXDE-OS/GXDE/issues/ICGX3L ）
 
- -- gfdgd_xi <3025613752@qq.com>  Sun, 09 Mar 2025 22:53:42 +0800
+ -- gfdgd_xi <3025613752@qq.com>  Thu, 03 Jul 2025 02:48:35 +0800
 
 deepin-screen-recorder (6.0.9gxde1) unstable; urgency=medium
   * GXDE Update

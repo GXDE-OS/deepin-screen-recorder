@@ -83,5 +83,7 @@
         <file>color_pen/Red.svg</file>
         <file>color_pen/White.svg</file>
         <file>color_pen/Yellow.svg</file>
+        <file>trayicon1.svg</file>
+        <file>trayicon2.svg</file>
     </qresource>
 </RCC>
