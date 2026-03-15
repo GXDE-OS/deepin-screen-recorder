@@ -993,7 +993,7 @@ void RecordProcess::exitRecord(QString newSavePath)
 
         QVariantMap hints;
         hints["x-deepin-action-_open"] = QStringList{"xdg-open", newSavePath};
-        QStringList savepathcommand = QStringList{"dde-file-manager", "--show-item", newSavePath};
+        QStringList savepathcommand = QStringList{"gxde-file-manager", "--show-item", newSavePath};
         hints["x-deepin-action-_open1"] = savepathcommand;
         int timeout = -1;
         unsigned int id = 0;

@@ -863,9 +863,9 @@ void MainWindow::sendNotify(QString savePath, bool bSaveState)
     // 如果保存路径为剪切板，不做打开view操作
     if (!savePath.isEmpty()) {
         actions << "_open" << tr("View");
-        if (!QStandardPaths::findExecutable("dde-file-manager").isEmpty()) {
+        if (!QStandardPaths::findExecutable("gxde-file-manager").isEmpty()) {
             qCDebug(dsrApp) << QFileInfo(savePath).path();
-            hints["x-deepin-action-_open"] = QStringList{"dde-file-manager", "--show-item", savePath};
+            hints["x-deepin-action-_open"] = QStringList{"gxde-file-manager", "--show-item", savePath};
         } else {
             hints["x-deepin-action-_open"] = QStringList{"xdg-open", savePath};
         }

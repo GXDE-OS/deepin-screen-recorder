@@ -4281,8 +4281,8 @@ void MainWindow::sendNotify(SaveAction saveAction, QString saveFilePath, const b
         QStringList command, savepathcommand;
         
         tips = QString(tr("Saved to %1")).arg(saveFilePath);
-        if (!QStandardPaths::findExecutable("dde-file-manager").isEmpty()) {
-            savepathcommand << "dde-file-manager";
+        if (!QStandardPaths::findExecutable("gxde-file-manager").isEmpty()) {
+            savepathcommand << "gxde-file-manager";
             savepathcommand << "--show-item";
             savepathcommand << saveFilePath;
         }
