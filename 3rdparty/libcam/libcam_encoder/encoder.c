@@ -745,24 +745,12 @@ static encoder_audio_context_t *encoder_audio_init(encoder_context_t *encoder_ct
 	audio_codec_data->codec_context->flags |= audio_defaults->flags;
 
 	audio_codec_data->codec_context->sample_rate = encoder_ctx->audio_samprate;
-#if LIBAVFORMAT_VERSION_MAJOR < 61
-	audio_codec_data->codec_context->channels = encoder_ctx->audio_channels;
-#else
-	av_channel_layout_default(&audio_codec_data->codec_context->ch_layout,
-	encoder_ctx->audio_channels);
-#endif
+	audio_codec_data->codec_context->ch_layout.nb_channels = encoder_ctx->audio_channels;
 
-#if LIBAVFORMAT_VERSION_MAJOR < 61
 	if(encoder_ctx->audio_channels < 2)
-		audio_codec_data->codec_context->channel_layout = AV_CH_LAYOUT_MONO;
+		audio_codec_data->codec_context->ch_layout.order = AV_CH_LAYOUT_MONO;
 	else
-		audio_codec_data->codec_context->channel_layout = AV_CH_LAYOUT_STEREO;
-#else
-	if(encoder_ctx->audio_channels < 2)
-		av_channel_layout_default(&audio_codec_data->codec_context->ch_layout, 1);
-	else
-		av_channel_layout_default(&audio_codec_data->codec_context->ch_layout, 2);
-#endif
+		audio_codec_data->codec_context->ch_layout.order = AV_CH_LAYOUT_STEREO;
 
 	audio_codec_data->codec_context->cutoff = 0; /*automatic*/
 
@@ -917,11 +905,7 @@ static encoder_audio_context_t *encoder_audio_init(encoder_context_t *encoder_ct
 	audio_codec_data->frame->nb_samples = frame_size;
 	audio_codec_data->frame->format = audio_defaults->sample_format;
 
-#if LIBAVFORMAT_VERSION_MAJOR < 61
-	audio_codec_data->frame->channel_layout = audio_codec_data->codec_context->channel_layout;
-#else
-	av_channel_layout_copy(&audio_codec_data->frame->ch_layout, &audio_codec_data->codec_context->ch_layout);
-#endif
+	audio_codec_data->frame->ch_layout = audio_codec_data->codec_context->ch_layout;
 
 	/*set codec data in encoder context*/
 	enc_audio_ctx->codec_data = (void *) audio_codec_data;
