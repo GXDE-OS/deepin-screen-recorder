@@ -39,14 +39,14 @@ DBusNameItem *dbus_name_get_name_list_v23()
 {
     static DBusNameItem list[DBUS_COUNT] = {
         {"org.deepin.dde.Notification1", "/org/deepin/dde/Notification1", "org.deepin.dde.Notification1"},
-        {"org.deepin.dde.Audio1", "/org/deepin/dde/Audio1", "org.deepin.dde.Audio1"},
+        {"org.deepin.daemon.Audio", "/org/deepin/daemon/Audio", "org.deepin.daemon.Audio"},
         {"org.deepin.dde.Display1", "/org/deepin/dde/Display1", "org.deepin.dde.Display1"},
         {"org.deepin.dde.ControlCenter1", "/org/deepin/dde/ControlCenter1", "org.deepin.dde.ControlCenter1"},
         {"org.deepin.dde.Zone1", "/org/deepin/dde/Zone1", "org.deepin.dde.Zone1"},
         {"org.deepin.dde.SoundEffect1", "/org/deepin/dde/SoundEffect1", "org.deepin.dde.SoundEffect1"},
         {"org.deepin.dde.Keybinding1", "/org/deepin/dde/Keybinding1", "org.deepin.dde.Keybinding1"},
-        {"org.deepin.dde.Audio1.Source", "/org/deepin/dde/Audio1/Source", "org.deepin.dde.Audio1.Source"},
-        {"org.deepin.dde.Audio1.Sink", "/org/deepin/dde/Audio1/Sink", "org.deepin.dde.Audio1.Sink"},
+        {"org.deepin.daemon.Audio.Source", "/org/deepin/daemon/Audio/Source", "org.deepin.daemon.Audio.Source"},
+        {"org.deepin.daemon.Audio.Sink", "/org/deepin/daemon/Audio/Sink", "org.deepin.daemon.Audio.Sink"},
         {"org.deepin.dde.LockFront1", "/org/deepin/dde/LockFront1", "org.deepin.dde.LockFront1"},
         {"org.deepin.dde.Dock1", "/org/deepin/dde/Dock1", "org.deepin.dde.Dock1"},
         {"org.deepin.dde.InputDevices1", "/org/deepin/dde/XEventMonitor1", "org.deepin.dde.XEventMonitor1"},

@@ -14,25 +14,25 @@
 #include "proxyaudioport.h"
 
 /**
- * @brief AudioService 音频服务名 org.deepin.dde.Audio1
+ * @brief AudioService 音频服务名 org.deepin.daemon.Audio
  */
-const static QString AudioService = QStringLiteral("org.deepin.dde.Audio1");
+const static QString AudioService = QStringLiteral("org.deepin.daemon.Audio");
 /**
- * @brief AudioPath 服务地址 /org/deepin/dde/Audio1
+ * @brief AudioPath 服务地址 /org/deepin/daemon/Audio
  */
-const static QString AudioPath = QStringLiteral("/org/deepin/dde/Audio1");
+const static QString AudioPath = QStringLiteral("/org/deepin/daemon/Audio");
 /**
- * @brief AudioInterface 接口名称 org.deepin.dde.Audio1
+ * @brief AudioInterface 接口名称 org.deepin.daemon.Audio
  */
-const static QString AudioInterface = QStringLiteral("org.deepin.dde.Audio1");
+const static QString AudioInterface = QStringLiteral("org.deepin.daemon.Audio");
 /**
- * @brief SinkInterface 音频输出接口名称 org.deepin.dde.Audio1.Sink
+ * @brief SinkInterface 音频输出接口名称 org.deepin.daemon.Audio.Sink
  */
-const static QString SinkInterface = QStringLiteral("org.deepin.dde.Audio1.Sink");
+const static QString SinkInterface = QStringLiteral("org.deepin.daemon.Audio.Sink");
 /**
- * @brief SourceInterface 音频输入接口名称 org.deepin.dde.Audio1.Source
+ * @brief SourceInterface 音频输入接口名称 org.deepin.daemon.Audio.Source
  */
-const static QString SourceInterface = QStringLiteral("org.deepin.dde.Audio1.Source");
+const static QString SourceInterface = QStringLiteral("org.deepin.daemon.Audio.Source");
 /**
  * @brief PropertiesInterface 属性接口名称 org.freedesktop.DBus.Properties
  */
@@ -45,9 +45,9 @@ const static QString PropertiesChanged = QStringLiteral("PropertiesChanged");
 /**
  * @brief The AudioUtils class 音频服务工具类
  * 获取音频服务的相关数据
- * 音频Dbus服务: org.deepin.dde.Audio1
- * 音频服务输入服务: org.deepin.dde.Audio1.SourceX  X---序号
- * 音频服务输出: org.deepin.dde.Audio1.SinkX  X---序号
+ * 音频Dbus服务: org.deepin.daemon.Audio
+ * 音频服务输入服务: org.deepin.daemon.Audio.SourceX  X---序号
+ * 音频服务输出: org.deepin.daemon.Audio.SinkX  X---序号
  */
 class AudioUtils : public QObject
 {
@@ -184,12 +184,12 @@ private:
     QDBusInterface *m_defaultSinkDBusInterface = nullptr;
 
     /**
-     * @brief 默认输入音频服务地址 org.deepin.dde.Audio1.SourceX  X---序号
+     * @brief 默认输入音频服务地址 org.deepin.daemon.Audio.SourceX  X---序号
      */
     QString m_defaultSourcePath;
 
     /**
-     * @brief 默认输出音频服务地址 org.deepin.dde.Audio1.SinkX  X---序号
+     * @brief 默认输出音频服务地址 org.deepin.daemon.Audio.SinkX  X---序号
      */
     QString m_defaultSinkPath;
 
