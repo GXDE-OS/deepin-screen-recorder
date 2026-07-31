@@ -46,10 +46,12 @@ QPixmap ScreenGrabber::grabEntireDesktop(bool &ok, const QRect &rect, const qrea
 {
     qCDebug(dsrApp) << "Grabbing entire desktop for rect:" << rect << ", devicePixelRatio:" << devicePixelRatio;
     ok = true;
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode) {
         qCDebug(dsrApp) << "Wayland mode detected, using Wayland screenshot.";
         return grabWaylandScreenshot(ok, rect, devicePixelRatio);
     }
+#endif
     qCDebug(dsrApp) << "X11 mode detected, using X11 screenshot.";
     return grabX11Screenshot(ok, rect, devicePixelRatio);
 }
@@ -208,6 +210,13 @@ QPixmap ScreenGrabber::grabPrimaryScreenFallback(bool &ok, const QRect &rect, co
  */
 QPixmap ScreenGrabber::grabSingleScreen(bool &ok, const QRect &rect, QScreen *screen, const qreal devicePixelRatio)
 {
+    // screen 由调用方传入，可能为 nullptr（例如无头环境或屏幕查找失败），
+    // 直接访问会段错误，需提前返回空图并标记失败。
+    if (!screen) {
+        qCWarning(dsrApp) << "grabSingleScreen: screen is null, returning empty pixmap.";
+        ok = false;
+        return {};
+    }
     qCDebug(dsrApp) << "Grabbing single screen:" << screen->name() << " for rect:" << rect;
     Q_UNUSED(ok)
     

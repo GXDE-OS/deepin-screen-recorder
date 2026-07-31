@@ -1,5 +1,5 @@
 // Copyright (C) 2020 ~ 2021 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -115,7 +115,11 @@ void MainToolWidget::initMainLabel()
     m_mainTool->setLayout(m_baseLayout);
     addWidget(m_mainTool);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    connect(buttonGroup, &QButtonGroup::idClicked,
+#else
     connect(buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked),
+#endif
             [ = ](int status) {
         Q_UNUSED(status);
         qCDebug(dsrApp) << "Button group clicked signal received, status:" << status;
@@ -149,6 +153,11 @@ void MainToolWidget::initMainLabel()
 
 void MainToolWidget::installTipHint(QWidget *w, const QString &hintstr)
 {
+    // w 可能为 nullptr（测试或误用），需提前返回避免后续解引用。
+    if (!w) {
+        qCWarning(dsrApp) << "installTipHint: widget is null, abort.";
+        return;
+    }
     qCDebug(dsrApp) << "installTipHint called for widget:" << w->objectName() << ", hint string:" << hintstr;
     // TODO: parent must be mainframe
     auto hintWidget = new ToolTips("", this->parentWidget()->parentWidget()->parentWidget());
@@ -160,6 +169,11 @@ void MainToolWidget::installTipHint(QWidget *w, const QString &hintstr)
 
 void MainToolWidget::installHint(QWidget *w, QWidget *hint)
 {
+    // w 可能为 nullptr（测试或误用），需提前返回避免后续 setProperty/installEventFilter 解引用。
+    if (!w) {
+        qCWarning(dsrApp) << "installHint: widget is null, abort.";
+        return;
+    }
     qCDebug(dsrApp) << "installHint called for widget:" << w->objectName() << ", hint widget:" << (hint ? hint->objectName() : "nullptr");
     w->setProperty("HintWidget", QVariant::fromValue<QWidget *>(hint));
     if(nullptr != hintFilter){

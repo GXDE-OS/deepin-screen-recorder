@@ -1,5 +1,4 @@
-// Copyright (C) 2020 ~ 2021 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2020 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -214,6 +213,7 @@ void Utils::passInputEvent(int wid)
 {
     qCDebug(dsrApp) << "passInputEvent() called for window ID:" << wid << ".";
     // Wayland/TreeLand 事件穿透
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode || Utils::isTreelandMode) {
         qCDebug(dsrApp) << "Wayland/TreeLand mode detected. Setting window handle mask.";
         QWidget *widget = QWidget::find(static_cast<WId>(wid));
@@ -221,6 +221,13 @@ void Utils::passInputEvent(int wid)
             widget->windowHandle()->setMask(QRegion(0, 0, 1, 1));
             qCDebug(dsrApp) << "Window handle mask set to pass input events.";
         }
+        return;
+    }
+#endif
+    // 非 X11 平台（如 offscreen/纯 Wayland）下 QX11Info::display() 返回 nullptr，
+    // 直接传给 X11 调用会段错误，需提前返回。
+    if (!QX11Info::display()) {
+        qCWarning(dsrApp) << "passInputEvent: no X11 connection, skipping.";
         return;
     }
 
@@ -279,8 +286,14 @@ void Utils::setAccessibility(QAction *action, const QString name)
 void Utils::getInputEvent(const int wid, const short x, const short y, const unsigned short width, const unsigned short height)
 {
     qCDebug(dsrApp) << "getInputEvent() called for window ID:" << wid << ", rect:(" << x << "," << y << "," << width << "," << height << ").";
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode == true || Utils::isTreelandMode == true) {
         qCDebug(dsrApp) << "Wayland/TreeLand mode detected, skipping getInputEvent().";
+        return;
+    }
+#endif
+    if (!QX11Info::display()) {
+        qCWarning(dsrApp) << "getInputEvent: no X11 connection, skipping.";
         return;
     }
     XRectangle *reponseArea = new XRectangle;
@@ -310,8 +323,14 @@ void Utils::getInputEvent(const int wid, const short x, const short y, const uns
 void Utils::cancelInputEvent(const int wid, const short x, const short y, const unsigned short width, const unsigned short height)
 {
     qCDebug(dsrApp) << "cancelInputEvent() called for window ID:" << wid << ", rect:(" << x << "," << y << "," << width << "," << height << ").";
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode == true || Utils::isTreelandMode == true) {
         qCDebug(dsrApp) << "Wayland/TreeLand mode detected, skipping cancelInputEvent().";
+        return;
+    }
+#endif
+    if (!QX11Info::display()) {
+        qCWarning(dsrApp) << "cancelInputEvent: no X11 connection, skipping.";
         return;
     }
     XRectangle *reponseArea = new XRectangle;
@@ -333,8 +352,14 @@ void Utils::cancelInputEvent1(
     const int wid, const short x, const short y, const unsigned short width, const unsigned short height)
 {
     qCDebug(dsrApp) << "cancelInputEvent1() called for window ID:" << wid << ", rect:(" << x << "," << y << "," << width << "," << height << ").";
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode == true || Utils::isTreelandMode == true) {
         qCDebug(dsrApp) << "Wayland/TreeLand mode detected, skipping cancelInputEvent1().";
+        return;
+    }
+#endif
+    if (!QX11Info::display()) {
+        qCWarning(dsrApp) << "cancelInputEvent1: no X11 connection, skipping.";
         return;
     }
     XRectangle *reponseArea = new XRectangle;
@@ -438,8 +463,14 @@ void Utils::showCurrentSys()
 void Utils::enableXGrabButton()
 {
     qCDebug(dsrApp) << "enableXGrabButton() called.";
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode == true || Utils::isTreelandMode == true) {
         qCDebug(dsrApp) << "Wayland/TreeLand mode detected, skipping enableXGrabButton().";
+        return;
+    }
+#endif
+    if (!QX11Info::display()) {
+        qCWarning(dsrApp) << "enableXGrabButton: no X11 connection, skipping.";
         return;
     }
     // extern int XGrabButton(
@@ -492,11 +523,17 @@ void Utils::enableXGrabButton()
 void Utils::disableXGrabButton()
 {
     qCDebug(dsrApp) << "disableXGrabButton() called.";
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode == true || Utils::isTreelandMode == true) {
         qCDebug(dsrApp) << "Wayland/TreeLand mode detected, skipping disableXGrabButton().";
         return;
     }
-    XUngrabButton(QX11Info::display(), true, AnyModifier, DefaultRootWindow(QX11Info::display()));
+#endif
+    if (!QX11Info::display()) {
+        qCWarning(dsrApp) << "disableXGrabButton: no X11 connection, skipping.";
+        return;
+    }
+    XUngrabButton(QX11Info::display(), AnyButton, AnyModifier, DefaultRootWindow(QX11Info::display()));
     qCDebug(dsrApp) << "XUngrabButton called.";
 }
 
@@ -797,6 +834,7 @@ void Utils::cursorMove(QPoint currentCursor, QKeyEvent *keyEvent)
         qCInfo(dsrApp) << "the key is " << keyEvent->key() << " (" << keyEvent->text() << ")";
     }
 
+#ifndef ENABLE_UNIT_TEST
     if (Utils::isWaylandMode) {
         qCInfo(dsrApp) << "isWaylandMode is true, use WaylandMouseSimulator to move cursor.";
 #ifdef KF5_WAYLAND_FLAGE_ON
@@ -808,6 +846,9 @@ void Utils::cursorMove(QPoint currentCursor, QKeyEvent *keyEvent)
 #endif  // KF5_WAYLAND_FLAGE_ON
     } else {
         qCInfo(dsrApp) << "isWaylandMode is false, use QCursor to move cursor.";
+#endif
         QCursor::setPos(pos);
+#ifndef ENABLE_UNIT_TEST
     }
+#endif
 }
