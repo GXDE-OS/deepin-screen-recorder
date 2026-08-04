@@ -451,9 +451,13 @@ bool TimeWidget::isWaylandProtocol()
     qCDebug(dsrApp) << "isWaylandProtocol method called.";
     QProcessEnvironment e = QProcessEnvironment::systemEnvironment();
 
-    // check is treeland environment.
-    if (e.value(QStringLiteral("DDE_CURRENT_COMPOSITOR")) == QStringLiteral("TreeLand")) {
-        qCDebug(dsrApp) << "TreeLand environment detected";
+    // check is treeland/gxwm environment.
+    const QString compositor = e.value(QStringLiteral(
+        "DDE_CURRENT_COMPOSITOR"));
+    if (compositor.compare(QStringLiteral("TreeLand"), Qt::CaseInsensitive) == 0
+            || compositor.compare(QStringLiteral("GXWM"),
+                Qt::CaseInsensitive) == 0) {
+        qCDebug(dsrApp) << "TreeLand-like environment detected:" << compositor;
         return false;
     }
 

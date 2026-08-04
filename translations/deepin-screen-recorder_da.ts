@@ -34,17 +34,6 @@ eller tryk på genvejen igen, for at stoppe optagelse</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Skærmbillede</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Optagelse</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ eller tryk på genvejen igen, for at stoppe optagelse</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Fæst skærmbilleder</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Skærmbilled</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Optag</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Skærmbilled</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Optagelse</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ eller tryk på genvejen igen, for at stoppe optagelse</translation>
     <message>
         <source>Arrow</source>
         <translation>Pil</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Skærmbillede</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Opfølg</translation>
     </message>
 </context>
 <context>

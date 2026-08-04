@@ -34,17 +34,6 @@ of druk nogmaals op de sneltoets om te stoppen</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Schermfoto</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Opname</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ of druk nogmaals op de sneltoets om te stoppen</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Schermfoto&apos;s vastmaken</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Schermfoto</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Opnemen</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Schermfoto</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Opname</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ of druk nogmaals op de sneltoets om te stoppen</translation>
     <message>
         <source>Arrow</source>
         <translation>Pijl</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Schermfoto</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Opnemen</translation>
     </message>
 </context>
 <context>

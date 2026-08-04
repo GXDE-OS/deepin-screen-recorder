@@ -34,17 +34,6 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>لقطة شاشة</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>جاري التسجيل</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Pin Screenshots</source>
         <translation>إرفاق صور الشاشة</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>لقطة شاشة</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>تسجيل</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>لقطة شاشة</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>جاري التسجيل</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Arrow</source>
         <translation>سهم</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>لقطة شاشة</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>تسجيل</translation>
     </message>
 </context>
 <context>

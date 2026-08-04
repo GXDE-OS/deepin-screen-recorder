@@ -34,17 +34,6 @@ tai lopeta tallennus painamalla pikakuvaketta uudelleen</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Kaappaus</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Tallennus</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ tai lopeta tallennus painamalla pikakuvaketta uudelleen</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Kiinnitä kaappaukset</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Kaappaus</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Tallenna</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Kaappaus</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Tallentaa</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ tai lopeta tallennus painamalla pikakuvaketta uudelleen</translation>
     <message>
         <source>Arrow</source>
         <translation>Nuoli</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Kaappaus</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Tallenna</translation>
     </message>
 </context>
 <context>

@@ -34,17 +34,6 @@ lub naciśnij ponownie skrót, aby zatrzymać nagrywanie</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Zrzut ekranu</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Nagrywanie</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ lub naciśnij ponownie skrót, aby zatrzymać nagrywanie</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Przypnij zrzuty ekranu</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Zrzut ekranu</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Nagrywanie</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Zrzut ekranu</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Nagrywanie</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ lub naciśnij ponownie skrót, aby zatrzymać nagrywanie</translation>
     <message>
         <source>Arrow</source>
         <translation>Strzałka</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Zrzut ekranu</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Nagrywanie</translation>
     </message>
 </context>
 <context>

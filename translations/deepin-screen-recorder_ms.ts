@@ -34,17 +34,6 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tangkap Layar</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Rakaman</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Cemat Tangkap Layar</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tangkap Layar</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Rakam</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tangkap Layar</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Merakam</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     <message>
         <source>Arrow</source>
         <translation>Anak Panah</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tangkap Layar</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Rakam</translation>
     </message>
 </context>
 <context>

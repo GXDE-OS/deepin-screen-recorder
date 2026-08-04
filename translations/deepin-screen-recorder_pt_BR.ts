@@ -34,17 +34,6 @@ clique no ícone da bandeja ou use o atalho</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capturar</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Gravando</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ clique no ícone da bandeja ou use o atalho</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Fixar capturas de tela</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de tela</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Gravar</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de tela</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Gravando</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ clique no ícone da bandeja ou use o atalho</translation>
     <message>
         <source>Arrow</source>
         <translation>Seta</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capturar</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Gravar</translation>
     </message>
 </context>
 <context>

@@ -34,17 +34,6 @@ pe bouezit adarre war ar verradenn evit paouez an enrolladenn</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tapadenn-skramm</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>التسجيل</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ pe bouezit adarre war ar verradenn evit paouez an enrolladenn</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>الانقاص</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>التقاط شاشة</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>تسجيل</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>التقاط شاشة</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>التسجيل</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ pe bouezit adarre war ar verradenn evit paouez an enrolladenn</translation>
     <message>
         <source>Arrow</source>
         <translation>Bir</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Tapadenn-skramm</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>تسجيل</translation>
     </message>
 </context>
 <context>

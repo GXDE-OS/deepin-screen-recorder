@@ -31,6 +31,27 @@
 
 DWIDGET_USE_NAMESPACE
 
+// Checks if the compositor is Treeland-compatiable.
+// It does NOT needs to be supporting every Treland protocols but it would be
+// enough if the compositor supports treeland-capture-unstable-v1.
+// In this case we let the app treat that compositor as vallina Treeland.
+static bool isTreelandLikeCompositor() {
+    const QString compositor = QProcessEnvironment::systemEnvironment()
+        .value(QStringLiteral("DDE_CURRENT_COMPOSITOR"));
+
+    bool isCompactiable = false;
+
+    if (compositor.compare(QStringLiteral("TreeLand"),
+            Qt::CaseInsensitive) == 0) {
+        isCompactiable = true;
+    } else if (compositor.compare(QStringLiteral("GXWM"),
+            Qt::CaseInsensitive) == 0) {
+        isCompactiable = true;
+    }
+
+    return isCompactiable;
+}
+
 static bool isWaylandProtocol()
 {
     qCDebug(dsrApp) << "isWaylandProtocol called.";
@@ -38,8 +59,8 @@ static bool isWaylandProtocol()
     qCDebug(dsrApp) << "System environment retrieved.";
 
     // TreeLand使用wayland协议，但需要特殊处理，不视为普通wayland
-    if (e.value(QStringLiteral("DDE_CURRENT_COMPOSITOR")) == QStringLiteral("TreeLand")) {
-        qCDebug(dsrApp) << "DDE_CURRENT_COMPOSITOR is TreeLand, returning false (TreeLand handled separately).";
+    if (isTreelandLikeCompositor()) {
+        qCDebug(dsrApp) << "DDE_CURRENT_COMPOSITOR is TreeLand-like, returning false (handled separately).";
         return false;
     }
 
@@ -54,9 +75,11 @@ static bool isWaylandProtocol()
 static bool isTreelandEnvironment()
 {
     qCDebug(dsrApp) << "isTreelandEnvironment called.";
-    QProcessEnvironment e = QProcessEnvironment::systemEnvironment();
-    bool isTreeland = e.value(QStringLiteral("DDE_CURRENT_COMPOSITOR")) == QStringLiteral("TreeLand");
-    qCDebug(dsrApp) << "DDE_CURRENT_COMPOSITOR:" << e.value(QStringLiteral("DDE_CURRENT_COMPOSITOR")) << ", isTreeland:" << isTreeland;
+    bool isTreeland = isTreelandLikeCompositor();
+    qCDebug(dsrApp) << "DDE_CURRENT_COMPOSITOR:"
+        << QProcessEnvironment::systemEnvironment()
+            .value(QStringLiteral("DDE_CURRENT_COMPOSITOR"))
+        << ", isTreeland:" << isTreeland;
     return isTreeland;
 }
 

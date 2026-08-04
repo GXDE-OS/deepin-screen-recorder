@@ -34,17 +34,6 @@ ou appuyer à nouveau sur le raccourci pour arrêter l&apos;enregistrement</tran
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capture d&apos;écran</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Enregistrement</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ ou appuyer à nouveau sur le raccourci pour arrêter l&apos;enregistrement</tran
     <message>
         <source>Pin Screenshots</source>
         <translation>Captures d&apos;écran de l&apos;épingle</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capture d&apos;écran</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Enregistrer</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capture d&apos;écran</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Enregistrement</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ ou appuyer à nouveau sur le raccourci pour arrêter l&apos;enregistrement</tran
     <message>
         <source>Arrow</source>
         <translation>Flèche</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Capture d&apos;écran</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Enregistrer</translation>
     </message>
 </context>
 <context>

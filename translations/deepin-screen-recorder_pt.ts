@@ -34,17 +34,6 @@ ou pressione novamente o atalho para parar de gravar</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de ecrã</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Gravação</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ ou pressione novamente o atalho para parar de gravar</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Afixar capturas de ecrã</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Gravar</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Gravando</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ ou pressione novamente o atalho para parar de gravar</translation>
     <message>
         <source>Arrow</source>
         <translation>Seta</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de ecrã</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Gravar</translation>
     </message>
 </context>
 <context>

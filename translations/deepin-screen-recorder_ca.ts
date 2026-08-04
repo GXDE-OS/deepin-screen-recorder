@@ -34,17 +34,6 @@ o premeu la drecera de nou per aturar la gravació.</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de pantalla</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Gavació</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ o premeu la drecera de nou per aturar la gravació.</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Fixa les captures</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de pantalla</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Grava</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de pantalla</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Gavació</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ o premeu la drecera de nou per aturar la gravació.</translation>
     <message>
         <source>Arrow</source>
         <translation>Fletxa</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Captura de pantalla</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Grava</translation>
     </message>
 </context>
 <context>

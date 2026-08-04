@@ -34,17 +34,6 @@ vagy nyomja le a gyorsbillentyűt ismét a felvétel megállításához</transla
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Képernyőkép</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Rögzítés</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ vagy nyomja le a gyorsbillentyűt ismét a felvétel megállításához</transla
     <message>
         <source>Pin Screenshots</source>
         <translation>Képernyőképek kitűzése</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Képernyőkép</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Felvétel</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Képernyőkép</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Felvétel</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ vagy nyomja le a gyorsbillentyűt ismét a felvétel megállításához</transla
     <message>
         <source>Arrow</source>
         <translation>Nyíl</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Képernyőkép</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Felvétel</translation>
     </message>
 </context>
 <context>

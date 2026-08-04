@@ -34,17 +34,6 @@ tepsi simgesine tıklayın ya da kısayola yeniden basın</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ekran Görüntüsü</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Kaydediyor</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ tepsi simgesine tıklayın ya da kısayola yeniden basın</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Ekran Görüntülerini Sabitle</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ekran görüntüsü</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Kaydet</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ekran görüntüsü</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Kayıt</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ tepsi simgesine tıklayın ya da kısayola yeniden basın</translation>
     <message>
         <source>Arrow</source>
         <translation>ok</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Ekran Görüntüsü</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Kaydet</translation>
     </message>
 </context>
 <context>

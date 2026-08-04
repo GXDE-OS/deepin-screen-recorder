@@ -31,9 +31,12 @@ bool isWaylandProtocol()
     qCDebug(dsrApp) << "Checking if Wayland protocol is in use.";
     QProcessEnvironment e = QProcessEnvironment::systemEnvironment();
 
-    // TreeLand：环境变量取值在不同版本可能有大小写差异，与主程序一致做不区分大小写判断
-    const QString compositor = e.value(QStringLiteral("DDE_CURRENT_COMPOSITOR"));
-    if (compositor.compare(QStringLiteral("treeland"), Qt::CaseInsensitive) == 0) {
+    // TreeLand/GXWM：环境变量取值在不同版本可能有大小写差异，与主程序一致做不区分大小写判断
+    const QString compositor = e.value(QStringLiteral(
+        "DDE_CURRENT_COMPOSITOR"));
+    if (compositor.compare(QStringLiteral("treeland"), Qt::CaseInsensitive) == 0
+            || compositor.compare(QStringLiteral("gxwm"),
+                Qt::CaseInsensitive) == 0) {
         PUtils::isTreelandMode = true;
         qCDebug(dsrApp) << "DDE_CURRENT_COMPOSITOR is TreeLand-like:" << compositor;
         return false;

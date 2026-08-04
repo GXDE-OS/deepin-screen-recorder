@@ -34,17 +34,6 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Foto ekrani</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Regjistrim</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     <message>
         <source>Pin Screenshots</source>
         <translation>Fiksoni Foto Ekrani</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Foto ekrani</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Regjistroje</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Foto ekrani</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Regjistrim</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     <message>
         <source>Arrow</source>
         <translation>Shigjetë</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Foto ekrani</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Regjistroje</translation>
     </message>
 </context>
 <context>

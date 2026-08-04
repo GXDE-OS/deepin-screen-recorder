@@ -34,17 +34,6 @@ oder drücken Sie die Tastenkombination erneut, um die Aufnahme zu stoppen</tran
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Bildschirmaufnahme</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Wird aufgenommen</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ oder drücken Sie die Tastenkombination erneut, um die Aufnahme zu stoppen</tran
     <message>
         <source>Pin Screenshots</source>
         <translation>Bildschirmfotos anheften</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Bildschirmaufnahme</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>Aufnehmen</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Bildschirmaufnahme</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>Wird aufgenommen</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ oder drücken Sie die Tastenkombination erneut, um die Aufnahme zu stoppen</tran
     <message>
         <source>Arrow</source>
         <translation>Pfeil</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>Bildschirmaufnahme</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>Aufnehmen</translation>
     </message>
 </context>
 <context>

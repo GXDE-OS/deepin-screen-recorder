@@ -34,17 +34,6 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
-    <name>IconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>ຮູບພາບໜ້າຈໍ</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>ການບັນທຶກ</translation>
-    </message>
-</context>
-<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -185,28 +174,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Pin Screenshots</source>
         <translation>ຕິດສະກີນພາບ</translation>
-    </message>
-</context>
-<context>
-    <name>QuickPanelWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>ຮູບພາບ</translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation>ບັນທຶກ</translation>
-    </message>
-</context>
-<context>
-    <name>RecordIconWidget</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>ຮູບຖ່າຍໜ້າຈໍ</translation>
-    </message>
-    <message>
-        <source>Recording</source>
-        <translation>ການບັນທຶກ</translation>
     </message>
 </context>
 <context>
@@ -473,20 +440,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Arrow</source>
         <translation>ລົມ</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartPlugin</name>
-    <message>
-        <source>Screenshot</source>
-        <translation>ສະກີນສໍາເນົາ</translation>
-    </message>
-</context>
-<context>
-    <name>ShotStartRecordPlugin</name>
-    <message>
-        <source>Record</source>
-        <translation>ບັນທຶກ</translation>
     </message>
 </context>
 <context>
