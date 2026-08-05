@@ -1,3 +1,10 @@
+deepin-screen-recorder (7.0.0-gxde2) unstable; urgency=medium
+
+  * 修复了任务栏图标无法正确拉起截图的问题
+  * 修复了Wayland下无法置顶截图的问题
+
+ -- CharOfString <root@charofstring.cc>  Wed, 5 Aug 2026 21:04:10 +0800
+
 deepin-screen-recorder (7.0.0-gxde1) unstable; urgency=medium
 
   * 新增对GXDE Wlcom的截图支持
