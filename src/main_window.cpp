@@ -164,7 +164,8 @@ MainWindow::MainWindow(DWidget *parent)
     if (Utils::isTreelandMode) {
         qCDebug(dsrApp) << "Running in Treeland mode";
         setAttribute(Qt::WA_TranslucentBackground);
-        setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowTransparentForInput); //Qt::WindowTransparentForInput
+        // 不做输入穿透：选区内的鼠标事件由主窗口自己收，不再透传给下层窗口
+        setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 
         // 确保主窗口显示
         initMainWindow();
@@ -3755,20 +3756,12 @@ void MainWindow::handleOptionMenuShown(){
 
         auto waylandWindow = static_cast<QtWaylandClient::QWaylandWindow *>(windowHandle()->handle());
 
-        QRect region = context->captureRegion().toRect();
-        bool regionReady = (region.width() != 0) && (region.height() != 0);
-
         if(windowHandle())
         {
             Qt::WindowFlags flags = windowHandle()->flags();
 
-            if (regionReady) {
-                // 取消输入穿透
-                flags &= ~Qt::WindowTransparentForInput;
-            } else {
-                // 保持输入穿透
-                flags |= Qt::WindowTransparentForInput;
-            }
+            // 始终取消输入穿透：无论选区是否就绪，事件都不再透传给下层窗口
+            flags &= ~Qt::WindowTransparentForInput;
            // flags |= Qt::WindowStaysOnTopHint;
             // 应用新的窗口标志
             windowHandle()->setFlags(flags);
@@ -3871,20 +3864,12 @@ void MainWindow::changeShotToolEvent(const QString &func)
 
         auto waylandWindow = static_cast<QtWaylandClient::QWaylandWindow *>(windowHandle()->handle());
 
-        QRect region = context->captureRegion().toRect();
-        bool regionReady = (region.width() != 0) && (region.height() != 0);
-
         if(windowHandle())
         {
             Qt::WindowFlags flags = windowHandle()->flags();
 
-            if (regionReady) {
-                // 取消输入穿透
-                flags &= ~Qt::WindowTransparentForInput;
-            } else {
-                // 保持输入穿透
-                flags |= Qt::WindowTransparentForInput;
-            }
+            // 始终取消输入穿透：无论选区是否就绪，事件都不再透传给下层窗口
+            flags &= ~Qt::WindowTransparentForInput;
             flags |= Qt::WindowStaysOnTopHint;
             // 应用新的窗口标志
             windowHandle()->setFlags(flags);
