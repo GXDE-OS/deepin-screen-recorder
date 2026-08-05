@@ -726,6 +726,11 @@ public slots:
 
 protected:
     /**
+     * @brief 窗口显示时补一次Treeland采集初始化
+     */
+    void showEvent(QShowEvent *event) override;
+
+    /**
      * @brief eventFilter
      * @param object
      * @param event

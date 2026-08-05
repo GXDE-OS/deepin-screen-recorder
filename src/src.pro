@@ -182,6 +182,7 @@ HEADERS += main_window.h \
     utils/voicevolumewatcher_interface.h \
     utils/x_multi_screen_info.h \
     utils/wayland_compositor.h \
+    utils/globalshortcut.h \
     utils_interface.h \
     voicevolumewatcherext.h \
     utils/baseutils.h \
@@ -271,6 +272,7 @@ SOURCES += main.cpp \
     record_process.cpp \
     utils.cpp \
     utils/log.cpp \
+    utils/globalshortcut.cpp \
     countdown_tooltip.cpp \
     constant.cpp \
     event_monitor.cpp \
@@ -438,6 +440,10 @@ contains(DEFINES, DDE_START_FLAGE_ON) {
 }
 dbus_service.path = $$PREFIX/share/dbus-1/services
 
+# Autostart: Wayland shortcut handler
+autostart.files = $$PWD/../deepin-screen-recorder-shortcuts.desktop
+autostart.path = /etc/xdg/autostart
+
 # Manual
 manual_dir.files = $$PWD/../assets/deepin-screen-recorder
 manual_dir.path = $$PREFIX/share/deepin-manual/manual-assets/application/
@@ -452,4 +458,4 @@ equals(QT_MAJOR_VERSION, 6) {
     DCONFIG_OVERRIDE_FILES += treeland_splash
 }
 
-INSTALLS += target icon desktop translations dbus_service manual_dir
+INSTALLS += target icon desktop translations dbus_service manual_dir autostart

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Screen Capture Shortcuts
+Comment=Registers the screenshot shortcut with the Wayland compositor
+
+# Wayland 下全局按键只有合成器看得到，注册方必须常驻才能收到合成器的按键信号
+# 在Wayland下拉起到dbus常驻模式，X11有daemon负责，不需要这个workaround
+# 在X11下无操作
+
+Exec=sh -c 'test "$XDG_SESSION_TYPE" = wayland && exec /usr/bin/deepin-screen-recorder --dbus'
+TryExec=/usr/bin/deepin-screen-recorder
+NoDisplay=true
+X-GNOME-Autostart-Phase=Applications
