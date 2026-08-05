@@ -85,7 +85,7 @@ equals(QT_MAJOR_VERSION, 6) {
           sql xml opengl openglwidgets waylandclient waylandclient-private
     
     # Qt6 specific configurations
-    PKGCONFIG += dtk6widget dtk6core dtk6gui xcb xcb-util gstreamer-app-1.0 libusb-1.0
+    PKGCONFIG += dtk6widget dtk6core dtk6gui xcb xcb-util gstreamer-app-1.0 libusb-1.0 wayland-client
     
     QMAKE_LRELEASE = /usr/lib/qt6/bin/lrelease
     
@@ -181,6 +181,7 @@ HEADERS += main_window.h \
     utils/proxyaudioport.h \
     utils/voicevolumewatcher_interface.h \
     utils/x_multi_screen_info.h \
+    utils/wayland_compositor.h \
     utils_interface.h \
     voicevolumewatcherext.h \
     utils/baseutils.h \

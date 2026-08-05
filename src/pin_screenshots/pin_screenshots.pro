@@ -7,16 +7,17 @@
 # Qt 模块配置
 equals(QT_MAJOR_VERSION, 6) {
     QT += core gui widgets dbus
-    
+
     # Qt6 specific configurations
-    PKGCONFIG += dtk6widget dtk6core
+    # wayland-client: 用于探测合成器是否支持 treeland-capture-unstable-v1
+    PKGCONFIG += dtk6widget dtk6core wayland-client
     # Add an alternative search path because of the incorrect dtk6widget.pc
     INCLUDEPATH += /usr/include/dtk6/DWidget
 } else {
     QT += core gui widgets dbus
-    
+
     # Qt5 specific configurations
-    PKGCONFIG += dtkwidget dtkcore
+    PKGCONFIG += dtkwidget dtkcore wayland-client
     # Add an alternative search path because of the incorrect dtkwidget.pc
     INCLUDEPATH += /usr/include/dtk5/DWidget
 }
@@ -72,6 +73,7 @@ HEADERS += \
     settings.h \
     ui/mainToolWidget.h \
     ../utils/log.h \
+    ../utils/wayland_compositor.h \
     ../widgets/toolbutton.h \
     ../widgets/savebutton.h
 

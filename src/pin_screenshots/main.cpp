@@ -8,6 +8,7 @@
 #include "service/dbuspinscreenshotsadaptor.h"
 #include "putils.h"
 #include "../utils/log.h"
+#include "../utils/wayland_compositor.h"
 
 #include <DWidget>
 #include <DLog>
@@ -39,6 +40,14 @@ bool isWaylandProtocol()
                 Qt::CaseInsensitive) == 0) {
         PUtils::isTreelandMode = true;
         qCDebug(dsrApp) << "DDE_CURRENT_COMPOSITOR is TreeLand-like:" << compositor;
+        return false;
+    }
+
+    // 本进程由 D-Bus 激活拉起，拿到的是激活环境而非会话脚本导出的环境，
+    // DDE_CURRENT_COMPOSITOR 多半为空，只能直接问合成器
+    if (compositorAdvertisesTreelandCapture()) {
+        PUtils::isTreelandMode = true;
+        qCDebug(dsrApp) << "Compositor advertises treeland_capture_manager_v1, TreeLand-like.";
         return false;
     }
 

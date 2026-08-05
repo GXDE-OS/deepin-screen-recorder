@@ -11,6 +11,7 @@
 #include "utils/eventlogutils.h"
 #include "utils/x_multi_screen_info.h"
 #include "utils/log.h"
+#include "utils/wayland_compositor.h"
 
 #include <DWidget>
 #include <DLog>
@@ -36,18 +37,20 @@ DWIDGET_USE_NAMESPACE
 // enough if the compositor supports treeland-capture-unstable-v1.
 // In this case we let the app treat that compositor as vallina Treeland.
 static bool isTreelandLikeCompositor() {
-    const QString compositor = QProcessEnvironment::systemEnvironment()
-        .value(QStringLiteral("DDE_CURRENT_COMPOSITOR"));
+    static const bool isCompactiable = [] {
+        const QString compositor = QProcessEnvironment::systemEnvironment()
+            .value(QStringLiteral("DDE_CURRENT_COMPOSITOR"));
 
-    bool isCompactiable = false;
+        if (compositor.compare(QStringLiteral("TreeLand"),
+                Qt::CaseInsensitive) == 0) {
+            return true;
+        } else if (compositor.compare(QStringLiteral("GXWM"),
+                Qt::CaseInsensitive) == 0) {
+            return true;
+        }
 
-    if (compositor.compare(QStringLiteral("TreeLand"),
-            Qt::CaseInsensitive) == 0) {
-        isCompactiable = true;
-    } else if (compositor.compare(QStringLiteral("GXWM"),
-            Qt::CaseInsensitive) == 0) {
-        isCompactiable = true;
-    }
+        return compositorAdvertisesTreelandCapture();
+    }();
 
     return isCompactiable;
 }
