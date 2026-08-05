@@ -74,6 +74,7 @@ Recommends: dde-session-ui,
  gstreamer1.0-plugins-bad,
  uos-reporter,
  deepin-event-log
+Breaks: gxde-wlcom (<< 2.1.4-gxde3)
 Conflicts: deepin-screenshot
 Replaces: deepin-screenshot,
  deepin-screen-recorder-plugin
