@@ -287,10 +287,11 @@ void ToolBar::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         QApplication::setOverrideCursor(Qt::ClosedHandCursor);
         m_isPress = true;
-        //获得鼠标的初始位置
-        m_mouseStartPoint = event->globalPos();
+        //记下鼠标在工具栏内的抓取偏移（不能用 globalPos，理由见 mouseMoveEvent）
+        m_mouseStartPoint = event->pos();
         //获得窗口的初始位置
         m_windowStartPoint = this->frameGeometry().topLeft();
+        m_hasDragAnchor = false;
         m_pMainWindow->getSideBarStartPressPoint();
     }
 
@@ -301,10 +302,35 @@ void ToolBar::mouseMoveEvent(QMouseEvent *event)
     //判断是否在拖拽移动
     if (m_isPress) {
         m_isDrag = true;
-        //获得鼠标移动的距离
-        QPoint move_distance = event->globalPos() - m_mouseStartPoint;
-        //改变窗口的位置
-//        this->move(m_windowStartPoint + move_distance);
+        // wayland 下事件坐标有两个来源：工具栏自己的 surface，以及主窗口那个全屏 overlay
+        // （工具栏的 windowHandle 在 main_window.cpp updateCaptureRegion 里被挂成了它的子
+        // surface，指针拖出工具栏后事件从主窗口送达，Qt 转发时不补 subsurface 偏移）。
+        // 前者要靠 pos() 才能换算成屏幕坐标，而 pos() 是客户端自己记的、拖拽中会和合成器
+        // 实际摆放的位置脱节，换算出来的位置能差出上百像素，两簇交替就是肉眼可见的抖动。
+        // 所以只认后者：主窗口是全屏的，原点即屏幕原点，这簇坐标本身就是指针的屏幕位置。
+        const QPoint pointerPos = event->pos();
+        if (!m_hasDragAnchor) {
+            // 第一帧要挑一个主窗口坐标系的事件做锚点。工具栏自身那簇必然落在自己矩形
+            // 附近，按矩形外扩一圈排除（不能用 rect().contains()：它的边界是 height-1，
+            // 指针停在下边缘那一行时 y 恰好等于 height，会漏过去）。
+            if (rect().adjusted(-width(), -height(), width(), height()).contains(pointerPos)) {
+                return;
+            }
+            m_dragAnchor = pointerPos;
+            m_lastPointer = pointerPos;
+            m_hasDragAnchor = true;
+            return;
+        }
+        // 锚定之后靠连续性分簇：两簇坐标相差上百像素，正常拖拽相邻帧不会跳这么远。
+        // 注意跳变要当成「参考系换了」处理，就地重新锚定后继续跟；早先的版本是直接丢弃，
+        // 结果事件流整体切簇时会被连续拒绝几百帧（实测最长冻结 462ms），手感发呆。
+        if ((pointerPos - m_lastPointer).manhattanLength() > 300) {
+            m_dragAnchor = pointerPos - (m_lastPointer - m_dragAnchor);
+            m_lastPointer = pointerPos;
+            return;
+        }
+        m_lastPointer = pointerPos;
+        const QPoint move_distance = pointerPos - m_dragAnchor;
         if (m_pMainWindow) {
             m_pMainWindow->moveToolBars(m_windowStartPoint, move_distance);
         }

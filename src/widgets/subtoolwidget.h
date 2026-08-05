@@ -21,6 +21,13 @@ class SubToolWidget : public DStackedWidget
 {
     Q_OBJECT
 public:
+    /**
+     * @brief 提前触发一次摄像头探测。QMediaDevices::videoInputs() 首次调用要初始化
+     *        Qt Multimedia 的 FFmpeg 后端并逐个探测硬件编解码框架，实测约 1.4s；
+     *        工具栏每次重新选区都会重建，不预热的话每选一次就卡一次。
+     */
+    static void warmUpCameraProbe();
+
     explicit SubToolWidget(MainWindow *pmainwindow, DWidget *parent = nullptr);
     ~SubToolWidget();
 

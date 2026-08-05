@@ -333,10 +333,10 @@ void MainWindow::initTreelandtAttributes() //initTreelandtAttributes
     qCInfo(dsrApp) << __LINE__ << __FUNCTION__ << "正在初始化一些属性...";
     setWindowTitle(tr("Screen Capture"));
 
-    rootWindowRect = QRect(0,
-                         0,
-                         static_cast<int>(qRound(m_screenSize.width() / m_pixelRatio)),
-                         static_cast<int>(qRound(m_screenSize.height() / m_pixelRatio)));
+    // m_screenSize 是各屏 geometry() 求并集得到的，本身就是逻辑坐标（见 initMainWindow），
+    // 不能再除一次 DPR：那样窗口只有屏幕的 1/DPR，setFixedSize 之后 showFullScreen 也撑不回来。
+    rootWindowRect = QRect(QPoint(0, 0), m_screenSize);
+    qCDebug(dsrApp) << __FUNCTION__ << __LINE__ << "screen size" << rootWindowRect;
 
     // 基本窗口属性
     if (m_hasComposite) {
@@ -368,9 +368,13 @@ void MainWindow::initTreelandtAttributes() //initTreelandtAttributes
         }
         m_zoomIndicator->hideMagnifier();
     }
+    // 摄像头探测放到事件循环空闲时先跑一遍：用户还在框选的时候把这 1.4s 消化掉，
+    // 免得 sourceReady 之后建工具栏时才卡（见 SubToolWidget::warmUpCameraProbe）
+    QTimer::singleShot(0, this, [] { SubToolWidget::warmUpCameraProbe(); });
+
+    // 同上，rootWindowRect 已是逻辑坐标，move/setFixedSize 收的也是逻辑坐标，不用再换算
     m_backgroundRect = rootWindowRect;
-    m_backgroundRect = QRect(m_backgroundRect.topLeft() / m_pixelRatio, m_backgroundRect.size());
-    move(m_backgroundRect.topLeft() * m_pixelRatio);
+    move(m_backgroundRect.topLeft());
     this->setFixedSize(m_backgroundRect.size());
     initShortcut();
 
@@ -4943,9 +4947,44 @@ bool MainWindow::saveAction(const QPixmap &pix)
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-    // TODO: treeland适配
     if (Utils::isTreelandMode) {
         DWidget::paintEvent(event);
+
+        // treeland 下背景由合成器直接透出，不需要自己贴背景截图，但选区遮罩和边框
+        // 得自己画：合成器的选择器在 source_ready 之后就撤了（参见 treeland
+        // CaptureSourceSelector::doneSelection()），批注阶段没人再画这两样东西。
+        if (recordWidth <= 0 || recordHeight <= 0) {
+            return;
+        }
+        if (Utils::isTabletEnvironment
+            && (status::record == m_functionType || status::scrollshot == m_functionType)) {
+            // 平板环境屏蔽录屏和滚动截图，不绘制线框
+            return;
+        }
+
+        const QRect fullRect(0, 0, width(), height());
+        const QRect frameRect(recordX, recordY, recordWidth, recordHeight);
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing, false);
+
+        // 非选区压 20% 黑，选区保持全透明，让合成器抓到原始画面
+        if (!m_isFullScreenRecord) {
+            painter.setClipRegion(QRegion(fullRect).subtracted(QRegion(frameRect)));
+            painter.fillRect(fullRect, QColor(0, 0, 0, 51));
+            painter.setClipping(false);
+        }
+
+        // 白色虚线框。treeland 下最终图像是合成器在确认时抓屏得到的，画在选区内会被
+        // 拍进截图，所以整圈外移一个像素，只占选区外侧那一行/列。
+        if (recordButtonStatus != RECORD_BUTTON_RECORDING) {
+            QPen framePen(Qt::white);
+            framePen.setStyle(Qt::DashLine);
+            framePen.setDashOffset(0);
+            framePen.setWidth(1);
+            painter.setPen(framePen);
+            painter.setBrush(Qt::NoBrush);
+            painter.drawRect(QRect(recordX - 1, recordY - 1, recordWidth + 1, recordHeight + 1));
+        }
         return;
     }
 
@@ -8137,6 +8176,10 @@ void MainWindow::updateCaptureRegion()
     // 无效选区：只销毁旧工具栏，等下一次 sourceReady 再创建
     if (region.width() <= 0 || region.height() <= 0) {
         destroyTreelandToolBar();
+        // 顺带清掉旧选区，否则重新选区时我们画的遮罩会和合成器选择器的遮罩叠加
+        recordWidth = 0;
+        recordHeight = 0;
+        update();
         return;
     }
 
@@ -8156,6 +8199,8 @@ void MainWindow::updateCaptureRegion()
     recordY = region.y();
     recordWidth = region.width();
     recordHeight = region.height();
+    // 选区变了要重绘，否则遮罩和虚线框不会跟上
+    update();
 
     m_toolBar->showWidget();
     const QPoint pos(region.x(), qMin(region.bottom(), height() - 2 * m_toolBar->height()));

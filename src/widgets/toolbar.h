@@ -205,6 +205,14 @@ private:
 
     QPoint m_mouseStartPoint;
     QPoint m_windowStartPoint;
+
+    /**
+     * @brief 本次拖拽的锚点：第一个落在主窗口坐标系里的指针位置
+     */
+    QPoint m_dragAnchor;
+    QPoint m_lastPointer;
+    bool m_hasDragAnchor = false;
+
     MainWindow *m_pMainWindow = nullptr;
 
 };

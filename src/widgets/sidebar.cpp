@@ -422,10 +422,11 @@ void SideBar::mousePressEvent(QMouseEvent *event)
             QApplication::setOverrideCursor(Qt::ClosedHandCursor);
         }
         m_isPress = true;
-        //获得鼠标的初始位置
-        m_mouseStartPoint = event->globalPos();
+        //获得鼠标在窗口内的初始位置（不能用 globalPos，理由见 mouseMoveEvent）
+        m_mouseStartPoint = event->pos();
         //获得窗口的初始位置
         m_windowStartPoint = this->frameGeometry().topLeft();
+        m_hasDragAnchor = false;
         m_pMainWindow->getToolBarStartPressPoint();
     }
 }
@@ -437,8 +438,26 @@ void SideBar::mouseMoveEvent(QMouseEvent *event)
     if (m_isPress) {
         qCDebug(dsrApp) << "Mouse is pressed, moving sidebar.";
         m_isDrag = true;
-        //获得鼠标移动的距离
-        QPoint move_distance = event->globalPos() - m_mouseStartPoint;
+        // 同 ToolBar::mouseMoveEvent：只认主窗口坐标系那簇事件（原点即屏幕原点），
+        // 工具栏自身 surface 那簇要靠会漂的 pos() 换算，直接丢弃。
+        const QPoint pointerPos = event->pos();
+        if (!m_hasDragAnchor) {
+            if (rect().adjusted(-width(), -height(), width(), height()).contains(pointerPos)) {
+                return;
+            }
+            m_dragAnchor = pointerPos;
+            m_lastPointer = pointerPos;
+            m_hasDragAnchor = true;
+            return;
+        }
+        // 跳变当成参考系切换处理，就地重锚后继续跟（详见 ToolBar::mouseMoveEvent）
+        if ((pointerPos - m_lastPointer).manhattanLength() > 300) {
+            m_dragAnchor = pointerPos - (m_lastPointer - m_dragAnchor);
+            m_lastPointer = pointerPos;
+            return;
+        }
+        m_lastPointer = pointerPos;
+        const QPoint move_distance = pointerPos - m_dragAnchor;
         //改变窗口的位置
         if (m_pMainWindow) {
             m_pMainWindow->moveToolBars(m_windowStartPoint, move_distance);

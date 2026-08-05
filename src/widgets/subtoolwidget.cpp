@@ -46,6 +46,18 @@
 DWIDGET_USE_NAMESPACE
 
 namespace {
+// QMediaDevices::videoInputs() 首次调用会初始化 Qt Multimedia 的 FFmpeg 后端，并逐个
+// 探测 cuda/vaapi/vdpau/vulkan，实测耗时约 1.4s。而 treeland 下工具栏在每次重新选区时
+// 都被析构重建（main_window.cpp updateCaptureRegion），于是每点一次窗口就卡一次。
+// 设备列表在一次截图会话内不会变，这里只探测一次。
+bool hasVideoInput()
+{
+    static const bool has = !QMediaDevices::videoInputs().isEmpty();
+    return has;
+}
+}
+
+namespace {
 const QSize TOOL_ICON_SIZE = QSize(36, 36);
 const QSize SMALL_TOOL_ICON_SIZE = QSize(24, 24);
 const QSize TOOL_BUTTON_SIZE = QSize(36, 36);
@@ -103,7 +115,7 @@ void SubToolWidget::initRecordLabel()
 
     //添加摄像头显示按钮
     m_cameraButton = new ToolButton();
-    m_cameraButton->setDisabled(QMediaDevices::videoInputs().isEmpty());
+    m_cameraButton->setDisabled(!hasVideoInput());
     Utils::setAccessibility(m_cameraButton, AC_SUBTOOLWIDGET_CAMERA_BUTTON);
     m_cameraButton->setIconSize(TOOL_ICON_SIZE);
     installTipHint(m_cameraButton, tr("Turn on camera (C)"));
@@ -2210,4 +2222,9 @@ SubToolWidget::~SubToolWidget()
         delete m_saveToSpecialPathMenu;
         m_saveToSpecialPathMenu = nullptr;
     }
+}
+
+void SubToolWidget::warmUpCameraProbe()
+{
+    hasVideoInput();
 }
