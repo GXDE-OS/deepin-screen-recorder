@@ -1,3 +1,9 @@
+deepin-screen-recorder (7.0.0-gxde1) unstable; urgency=medium
+
+  * 新增对GXDE Wlcom的截图支持
+
+ -- CharOfString <root@charofstring.cc>  Wed, 5 Aug 2026 17:40:12 +0800
+
 deepin-screen-recorder (6.6.38) unstable; urgency=medium
 
   * chore: Update version to 6.6.38
