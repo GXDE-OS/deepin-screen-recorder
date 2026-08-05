@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "putils.h"
 #include "settings.h"
+#include "ddeshellsurface.h"
 #include "../utils/log.h"
 
 #include <QDebug>
@@ -996,6 +997,13 @@ void MainWindow::showEvent(QShowEvent *event)
 
     createWinId();
     m_toolBar->createWinId();
+
+    // Qt::WindowStaysOnTopHint 在 Wayland 下不起作用，置顶要靠合成器的 overlay role
+    if (!DDEShell::raiseToOverlay(windowHandle())) {
+        qCWarning(dsrApp) << "[Treeland] pin window is not on the overlay layer,"
+                          << "it can be covered by other windows.";
+    }
+
     if (!windowHandle() || !m_toolBar->windowHandle() || toolbarAttachedToWindow()) {
         return;
     }

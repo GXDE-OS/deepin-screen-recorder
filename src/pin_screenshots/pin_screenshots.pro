@@ -6,15 +6,15 @@
 
 # Qt 模块配置
 equals(QT_MAJOR_VERSION, 6) {
-    QT += core gui widgets dbus
+    QT += core gui widgets dbus waylandclient waylandclient-private
 
     # Qt6 specific configurations
-    # wayland-client: 用于探测合成器是否支持 treeland-capture-unstable-v1
+    # wayland-client: 探测合成器协议、以及 treeland-dde-shell-v1 的绑定
     PKGCONFIG += dtk6widget dtk6core wayland-client
     # Add an alternative search path because of the incorrect dtk6widget.pc
     INCLUDEPATH += /usr/include/dtk6/DWidget
 } else {
-    QT += core gui widgets dbus
+    QT += core gui widgets dbus waylandclient waylandclient-private
 
     # Qt5 specific configurations
     PKGCONFIG += dtkwidget dtkcore wayland-client
@@ -55,9 +55,12 @@ SOURCES += \
     putils.cpp \
     settings.cpp \
     ui/mainToolWidget.cpp \
+    ddeshellsurface.cpp \
     ../utils/log.cpp \
     ../widgets/toolbutton.cpp \
-    ../widgets/savebutton.cpp
+    ../widgets/savebutton.cpp \
+    ../protocols/treeland-dde-shell/qwayland-treeland-dde-shell-v1.cpp \
+    ../protocols/treeland-dde-shell/wayland-treeland-dde-shell-v1-protocol.c
 
 HEADERS += \
     service/dbuspinscreenshotsadaptor.h \
@@ -72,10 +75,13 @@ HEADERS += \
     putils.h \
     settings.h \
     ui/mainToolWidget.h \
+    ddeshellsurface.h \
     ../utils/log.h \
     ../utils/wayland_compositor.h \
     ../widgets/toolbutton.h \
-    ../widgets/savebutton.h
+    ../widgets/savebutton.h \
+    ../protocols/treeland-dde-shell/qwayland-treeland-dde-shell-v1.h \
+    ../protocols/treeland-dde-shell/wayland-treeland-dde-shell-v1-client-protocol.h
 
 equals(QT_MAJOR_VERSION, 6) {
     # Qt6 特定的编译选项
@@ -104,5 +110,6 @@ RESOURCES += \
 
 INCLUDEPATH += ../utils
 INCLUDEPATH += ../widgets
+INCLUDEPATH += ../protocols/treeland-dde-shell
 
 
