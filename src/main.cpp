@@ -12,7 +12,6 @@
 #include "utils/x_multi_screen_info.h"
 #include "utils/log.h"
 #include "utils/wayland_compositor.h"
-#include "utils/globalshortcut.h"
 
 #include <DWidget>
 #include <DLog>
@@ -101,36 +100,6 @@ static bool initQt6XcbEnv()
     return result;
 #endif
     return false;
-}
-
-// 常驻模式下自己把截图快捷键注册到合成器
-// Wayland下必须常驻才行
-static void registerGlobalShortcuts(DBusScreenshotService* service) {
-    if (!Utils::isWaylandMode && !Utils::isTreelandMode) {
-        // X11: DDE Daemon负责
-        return;
-    }
-
-    if (!GlobalShortcut::isSupported()) {
-        qCWarning(dsrApp) << "Compositor provides NO KGlobalAccel service,"
-            << "Global key registration HALTED!.";
-        return;
-    }
-
-    auto* shortcut = new GlobalShortcut(
-        QStringLiteral("deepin-screen-recorder"),
-        QStringLiteral("Screen Capture"), service);
-
-    QObject::connect(shortcut, &GlobalShortcut::triggered, service,
-            [service](const QString &actionName) {
-        if (actionName == QLatin1String("StartScreenshot")) {
-            service->StartScreenshot();
-        }
-    });
-
-    shortcut->bind(QStringLiteral("StartScreenshot"),
-    QStringLiteral("Screenshot"),
-    QKeyCombination(Qt::ControlModifier | Qt::AltModifier, Qt::Key_A));
 }
 
 static bool CheckFFmpegEnv()
@@ -404,7 +373,6 @@ int main(int argc, char *argv[])
         if (cmdParser.isSet(dbusOption)) {
             qDebug() << "dbus register waiting!";
             qCDebug(dsrApp) << "DBus option set, waiting for DBus registration.";
-            registerGlobalShortcuts(&dbusService);
             return app->exec();
 
         } else {

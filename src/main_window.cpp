@@ -7975,15 +7975,6 @@ void MainWindow::setupConnections()
             this, &MainWindow::onFinishClicked);
 }
 
-void MainWindow::showEvent(QShowEvent* event) {
-    DWidget::showEvent(event);
-#ifndef ENABLE_UNIT_TEST
-    if (Utils::isTreelandMode) {
-        initializeCapture();
-    }
-#endif
-}
-
 void MainWindow::initializeCapture()
 {
 #ifndef ENABLE_UNIT_TEST
@@ -7997,13 +7988,9 @@ void MainWindow::initializeCapture()
 
     // 检查窗口句柄是否可用
     if (!windowHandle() || !windowHandle()->handle()) {
-        if (!isVisible()) {
-            qCDebug(dsrApp) << "Window not shown yet, defer capture initialization";
-            return;
-        }
         qCWarning(dsrApp) << "Window handle not available, cannot initialize capture";
-        // 已在显示流程中但句柄还没建好，等一下
-        // 句柄需慢慢等，心急则GET OUT
+        // 如果窗口句柄还未创建，延迟初始化
+        // 等待窗口创建完成后再初始化
         QTimer::singleShot(100, this, &MainWindow::initializeCapture);
         return;
     }
