@@ -1,6 +1,8 @@
-deepin-screen-recorder (7.0.0-gxde3) unstable; urgency=medium
+deepin-screen-recorder (7.0.1-gxde1) unstable; urgency=medium
 
   * 注册Ctrl+Alt+A为截屏快捷键
+  * fix: [record] allow recording across compositor switch and fix
+    camera in 2D
 
  -- CharOfString <root@charofstring.cc>  Thu, 6 Aug 2026 02:09:04 +0800
 

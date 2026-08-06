@@ -36,6 +36,7 @@ using namespace testing;
 
 // DEDUP-REMOVED: ACCESS_PRIVATE_FIELD(Screenshot, MainWindow, m_window);
 ACCESS_PRIVATE_FUN(Screenshot, bool() const, isRecording);
+ACCESS_PRIVATE_FIELD(Screenshot, bool, m_isCustomScreenshot);
 
 class ScreenShotCov2Test : public Test
 {
@@ -188,4 +189,63 @@ TEST_F(ScreenShotCov2Test, getRecorderNormalIconReturnsString)
     QString r;
     EXPECT_NO_FATAL_FAILURE(r = m_shot->getRecorderNormalIcon());
     EXPECT_TRUE(r.isEmpty() || !r.isEmpty()); // exercise only
+}
+
+// ---------- ctor lambda #1: screenshotSaved signal handler ----------
+// Screenshot ctor connects MainWindow::screenshotSaved to a lambda that emits
+// Screenshot::screenshotSaved when m_isCustomScreenshot is true. Trigger via
+// QMetaObject::invokeMethod on m_window.
+TEST_F(ScreenShotCov2Test, ctorLambdaScreenshotSavedFires)
+{
+    access_private_field::Screenshotm_isCustomScreenshot(*m_shot) = true;
+    MainWindow &mw = access_private_field::Screenshotm_window(*m_shot);
+    EXPECT_NO_FATAL_FAILURE({
+        QMetaObject::invokeMethod(&mw, "screenshotSaved",
+                                  Qt::DirectConnection,
+                                  Q_ARG(QString, QStringLiteral("ut_path")));
+    });
+}
+
+// ---------- ctor lambda #2: recording state callback ----------
+// Screenshot ctor sets a recording-state callback on m_window via
+// setRecordingStateCallback. Trigger it by calling MainWindow::onRecordingStarted
+// and onRecordingStopped, which invoke m_recordingStateCallback(true/false).
+TEST_F(ScreenShotCov2Test, ctorLambdaRecordingStateCallbackFires)
+{
+    MainWindow &mw = access_private_field::Screenshotm_window(*m_shot);
+    EXPECT_NO_FATAL_FAILURE(mw.onRecordingStarted());
+    EXPECT_NO_FATAL_FAILURE(mw.onRecordingStopped());
+}
+
+// OcrScreenshot: public method，启用 OCR 时调用 m_window 的多个入口（均已 stub）。
+// OCR_SCROLL_FLAGE_ON 已定义，走 #if 分支调用 MainWindow 方法（全被 stub）。安全。
+TEST_F(ScreenShotCov2Test, ocrScreenshotDelegatesToMainWindow)
+{
+    EXPECT_NO_FATAL_FAILURE(m_shot->OcrScreenshot());
+}
+
+// delayScreenshot 两个 lambda：timerNoti(50ms) 与 timer(100ms) 的 timeout 回调。
+// delayScreenshot(0.1) => timerNoti->start(50), timer->start(100)。
+// spin event loop >100ms 触发两个 lambda。MainWindow 方法均已 stub。
+TEST_F(ScreenShotCov2Test, delayScreenshotTimerLambdasFire)
+{
+    EXPECT_NO_FATAL_FAILURE(m_shot->delayScreenshot(0.1));
+    // spin event loop >100ms to fire both timer callbacks
+    {
+        QEventLoop loop;
+        QTimer::singleShot(200, &loop, &QEventLoop::quit);
+        loop.exec();
+    }
+}
+
+// ScrollScreenshot: 检查 DWindowManagerHelper::hasBlurWindow。
+// 如果 hasBlurWindow 返回 true，调用 MainWindow 入口点（已 stub）。
+// 如果返回 false，调用 qApp->quit() — 不安全。
+// stub hasBlurWindow 返回 true 使其走 true 分支。
+static bool hasBlurWindow_stub() { return true; }
+TEST_F(ScreenShotCov2Test, scrollScreenshotWithBlurWindow)
+{
+    Stub localStub;
+    localStub.set(ADDR(DWindowManagerHelper, hasBlurWindow), hasBlurWindow_stub);
+    EXPECT_NO_FATAL_FAILURE(m_shot->ScrollScreenshot());
 }
