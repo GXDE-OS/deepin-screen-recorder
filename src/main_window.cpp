@@ -7988,10 +7988,6 @@ void MainWindow::initializeCapture()
 {
 #ifndef ENABLE_UNIT_TEST
     auto manager = TreelandCaptureManager::instance();
-    if (!manager->isActive()) {
-        return;
-    }
-
     auto captureContext = manager->ensureContext();
 
     if (!captureContext) {
