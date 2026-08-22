@@ -102,6 +102,51 @@ static bool initQt6XcbEnv()
     return false;
 }
 
+static bool isDbusLaunch(int argc, char *argv[])
+{
+    for (int i = 1; i < argc; ++i) {
+        const QByteArray argument(argv[i]);
+        if (argument == "--dbus" || argument == "--screenRecord")
+            return true;
+    }
+    return false;
+}
+
+// The desktop session exports a fallback QPA list (dxcb;xcb;wayland).  A
+// DBus-activated process therefore picks X11 before it can use Treeland's
+// Wayland capture protocol.  Prefer Wayland only when the compositor and its
+// socket make that choice valid.
+static void prepareTreelandDbusPlatform(int argc, char *argv[])
+{
+    if (!isDbusLaunch(argc, argv) || !isTreelandLikeCompositor())
+        return;
+
+    const QString runtimeDir = qEnvironmentVariable("XDG_RUNTIME_DIR");
+    if (runtimeDir.isEmpty())
+        return;
+
+    QString displayName = qEnvironmentVariable("WAYLAND_DISPLAY");
+    if (displayName.isEmpty())
+        displayName = QStringLiteral("wayland-0");
+
+    const QString socketPath = displayName.startsWith(QLatin1Char('/'))
+        ? displayName
+        : QDir(runtimeDir).filePath(displayName);
+    if (!QFile::exists(socketPath))
+        return;
+
+    const QByteArray currentPlatform = qgetenv("QT_QPA_PLATFORM").toLower();
+    // A single platform value is an explicit caller choice.  The desktop's
+    // semicolon-separated value is a fallback list and is the case this
+    // workaround is intended to correct.
+    if (!currentPlatform.isEmpty() && !currentPlatform.contains(';'))
+        return;
+
+    qputenv("QT_QPA_PLATFORM", "wayland");
+    qCDebug(dsrApp) << "DBus Treeland launch: using Wayland QPA platform;"
+                    << "socket:" << socketPath;
+}
+
 static bool CheckFFmpegEnv()
 {
     qCDebug(dsrApp) << "CheckFFmpegEnv called.";
@@ -167,6 +212,8 @@ int main(int argc, char *argv[])
         setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
         qCDebug(dsrApp) << "XDG_CURRENT_DESKTOP not Deepin, setting to Deepin.";
     }
+
+    prepareTreelandDbusPlatform(argc, argv);
 
 #if (QT_VERSION_MAJOR == 5)
     DGuiApplicationHelper::setUseInactiveColorGroup(false);

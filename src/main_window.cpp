@@ -181,17 +181,29 @@ MainWindow::MainWindow(DWidget *parent)
 
         // 确保主窗口显示
         initMainWindow();
-        // 初始化截图/录屏管理器
-        auto manager = TreelandCaptureManager::instance();
-        if (manager->isActive()) {
-            qCDebug(dsrApp) << "Treeland capture manager is active, initializing capture";
-            initializeCapture();
-        } else {
-            qCDebug(dsrApp) << "Treeland capture manager not active, waiting for activation";
-            connect(manager, &TreelandCaptureManager::activeChanged,
-                    this, &MainWindow::initializeCapture);
-        }
     }
+#endif
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    QMainWindow::showEvent(event);
+
+#ifndef ENABLE_UNIT_TEST
+    if (!Utils::isTreelandMode || m_treelandCaptureStarted)
+        return;
+
+    auto manager = TreelandCaptureManager::instance();
+    if (manager->isActive()) {
+        initializeCapture();
+    } else {
+        // The Wayland extension may become available after the window is
+        // mapped.  Start capture from its state change instead of polling.
+        connect(manager, &TreelandCaptureManager::activeChanged,
+                this, &MainWindow::initializeCapture, Qt::UniqueConnection);
+    }
+#else
+    Q_UNUSED(event);
 #endif
 }
 
@@ -222,8 +234,15 @@ void MainWindow::initMainWindow()
     connect(m_wmHelper, &DWindowManagerHelper::hasBlurWindowChanged, this, &MainWindow::compositeChanged);
     qCDebug(dsrApp) << "Connected hasBlurWindowChanged signal.";
 
-    connect(qApp, &QGuiApplication::screenAdded, this, &MainWindow::onExit);
-    qCDebug(dsrApp) << "Connected screenAdded signal to onExit.";
+    // A Wayland output can be announced after the first surface is mapped.
+    // In Treeland this is normal startup, not a screen change that should
+    // cancel the screenshot.  Keep the legacy X11 behavior only where the
+    // application owns the screen surface directly.
+    if (!Utils::isTreelandMode) {
+        connect(qApp, &QGuiApplication::screenAdded, this, &MainWindow::onExit,
+                Qt::UniqueConnection);
+        qCDebug(dsrApp) << "Connected screenAdded signal to onExit.";
+    }
     connect(qApp, &QGuiApplication::screenRemoved, this, &MainWindow::onExit);
     qCDebug(dsrApp) << "Connected screenRemoved signal to onExit.";
 
@@ -267,8 +286,11 @@ void MainWindow::initMainWindow()
     m_screenCount = QGuiApplication::screens().count();
     qCDebug(dsrApp) << "Number of screens detected:" << m_screenCount;
     
-    connect(qApp, &QGuiApplication::screenAdded, this, &MainWindow::onScreenResolutionChanged);
-    qCDebug(dsrApp) << "Connected screenAdded signal to onScreenResolutionChanged.";
+    if (!Utils::isTreelandMode) {
+        connect(qApp, &QGuiApplication::screenAdded, this, &MainWindow::onScreenResolutionChanged,
+                Qt::UniqueConnection);
+        qCDebug(dsrApp) << "Connected screenAdded signal to onScreenResolutionChanged.";
+    }
     connect(qApp, &QGuiApplication::screenRemoved, this, &MainWindow::onScreenResolutionChanged);
     qCDebug(dsrApp) << "Connected screenRemoved signal to onScreenResolutionChanged.";
 
@@ -8087,6 +8109,13 @@ void MainWindow::setupConnections()
 void MainWindow::initializeCapture()
 {
 #ifndef ENABLE_UNIT_TEST
+    // The DBus service constructs MainWindow before StartScreenshot arrives.
+    // Do not open the compositor selector during that idle period; showEvent
+    // starts it after the screenshot request has shown the window.
+    if (!isVisible() || m_treelandCaptureStarted) {
+        return;
+    }
+
     auto manager = TreelandCaptureManager::instance();
     auto captureContext = manager->ensureContext();
 
@@ -8098,9 +8127,6 @@ void MainWindow::initializeCapture()
     // 检查窗口句柄是否可用
     if (!windowHandle() || !windowHandle()->handle()) {
         qCWarning(dsrApp) << "Window handle not available, cannot initialize capture";
-        // 如果窗口句柄还未创建，延迟初始化
-        // 等待窗口创建完成后再初始化
-        QTimer::singleShot(100, this, &MainWindow::initializeCapture);
         return;
     }
 
@@ -8110,22 +8136,39 @@ void MainWindow::initializeCapture()
         return;
     }
 
+    // Connect before requesting the source.  A compositor can answer the
+    // request immediately, which would otherwise leave the selector waiting
+    // for input while the application misses source_ready.
+    connect(captureContext, &TreelandCaptureContext::captureRegionChanged,
+            this, &MainWindow::updateCaptureRegion, Qt::UniqueConnection);
+
+    connect(manager, &TreelandCaptureManager::finishSelect,
+            this, &MainWindow::handleCaptureFinish, Qt::UniqueConnection);
+
+    // 连接 source_failed 信号到槽函数
+    connect(captureContext, &TreelandCaptureContext::sourceFailed,
+           this, &MainWindow::onSourceFailed, Qt::UniqueConnection);
+
     captureContext->selectSource(
             TreelandCaptureContext::source_type_region,
         true,
         false,
         waylandWindow->surface()
         );
+    m_treelandCaptureStarted = true;
 
-    connect(manager->context(), &TreelandCaptureContext::captureRegionChanged,
-            this, &MainWindow::updateCaptureRegion, Qt::UniqueConnection);
-
-    connect(manager, &TreelandCaptureManager::finishSelect,
-            this, &MainWindow::handleCaptureFinish);
-
-    // 连接 source_failed 信号到槽函数
-    connect(captureContext, &TreelandCaptureContext::sourceFailed,
-           this, &MainWindow::onSourceFailed);
+    // source_ready may have been delivered before the signal connection was
+    // installed (for example when launched through Dock/DBus).  The context
+    // retains the region, so replay the update on the event loop as a
+    // fallback.
+    if (!captureContext->captureRegion().isEmpty()) {
+        QTimer::singleShot(0, this, [this, captureContext] {
+            if (TreelandCaptureManager::instance()->context() == captureContext
+                && !captureContext->captureRegion().isEmpty()) {
+                updateCaptureRegion();
+            }
+        });
+    }
 #endif
 }
 

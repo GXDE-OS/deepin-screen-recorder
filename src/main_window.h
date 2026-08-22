@@ -87,6 +87,7 @@ using namespace KWayland::Client;
 #include <QLabel>
 #include <QPushButton>
 #include <QMainWindow>
+#include <QShowEvent>
 
 class MainWindow : public QMainWindow
 {
@@ -729,6 +730,8 @@ public slots:
     void onSourceFailed(uint32_t reason);
 
 protected:
+    void showEvent(QShowEvent *event) override;
+
     /**
      * @brief eventFilter
      * @param object
@@ -1474,6 +1477,7 @@ private:
     std::function<void(bool)> m_recordingStateCallback;
     // treeland：抑制一次 handleCaptureFinish 的完成动作（用于中途切换时仅重置后端选区）
     bool m_suppressTreelandFinishOnce = false;
+    bool m_treelandCaptureStarted = false;
     // treeland：记录上一次截图模式的选区，用于从录屏切回截图时恢复
     QRect m_lastTreelandShotRegion;
     bool m_hasLastTreelandShotRegion = false;
