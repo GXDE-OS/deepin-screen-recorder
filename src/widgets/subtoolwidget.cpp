@@ -724,7 +724,6 @@ void SubToolWidget::initShotLabel()
     });
 
     //切换到录屏按钮
-    // TODO:treeland暂时屏蔽录屏功能
     m_recorderButton = new ToolButton();
     m_recorderButton->setCheckable(false);
     m_recorderButton->setIconSize(TOOL_ICON_SIZE);
@@ -732,17 +731,16 @@ void SubToolWidget::initShotLabel()
     Utils::setAccessibility(m_recorderButton, AC_SUBTOOLWIDGET_RECORDER_BUTTON);
         m_recorderButton->setFixedSize(TOOL_BUTTON_SIZE);
         installTipHint(m_recorderButton, tr("Record"));
-    if (!(Utils::isTreelandMode))
-        btnList.append(m_recorderButton);
-        connect(m_recorderButton, &ToolButton::clicked, this, [ = ] {
-            m_pMainWindow->getToolBarPoint();
-            switchContent("record");
-            // Treeland 环境下点击“切换到录屏”，进行前端UI切换与后端选择器退出
-            if (Utils::isTreelandMode) {
-                m_pMainWindow->onTreelandSwitchToRecordUI();
-            }
-            emit changeShotToolFunc("record");
-        });
+    btnList.append(m_recorderButton);
+    connect(m_recorderButton, &ToolButton::clicked, this, [ = ] {
+        m_pMainWindow->getToolBarPoint();
+        switchContent("record");
+        // Treeland 环境下点击“切换到录屏”，进行前端UI切换与后端选择器退出
+        if (Utils::isTreelandMode) {
+            m_pMainWindow->onTreelandSwitchToRecordUI();
+        }
+        emit changeShotToolFunc("record");
+    });
 
     m_shotOptionButton = new ToolButton();
     m_shotOptionButton->setCheckable(false);

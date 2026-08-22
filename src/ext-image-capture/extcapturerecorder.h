@@ -14,6 +14,7 @@
 #include <QThread>
 #include <QProcess>
 #include <QElapsedTimer>
+#include <QRect>
 
 // DMA Buffer相关头文件
 #include <gbm.h>
@@ -65,8 +66,9 @@ public:
      * @param frameRate 帧率(fps)
      * @return 是否成功开始
      */
-    bool startRecording(QScreen *screen, bool includeCursor = false, 
-                       const QString &outputPath = QString(), int frameRate = 30);
+    bool startRecording(QScreen *screen, bool includeCursor = false,
+        const QString &outputPath = QString(), int frameRate = 30,
+        const QRect &captureRegion = QRect());
 
     /**
      * @brief 停止录制
@@ -154,6 +156,8 @@ private:
     bool startFFmpegProcess();
     bool startDmaFFmpegProcess();
     bool processDmaBufferFrame(int dmaBufferFd, void *gbmBo, int width, int height, int stride);
+    QRect cropRectForFrame(int frameWidth, int frameHeight) const;
+    QString cropFilterForFrame(int frameWidth, int frameHeight) const;
     void updateFrameTimestamps(int64_t timestamp);
     bool adjustVideoDurationIfNeeded();
     ExtCaptureIntegration *m_extCapture;
@@ -166,6 +170,8 @@ private:
     int m_frameCount;
     qint64 m_startTime;
     bool m_includeCursor;
+    QRect m_captureRegion;
+    QRect m_screenGeometry;
     
     // 录制参数
     int m_frameWidth;

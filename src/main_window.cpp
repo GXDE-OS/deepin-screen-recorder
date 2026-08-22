@@ -1522,7 +1522,7 @@ void MainWindow::initScreenRecorder()
     isPressMouseLeftButton = false;
     isReleaseMouseLeftButton = false;
 
-    if (m_firstShot == 1) {
+    if (m_firstShot == 1 && !Utils::isTreelandMode) {
         qCDebug(dsrApp) << "initScreenRecorder m_firstShot == 1";
         if (recordWidth < 580) {
             qCDebug(dsrApp) << "initScreenRecorder recordWidth < 580";
@@ -2232,7 +2232,14 @@ void MainWindow::initLaunchMode(const QString &launchMode)
 {
     qCDebug(dsrApp) << "initLaunchMode";
     m_functionType = status::shot;
-    if (launchMode == "screenRecord" && !Utils::isTreelandMode) {
+    if (launchMode == "screenRecord" && Utils::isTreelandMode) {
+        // Treeland starts with a compositor-owned selector.  Initialize that
+        // path normally, then cancel it and enter the full-screen record UI
+        // once the event loop is running.
+        qCDebug(dsrApp) << "initLaunchMode Treeland screenRecord";
+        initScreenShot();
+        QTimer::singleShot(0, this, &MainWindow::onTreelandSwitchToRecordUI);
+    } else if (launchMode == "screenRecord") {
         qCDebug(dsrApp) << "initLaunchMode screenRecord";
         m_sizeTips->setRecorderTipsInfo(true);
         m_sizeTips->updateTips(QPoint(recordX, recordY), QSize(recordWidth, recordHeight));
@@ -7622,10 +7629,11 @@ void MainWindow::startCountdown()
     //    qCDebug(dsrApp) << "recordX:" << recordX << " , recordY: " << recordY
     //             << " , recordWidth: " << recordWidth << " , recordHeight: " << recordHeight;
     // const QPoint topLeft = geometry().topLeft();
-    QRect recordRect{static_cast<int>(recordX * m_pixelRatio /* + topLeft.x()*/),
-                     static_cast<int>(recordY * m_pixelRatio /* + topLeft.y()*/),
-                     static_cast<int>(recordWidth * m_pixelRatio),
-                     static_cast<int>(recordHeight * m_pixelRatio)};
+    const qreal recordScale = Utils::isTreelandMode ? 1.0 : m_pixelRatio;
+    QRect recordRect{static_cast<int>(recordX * recordScale /* + topLeft.x()*/),
+                     static_cast<int>(recordY * recordScale /* + topLeft.y()*/),
+                     static_cast<int>(recordWidth * recordScale),
+                     static_cast<int>(recordHeight * recordScale)};
     qCDebug(dsrApp) << "record rect:" << recordRect;
 
     recordProcess.setRecordInfo(recordRect, selectAreaName);
@@ -8330,6 +8338,12 @@ void MainWindow::setTreelandInputTransparent(bool transparent)
 void MainWindow::updateCaptureRegion()
 {
 #ifndef ENABLE_UNIT_TEST
+    // cancelCapture() may deliver one final selector update. Once recording
+    // mode owns the UI it must not recreate the screenshot toolbar.
+    if (m_functionType == status::record) {
+        return;
+    }
+
     auto context = TreelandCaptureManager::instance()->context();
     if (!context) {
         return;
@@ -8398,13 +8412,23 @@ void MainWindow::updateCaptureRegion()
 void MainWindow::onTreelandSwitchToRecordUI()
 {
 #ifndef ENABLE_UNIT_TEST
-    // 仅 treeland 下生效：全屏选区 + 工具栏居中，仅做 UI 切换
+    // 仅 treeland 下生效
     if (!Utils::isTreelandMode)
         return;
 
     // 目标：录屏下取消后端选择器（模态选区），让其立即退出
     qCWarning(dsrApp) << "[treeland] onTreelandSwitchToRecordUI enter";
     auto manager = TreelandCaptureManager::instance();
+
+    // Preserve the compositor selector's logical region before closing its
+    // context. Direct --record launches have no region and fall back below.
+    QRect selectedRegion(recordX, recordY, recordWidth, recordHeight);
+    if (auto currentContext = manager->context()) {
+        const QRect contextRegion = currentContext->captureRegion().toRect();
+        if (contextRegion.isValid()) {
+            selectedRegion = contextRegion;
+        }
+    }
     // 先结束截图选择器（后端模态选区），避免残留：强制走一次 session 流程让后端 finish，然后销毁扩展
     m_suppressTreelandFinishOnce = true; 
     if (auto ctxClose = manager->ensureContext()) {
@@ -8455,33 +8479,50 @@ void MainWindow::onTreelandSwitchToRecordUI()
     if (m_sideBar)
         m_sideBar->hide();
 
-    // 工具栏居中到屏幕
-    // Treeland 录屏模式下使用屏幕完整几何区域（geometry），确保包含 dock 栏
+    // Resolve the output containing the selected region. ext-image-copy-
+    // capture records one output and FFmpeg crops that output to this region.
     QRect scr;
+    QScreen *selectedScreen = selectedRegion.isValid()
+                            ? QGuiApplication::screenAt(selectedRegion.center())
+                            : nullptr;
 #if (QT_VERSION_MAJOR == 5)
-    QScreen *primaryScreen = QGuiApplication::primaryScreen();
-    if (primaryScreen) {
-        scr = primaryScreen->geometry();
+    if (!selectedScreen)
+        selectedScreen = QGuiApplication::primaryScreen();
+    if (selectedScreen) {
+        scr = selectedScreen->geometry();
     } else {
         scr = QApplication::desktop()->screenGeometry();
     }
 #elif (QT_VERSION_MAJOR == 6)
-    QScreen *primaryScreen = QGuiApplication::primaryScreen();
-    if (primaryScreen) {
-        scr = primaryScreen->geometry();
+    if (!selectedScreen)
+        selectedScreen = QGuiApplication::primaryScreen();
+    if (selectedScreen) {
+        scr = selectedScreen->geometry();
     } else {
         scr = this->geometry();
     }
 #endif
-    // Treeland 录屏只需要可点工具栏，跳过全屏透明区域窗口，避免遮挡输入
-    // 仍然把录屏区域设为全屏，供后续倒计时/录制参数使用
-    recordX = scr.x();
-    recordY = scr.y();
-    recordWidth = scr.width();
-    recordHeight = scr.height();
 
-    const int centerX = scr.x() + scr.width() / 2 - m_toolBar->width() / 2;
-    const int centerY = scr.y() + scr.height() / 2 - m_toolBar->height() / 2;
+    const QRect recordRegion = selectedRegion.isValid()
+                             ? selectedRegion.intersected(scr)
+                             : scr;
+    const QRect effectiveRegion = recordRegion.isValid() ? recordRegion : scr;
+    recordX = effectiveRegion.x();
+    recordY = effectiveRegion.y();
+    recordWidth = effectiveRegion.width();
+    recordHeight = effectiveRegion.height();
+    m_isFullScreenRecord = (effectiveRegion == scr);
+    qCWarning(dsrApp) << "[treeland] record region" << effectiveRegion
+                      << "screen" << scr
+                      << "full screen" << m_isFullScreenRecord;
+    initScreenRecorder();
+
+    const QPoint existingToolBarPos = m_hasLastTreelandShotToolBarPos
+                                    ? m_lastTreelandShotToolBarPos
+                                    : QPoint(scr.x() + scr.width() / 2 - m_toolBar->width() / 2,
+                                             scr.y() + scr.height() / 2 - m_toolBar->height() / 2);
+    const int centerX = existingToolBarPos.x();
+    const int centerY = existingToolBarPos.y();
     m_toolBar->setAttribute(Qt::WA_ShowWithoutActivating, true);
     m_toolBar->setFocusPolicy(Qt::NoFocus);
     m_toolBar->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint | Qt::BypassWindowManagerHint);

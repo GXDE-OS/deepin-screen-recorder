@@ -87,8 +87,9 @@ bool ExtCaptureRecorder::isAvailable() const
     return m_extCapture && m_extCapture->isAvailable();
 }
 
-bool ExtCaptureRecorder::startRecording(QScreen *screen, bool includeCursor, 
-                                       const QString &outputPath, int frameRate)
+bool ExtCaptureRecorder::startRecording(QScreen *screen, bool includeCursor,
+        const QString &outputPath, int frameRate,
+        const QRect &captureRegion)
 {
     qCWarning(dsrApp) << "ExtCaptureRecorder::startRecording: *** START RECORDING REQUEST *** current state:" << m_state;
     
@@ -113,8 +114,16 @@ bool ExtCaptureRecorder::startRecording(QScreen *screen, bool includeCursor,
     m_includeCursor = includeCursor;
     m_frameRate = qMax(1, qMin(frameRate, 60)); // 限制在1-60fps
     m_outputPath = outputPath.isEmpty() ? generateDefaultOutputPath() : outputPath;
+    m_screenGeometry = screen->geometry();
+    m_captureRegion = captureRegion.isValid()
+                    ? captureRegion.intersected(m_screenGeometry)
+                    : m_screenGeometry;
     
-    qCWarning(dsrApp) << "ExtCaptureRecorder::startRecording: Parameters - includeCursor:" << m_includeCursor << "FPS:" << m_frameRate << "Output:" << m_outputPath;
+    qCWarning(dsrApp) << "ExtCaptureRecorder::startRecording: Parameters - includeCursor:"
+                      << m_includeCursor << "FPS:" << m_frameRate
+                      << "Output:" << m_outputPath
+                      << "Region:" << m_captureRegion
+                      << "Screen:" << m_screenGeometry;
     
     // 重置计数器
     m_frameCount = 0;
@@ -563,6 +572,56 @@ QString ExtCaptureRecorder::generateDefaultOutputPath()
     return QDir(documentsPath).filePath(filename);
 }
 
+QRect ExtCaptureRecorder::cropRectForFrame(int frameWidth, int frameHeight) const
+{
+    const QRect fullFrame(0, 0, frameWidth, frameHeight);
+    if (!fullFrame.isValid() || !m_screenGeometry.isValid() || !m_captureRegion.isValid()) {
+        return fullFrame;
+    }
+
+    const QRect logicalRegion = m_captureRegion.intersected(m_screenGeometry);
+    if (!logicalRegion.isValid() || logicalRegion == m_screenGeometry) {
+        return fullFrame;
+    }
+
+    const qreal scaleX = static_cast<qreal>(frameWidth) / m_screenGeometry.width();
+    const qreal scaleY = static_cast<qreal>(frameHeight) / m_screenGeometry.height();
+    const int left = qBound(0,
+                            qRound((logicalRegion.left() - m_screenGeometry.left()) * scaleX),
+                            frameWidth - 1);
+    const int top = qBound(0,
+                           qRound((logicalRegion.top() - m_screenGeometry.top()) * scaleY),
+                           frameHeight - 1);
+    const int right = qBound(left + 1,
+                             qRound((logicalRegion.right() + 1 - m_screenGeometry.left()) * scaleX),
+                             frameWidth);
+    const int bottom = qBound(top + 1,
+                              qRound((logicalRegion.bottom() + 1 - m_screenGeometry.top()) * scaleY),
+                              frameHeight);
+
+    // libx264 with yuv420p requires even output dimensions.
+    const int cropWidth = (right - left) & ~1;
+    const int cropHeight = (bottom - top) & ~1;
+    if (cropWidth < 2 || cropHeight < 2) {
+        return fullFrame;
+    }
+    return QRect(left, top, cropWidth, cropHeight);
+}
+
+QString ExtCaptureRecorder::cropFilterForFrame(int frameWidth, int frameHeight) const
+{
+    const QRect cropRect = cropRectForFrame(frameWidth, frameHeight);
+    if (!cropRect.isValid() || cropRect == QRect(0, 0, frameWidth, frameHeight)) {
+        return QString();
+    }
+
+    return QStringLiteral("crop=%1:%2:%3:%4")
+        .arg(cropRect.width())
+        .arg(cropRect.height())
+        .arg(cropRect.x())
+        .arg(cropRect.y());
+}
+
 bool ExtCaptureRecorder::startFFmpegProcess()
 {
     if (m_ffmpegProcess) {
@@ -580,10 +639,15 @@ bool ExtCaptureRecorder::startFFmpegProcess()
     }
     
     // 构建FFmpeg命令 - WL_SHM_FORMAT_XBGR8888 正确映射为 rgba 格式
-    QString ffmpegCmd = QString("ffmpeg -y -f rawvideo -pix_fmt rgba -s %1x%2 -r %3 -i - -c:v libx264 -pix_fmt yuv420p \"%4\"")
+    const QString cropFilter = cropFilterForFrame(m_frameWidth, m_frameHeight);
+    const QString filterOption = cropFilter.isEmpty()
+                               ? QString()
+                               : QStringLiteral(" -vf %1").arg(cropFilter);
+    QString ffmpegCmd = QString("ffmpeg -y -f rawvideo -pix_fmt rgba -s %1x%2 -r %3 -i -%4 -c:v libx264 -pix_fmt yuv420p \"%5\"")
                        .arg(m_frameWidth)
                        .arg(m_frameHeight)
                        .arg(m_frameRate)
+                       .arg(filterOption)
                        .arg(m_outputPath);
     
     qCWarning(dsrApp) << "ExtCaptureRecorder::startFFmpegProcess: Starting FFmpeg with command:" << ffmpegCmd;
@@ -646,6 +710,11 @@ bool ExtCaptureRecorder::startDmaFFmpegProcess()
               << "-r" << QString::number(m_frameRate)          // 帧率
               << "-i" << "-";                                  // 从stdin读取（临时方案）
     
+    const QString cropFilter = cropFilterForFrame(m_frameWidth, m_frameHeight);
+    if (!cropFilter.isEmpty()) {
+        arguments << "-vf" << cropFilter;
+    }
+
     arguments << "-c:v" << "libx264"                          // 使用软件H.264编码器
               << "-preset" << "fast"                          // 编码预设
               << "-crf" << "23"                               // 质量参数

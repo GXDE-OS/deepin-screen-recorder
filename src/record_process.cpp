@@ -670,7 +670,10 @@ void RecordProcess::treelandRecord()
         }
     }
     
-    QScreen *screen = QGuiApplication::primaryScreen();
+    QScreen *screen = QGuiApplication::screenAt(m_recordRect.center());
+    if (!screen) {
+        screen = QGuiApplication::primaryScreen();
+    }
     if (!screen) {
         qCCritical(dsrApp) << "无法获取屏幕信息";
         delete extRecorder;
@@ -689,7 +692,11 @@ void RecordProcess::treelandRecord()
         qCCritical(dsrApp) << "TreeLand录制错误:" << message;
     });
     
-    bool startResult = extRecorder->startRecording(screen, m_mouseType != RECORD_MOUSE_NULL, savePath, m_framerate);
+    bool startResult = extRecorder->startRecording(screen,
+                                                    m_mouseType != RECORD_MOUSE_NULL,
+                                                    savePath,
+                                                    m_framerate,
+                                                    m_recordRect);
     
     if (!startResult) {
         qCCritical(dsrApp) << "启动TreeLand录制失败";

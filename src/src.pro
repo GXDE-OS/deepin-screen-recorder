@@ -400,7 +400,14 @@ RESOURCES = ../assets/image/deepin-screen-recorder.qrc \
     # ../resources.qrc
 
 # Libraries
-LIBS += -lX11 -lXext -lXtst -lXfixes -lXcursor -ldl -lXinerama -ldrm -lgbm
+# libcam loads its udev-backed camera helpers at runtime. Keep libudev in the
+# final executable even with --as-needed, otherwise switching to record can
+# terminate the process with unresolved udev_* symbols.
+LIBS += -Wl,--no-as-needed \
+        -ludev -lv4l2 -lavcodec -lavformat -lavutil -lswscale -lswresample \
+        -lffmpegthumbnailer -lportaudio -lusb-1.0 \
+        -Wl,--as-needed \
+        -lX11 -lXext -lXtst -lXfixes -lXcursor -ldl -lXinerama -ldrm -lgbm
 
 # 添加libdrm包含路径
 INCLUDEPATH += /usr/include/libdrm
