@@ -1,3 +1,9 @@
+deepin-screen-recorder (7.0.2-gxde1) UNRELEASED; urgency=medium
+
+  * 修复Wayland下点击Dock上的截图录屏图标无法截屏的问题
+
+ -- CharOfString <root@charofstring.cc>  Sun, 23 Aug 2026 00:55:11 +0800
+
 deepin-screen-recorder (7.0.1-gxde2) UNRELEASED; urgency=medium
 
   * Wayland 优化
