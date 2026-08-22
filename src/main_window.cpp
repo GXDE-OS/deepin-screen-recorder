@@ -80,6 +80,13 @@ extern "C" {
 #include <time.h>
 #include <cmath>
 #define EPSILON 1e-10
+
+QT_BEGIN_NAMESPACE
+Q_WIDGETS_EXPORT extern void
+qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality,
+             bool alphaOnly, int transposed = 0);
+QT_END_NAMESPACE
+
 // const int MainWindow::CURSOR_BOUND = 5;
 const int MainWindow::RECORD_MIN_SIZE = 580;
 const int MainWindow::RECORD_MIN_HEIGHT = 280;
@@ -164,8 +171,13 @@ MainWindow::MainWindow(DWidget *parent)
     if (Utils::isTreelandMode) {
         qCDebug(dsrApp) << "Running in Treeland mode";
         setAttribute(Qt::WA_TranslucentBackground);
-        // 不做输入穿透：选区内的鼠标事件由主窗口自己收，不再透传给下层窗口
-        setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+        // The compositor owns pointer input while its region selector is open
+        // on the native Wayland backend.  Treeland-like X11 sessions still use
+        // the application's own selection event handling.
+        Qt::WindowFlags treelandFlags = Qt::FramelessWindowHint | Qt::Tool;
+        if (QGuiApplication::platformName().startsWith(QStringLiteral("wayland")))
+            treelandFlags |= Qt::WindowTransparentForInput;
+        setWindowFlags(treelandFlags);
 
         // 确保主窗口显示
         initMainWindow();
@@ -4989,9 +5001,9 @@ void MainWindow::paintEvent(QPaintEvent *event)
     if (Utils::isTreelandMode) {
         DWidget::paintEvent(event);
 
-        // treeland 下背景由合成器直接透出，不需要自己贴背景截图，但选区遮罩和边框
-        // 得自己画：合成器的选择器在 source_ready 之后就撤了（参见 treeland
-        // CaptureSourceSelector::doneSelection()），批注阶段没人再画这两样东西。
+        // The compositor selector disappears after source_ready.  Paint the
+        // captured region back into the window so annotation happens over the
+        // exact frozen frame that will be saved.
         if (recordWidth <= 0 || recordHeight <= 0) {
             return;
         }
@@ -5006,15 +5018,19 @@ void MainWindow::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing, false);
 
-        // 非选区压 20% 黑，选区保持全透明，让合成器抓到原始画面
+        if (m_hasTreelandFrozenPixmap) {
+            painter.drawPixmap(frameRect,
+                               m_treelandFrozenPixmap,
+                               m_treelandFrozenPixmap.rect());
+        }
+
+        // Dim everything outside the selected frozen region.
         if (!m_isFullScreenRecord) {
             painter.setClipRegion(QRegion(fullRect).subtracted(QRegion(frameRect)));
             painter.fillRect(fullRect, QColor(0, 0, 0, 51));
             painter.setClipping(false);
         }
 
-        // 白色虚线框。treeland 下最终图像是合成器在确认时抓屏得到的，画在选区内会被
-        // 拍进截图，所以整圈外移一个像素，只占选区外侧那一行/列。
         if (recordButtonStatus != RECORD_BUTTON_RECORDING) {
             QPen framePen(Qt::white);
             framePen.setStyle(Qt::DashLine);
@@ -7260,26 +7276,12 @@ QPixmap MainWindow::paintImage()
 {
     QImage backgroundImage; // 声明背景图像
     if (Utils::isTreelandMode) {
-        // 在treeland模式下，通过result获取背景图像
-        auto manager = TreelandCaptureManager::instance();
-        auto captureContext = manager->context();
-        auto frame = captureContext->ensureFrame();
-        QImage result;
-        QEventLoop loop;
-
-        connect(frame, &TreelandCaptureFrame::ready,
-                this, [&result, &loop](QImage image) {
-                    result = image;
-                    loop.quit();
-                });
-
-        connect(frame, &TreelandCaptureFrame::failed,
-                this, [&loop] {
-                    loop.quit();
-                });
-
-        loop.exec();
-        backgroundImage = result; // 使用result作为背景图像
+        if (m_hasTreelandFrozenPixmap) {
+            backgroundImage = m_treelandFrozenPixmap.toImage();
+        } else {
+            // Keep a guarded fallback for cancellation or compositor startup.
+            backgroundImage = captureTreelandFrame().toImage();
+        }
     } else {
         backgroundImage = m_backgroundPixmap.toImage(); // 非treeland模式下的背景图像
     }
@@ -7996,14 +7998,46 @@ void MainWindow::reloadImage(QString effect, int radius)
         return;
 
     if (!tmpImg.isNull()) {
-        tmpImg = tmpImg.scaled(imgWidth / radius, imgHeight / radius, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        const qreal dpr = tmpImg.devicePixelRatio();
+        QImage effectImage;
         if (effect == "blur") {
-            tmpImg = tmpImg.scaled(imgWidth, imgHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-            tempFile->setBlurPixmap(tmpImg, radius);
+            QImage source = tmpImg.toImage().convertToFormat(QImage::Format_ARGB32_Premultiplied);
+            // qt_blurImage operates on the painter's pixel grid.  Normalize
+            // both images to DPR 1 while filtering, then restore the capture
+            // DPR on the cached pixmap below.  Mixing the two DPRs shifts and
+            // scales the sampled content on fractional-scale displays.
+            source.setDevicePixelRatio(1.0);
+            effectImage = QImage(source.size(), QImage::Format_ARGB32_Premultiplied);
+            effectImage.setDevicePixelRatio(1.0);
+            effectImage.fill(Qt::transparent);
+
+            QPainter blurPainter(&effectImage);
+            const qreal blurRadius = qMax<qreal>(3.0, radius * dpr * 1.2);
+            qt_blurImage(&blurPainter, source, blurRadius, true, false);
+            blurPainter.end();
         } else {
-            tmpImg = tmpImg.scaled(imgWidth, imgHeight);
-            tempFile->setMosaicPixmap(tmpImg, radius);
+            const int reducedWidth = qMax(1, imgWidth / radius);
+            const int reducedHeight = qMax(1, imgHeight / radius);
+            tmpImg = tmpImg.scaled(reducedWidth, reducedHeight,
+                                   Qt::IgnoreAspectRatio,
+                                   Qt::SmoothTransformation);
+            tmpImg = tmpImg.scaled(imgWidth, imgHeight,
+                                   Qt::IgnoreAspectRatio,
+                                   Qt::FastTransformation);
+            effectImage = tmpImg.toImage();
         }
+
+        // Capture buffers are expected to be opaque.  Normalize the cached
+        // effect image so an unexpected alpha channel cannot reveal the sharp
+        // frame underneath the blur/mosaic region.
+        QImage opaqueImage = effectImage.convertToFormat(QImage::Format_RGB32);
+        opaqueImage.setDevicePixelRatio(dpr);
+        QPixmap opaquePixmap = QPixmap::fromImage(opaqueImage);
+        opaquePixmap.setDevicePixelRatio(dpr);
+        if (effect == "blur")
+            tempFile->setBlurPixmap(opaquePixmap, radius);
+        else
+            tempFile->setMosaicPixmap(opaquePixmap, radius);
     }
 #endif
 }
@@ -8013,6 +8047,17 @@ void MainWindow::shotImgWidthEffect()
 #ifndef ENABLE_UNIT_TEST
     if (recordWidth == 0 || recordHeight == 0)
         return;
+
+    if (Utils::isTreelandMode) {
+        // ShapesWidget coordinates are local to the selected region under
+        // Treeland.  Cropping with its global geometry would crop the image a
+        // second time and leave mosaic/blur without a valid source pixmap.
+        if (m_hasTreelandFrozenPixmap)
+            m_resultPixmap = m_treelandFrozenPixmap;
+        update();
+        return;
+    }
+
     QRect target(static_cast<int>(m_shapesWidget->geometry().x() * m_pixelRatio),
                  static_cast<int>(m_shapesWidget->geometry().y() * m_pixelRatio),
                  static_cast<int>(m_shapesWidget->geometry().width() * m_pixelRatio),
@@ -8076,6 +8121,79 @@ void MainWindow::initializeCapture()
 #endif
 }
 
+QPixmap MainWindow::captureTreelandFrame()
+{
+#ifndef ENABLE_UNIT_TEST
+    auto manager = TreelandCaptureManager::instance();
+    auto context = manager ? manager->context() : nullptr;
+    if (!context)
+        return {};
+
+    auto frame = context->ensureFrame();
+    if (!frame)
+        return {};
+
+    QImage result;
+    QEventLoop loop;
+    QTimer timeout;
+    timeout.setSingleShot(true);
+
+    connect(frame, &TreelandCaptureFrame::ready,
+            &loop, [&result, &loop](QImage image) {
+                result = image.copy();
+                loop.quit();
+            });
+    connect(frame, &TreelandCaptureFrame::failed,
+            &loop, &QEventLoop::quit);
+    connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
+
+    timeout.start(1000);
+    loop.exec();
+    timeout.stop();
+
+    if (result.isNull())
+        return {};
+
+    QPixmap pixmap = QPixmap::fromImage(result);
+    return pixmap;
+#else
+    return {};
+#endif
+}
+
+void MainWindow::showTreelandShotUi(const QRect &region)
+{
+#ifndef ENABLE_UNIT_TEST
+    m_toolBar = new ToolBar(this);
+    connect(m_toolBar, &ToolBar::currentFunctionToMain, this, &MainWindow::changeFunctionButton);
+    m_toolBar->initToolBar(this, isHideToolBar);
+    m_toolBar->setRecordLaunchMode(m_functionType);
+    m_toolBarInit = true;
+
+    m_toolBar->setAttribute(Qt::WA_TranslucentBackground);
+    m_toolBar->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);
+
+    recordX = region.x();
+    recordY = region.y();
+    recordWidth = region.width();
+    recordHeight = region.height();
+    update();
+
+    m_toolBar->showWidget();
+    const QPoint pos(region.x(), qMin(region.bottom(), height() - 2 * m_toolBar->height()));
+    m_toolBar->showAt(pos);
+
+    if (windowHandle() && m_toolBar->windowHandle()
+        && m_toolBar->windowHandle()->parent() != windowHandle()) {
+        m_toolBar->windowHandle()->setParent(windowHandle());
+        m_toolBar->hide();
+        m_toolBar->show();
+    }
+#else
+    Q_UNUSED(region);
+#endif
+}
+
 void MainWindow::onSourceFailed(uint32_t reason)
 {
 #ifdef ENABLE_UNIT_TEST
@@ -8092,25 +8210,9 @@ void MainWindow::onSourceFailed(uint32_t reason)
 void MainWindow::handleCaptureFinish()
 {
 #ifndef ENABLE_UNIT_TEST
-    auto manager = TreelandCaptureManager::instance();
-    auto captureContext = manager->context();
-
-    auto frame = captureContext->ensureFrame();
-    QImage result;
-    QEventLoop loop;
-
-    connect(frame, &TreelandCaptureFrame::ready,
-            this, [&result, &loop](QImage image) {
-                result = image;
-                loop.quit();
-            });
-
-    connect(frame, &TreelandCaptureFrame::failed,
-            this, [&loop] {
-                loop.quit();
-            });
-
-    loop.exec();
+    QImage result = m_hasTreelandFrozenPixmap ? m_treelandFrozenPixmap.toImage() : QImage();
+    if (result.isNull())
+        result = captureTreelandFrame().toImage();
 
     if (result.isNull()) {
         qApp->exit(-1);
@@ -8205,6 +8307,26 @@ void MainWindow::destroyTreelandToolBar()
 #endif
 }
 
+void MainWindow::setTreelandInputTransparent(bool transparent)
+{
+#ifndef ENABLE_UNIT_TEST
+    if (!Utils::isTreelandMode || !windowHandle()
+        || !QGuiApplication::platformName().startsWith(QStringLiteral("wayland")))
+        return;
+
+    Qt::WindowFlags flags = windowHandle()->flags();
+    if (transparent)
+        flags |= Qt::WindowTransparentForInput;
+    else
+        flags &= ~Qt::WindowTransparentForInput;
+
+    if (flags != windowHandle()->flags())
+        windowHandle()->setFlags(flags);
+#else
+    Q_UNUSED(transparent);
+#endif
+}
+
 void MainWindow::updateCaptureRegion()
 {
 #ifndef ENABLE_UNIT_TEST
@@ -8216,10 +8338,13 @@ void MainWindow::updateCaptureRegion()
     const QRect region = context->captureRegion().toRect();
     // 无效选区：只销毁旧工具栏，等下一次 sourceReady 再创建
     if (region.width() <= 0 || region.height() <= 0) {
+        setTreelandInputTransparent(true);
         destroyTreelandToolBar();
         // 顺带清掉旧选区，否则重新选区时我们画的遮罩会和合成器选择器的遮罩叠加
         recordWidth = 0;
         recordHeight = 0;
+        m_hasTreelandFrozenPixmap = false;
+        m_treelandFrozenPixmap = QPixmap();
         update();
         return;
     }
@@ -8227,32 +8352,46 @@ void MainWindow::updateCaptureRegion()
     // 每次重新选区：先析构上一块工具栏（含 Wayland subsurface），再按新选区 new
     destroyTreelandToolBar();
 
-    m_toolBar = new ToolBar(this);
-    connect(m_toolBar, &ToolBar::currentFunctionToMain, this, &MainWindow::changeFunctionButton);
-    m_toolBar->initToolBar(this, isHideToolBar);
-    m_toolBar->setRecordLaunchMode(m_functionType);
-    m_toolBarInit = true;
+    recordWidth = 0;
+    recordHeight = 0;
+    if (m_shapesWidget)
+        m_shapesWidget->hide();
+    if (m_sideBar)
+        m_sideBar->hide();
+    if (m_sizeTips)
+        m_sizeTips->hide();
+    m_hasTreelandFrozenPixmap = false;
+    repaint();
+    QTimer::singleShot(0, this, [this, region] {
+        auto currentContext = TreelandCaptureManager::instance()->context();
+        if (!currentContext || currentContext->captureRegion().toRect() != region)
+            return;
 
-    m_toolBar->setAttribute(Qt::WA_TranslucentBackground);
-    m_toolBar->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);
-
-    recordX = region.x();
-    recordY = region.y();
-    recordWidth = region.width();
-    recordHeight = region.height();
-    // 选区变了要重绘，否则遮罩和虚线框不会跟上
-    update();
-
-    m_toolBar->showWidget();
-    const QPoint pos(region.x(), qMin(region.bottom(), height() - 2 * m_toolBar->height()));
-    m_toolBar->showAt(pos);
-
-    if (windowHandle() && m_toolBar->windowHandle()
-        && m_toolBar->windowHandle()->parent() != windowHandle()) {
-        m_toolBar->windowHandle()->setParent(windowHandle());
-        m_toolBar->hide();
-        m_toolBar->show();
-    }
+        // source_ready means the compositor selector has finished.  Take
+        // input back before showing the toolbar and annotation controls.
+        setTreelandInputTransparent(false);
+        m_treelandFrozenPixmap = captureTreelandFrame();
+        m_hasTreelandFrozenPixmap = !m_treelandFrozenPixmap.isNull();
+        if (m_hasTreelandFrozenPixmap) {
+            const qreal scaleX = static_cast<qreal>(m_treelandFrozenPixmap.width())
+                               / qMax(1, region.width());
+            const qreal scaleY = static_cast<qreal>(m_treelandFrozenPixmap.height())
+                               / qMax(1, region.height());
+            if (scaleX > 0.0 && scaleY > 0.0) {
+                if (!qFuzzyCompare(scaleX, scaleY)) {
+                    qCWarning(dsrApp) << "[treeland] non-uniform frame scale"
+                                      << scaleX << scaleY;
+                }
+                m_treelandFrozenPixmap.setDevicePixelRatio(scaleX);
+            }
+            qCInfo(dsrApp) << "[treeland] frozen frame size="
+                           << m_treelandFrozenPixmap.size()
+                           << "region=" << region
+                           << "dpr=" << m_treelandFrozenPixmap.devicePixelRatio();
+            TempFile::instance()->clearEffectPixmaps();
+        }
+        showTreelandShotUi(region);
+    });
 #endif
 }
 
@@ -8392,11 +8531,22 @@ void MainWindow::onTreelandSwitchToShotUI()
     auto manager = TreelandCaptureManager::instance();
     // 设为截图样式
     manager->setRecord(false);
+    // A context only supports one capture() request.  Recreate it after the
+    // record flow so the new screenshot selection gets a fresh frame/session.
+    manager->resetContext();
     auto ctx = manager->ensureContext();
     if (!ctx) {
         qCWarning(dsrApp) << "[treeland] ensureContext failed on switchToShot";
         return;
     }
+
+    m_hasTreelandFrozenPixmap = false;
+    m_treelandFrozenPixmap = QPixmap();
+
+    // The previous screenshot/recording flow may have made the main surface
+    // interactive.  Restore compositor-owned input before opening a new
+    // region selector.
+    setTreelandInputTransparent(true);
 
     // 确保存在会话，再发起选择请求
     ctx->ensureSession();
@@ -8517,4 +8667,3 @@ void MainWindow::initAudioAndCameraWatchers()
         qCDebug(dsrApp) << "摄像头监视器初始化完成";
     }
 }
-

@@ -473,6 +473,8 @@ public slots:
     /** Treeland：销毁当前工具栏（含 subsurface 解绑），便于重选区后重建 */
     void destroyTreelandToolBar();
 
+    void setTreelandInputTransparent(bool transparent);
+
     Q_SCRIPTABLE void stopRecord();
     Q_SCRIPTABLE void stopApp();
     
@@ -1455,6 +1457,10 @@ private:
      */
     void handleCaptureFinish();
 
+    // Capture the one-shot Wayland frame before annotation surfaces are shown.
+    QPixmap captureTreelandFrame();
+    void showTreelandShotUi(const QRect &region);
+
     /**
      * @brief Finish button for completing capture
      */
@@ -1474,6 +1480,9 @@ private:
     // treeland：记录切到录屏前工具栏的屏幕位置，用于切回截图时还原
     QPoint m_lastTreelandShotToolBarPos;
     bool m_hasLastTreelandShotToolBarPos = false;
+
+    QPixmap m_treelandFrozenPixmap;
+    bool m_hasTreelandFrozenPixmap = false;
 };
 
 #endif //MAINWINDOW_H

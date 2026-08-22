@@ -241,6 +241,7 @@ public:
     }
 
     TreelandCaptureContext *ensureContext();
+    void resetContext();
 
     inline bool record() const
     {

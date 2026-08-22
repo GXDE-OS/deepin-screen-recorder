@@ -55,6 +55,12 @@ void TempFile::setMosaicPixmap(const QPixmap &pixmap, const int radius)
     qCDebug(dsrApp) << "Mosaic pixmap added for radius:" << radius;
 }
 
+void TempFile::clearEffectPixmaps()
+{
+    m_blurPixmap.clear();
+    m_mosaicPixmap.clear();
+}
+
 bool TempFile::isContainsPix(const QString effect, const int radius)
 {
     qCDebug(dsrApp) << Q_FUNC_INFO << "Checking if pixmap contains effect:" << effect << ", radius:" << radius;

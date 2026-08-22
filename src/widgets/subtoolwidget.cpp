@@ -618,9 +618,8 @@ void SubToolWidget::initShotLabel()
     Utils::setAccessibility(m_mosaicButton, AC_SUBTOOLWIDGET_MOSAIC_BUTTON);
     m_shotBtnGroup->addButton(m_mosaicButton);
     m_mosaicButton->setFixedSize(TOOL_BUTTON_SIZE);
-    // TODO: 初版treeland暂时屏蔽
-    if (!(Utils::isTreelandMode))
-          btnList.append(m_mosaicButton);
+    // Force re-enabling blur
+    btnList.append(m_mosaicButton);
 
     //添加文字按钮
     m_textButton = new ToolButton();

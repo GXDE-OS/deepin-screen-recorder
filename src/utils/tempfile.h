@@ -33,6 +33,7 @@ public slots:
     void setFullScreenPixmap(const QPixmap &pixmap);
     void setBlurPixmap(const QPixmap &pixmap, const int radius);
     void setMosaicPixmap(const QPixmap &pixmap, const int radius);
+    void clearEffectPixmaps();
     bool isContainsPix(const QString effect, const int radius);
 private:
     explicit TempFile(QObject *parent = 0);

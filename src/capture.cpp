@@ -97,6 +97,12 @@ TreelandCaptureContext *TreelandCaptureManager::ensureContext()
     return m_context;
 }
 
+void TreelandCaptureManager::resetContext()
+{
+    if (m_context)
+        delete m_context;
+}
+
 // 处理捕获源准备就绪的信号
 void TreelandCaptureContext::treeland_capture_context_v1_source_ready(int32_t region_x,
                                                                       int32_t region_y,
@@ -318,7 +324,13 @@ void TreelandCaptureFrame::treeland_capture_frame_v1_ready()
     m_shmBuffer = m_pendingShmBuffer;
     m_pendingShmBuffer = nullptr;
     // 将待处理的缓冲区设为当前缓冲区
-    Q_EMIT ready(*m_shmBuffer->image());
+    const QImage image = m_shmBuffer && m_shmBuffer->image()
+        ? m_shmBuffer->image()->copy()
+        : QImage();
+    if (!image.isNull())
+        Q_EMIT ready(image);
+    else
+        Q_EMIT failed();
     // 发出帧就绪信号
 }
 
