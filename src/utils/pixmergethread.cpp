@@ -8,7 +8,7 @@
 
 #include <QMutexLocker>
 #include <QDateTime>
-#include <opencv2/imgproc/types_c.h>
+#include <opencv2/imgproc.hpp>
 
 static void blendVerticalSeamBand(cv::Mat &dst, const cv::Mat &a, const cv::Mat &b, int yDst, int bandH)
 {
@@ -343,8 +343,8 @@ bool PixMergeThread::splicePictureUp(const cv::Mat &image)
     m_upCount++;
     /*转灰度图像*/
     cv::Mat image1_gray, image2_gray;
-    cvtColor(image, image1_gray, CV_BGR2GRAY);
-    cvtColor(m_curImg, image2_gray, CV_BGR2GRAY);
+    cvtColor(image, image1_gray, cv::COLOR_BGR2GRAY);
+    cvtColor(m_curImg, image2_gray, cv::COLOR_BGR2GRAY);
     /*
      * 取图像2的全部行，1到35列作为模板
      * 这样image1作为原图，temp作为模板图像
@@ -353,9 +353,9 @@ bool PixMergeThread::splicePictureUp(const cv::Mat &image)
     /*结果矩阵图像,大小，数据类型*/
     cv::Mat res(image2_gray.rows - temp.rows + 1, image2_gray.cols - temp.cols + 1, CV_32FC1);
     /*模板匹配，采用归一化相关系数匹配*/
-    matchTemplate(image2_gray, temp, res, CV_TM_CCOEFF_NORMED);
+    matchTemplate(image2_gray, temp, res, cv::TM_CCOEFF_NORMED);
     /*结果矩阵阈值化处理*/
-    threshold(res, res, 0.8, 1, CV_THRESH_TOZERO);
+    threshold(res, res, 0.8, 1, cv::THRESH_TOZERO);
     double minVal, maxVal, thresholdv = 0.8;
 
     /*查找最大值及位置*/
@@ -364,7 +364,7 @@ bool PixMergeThread::splicePictureUp(const cv::Mat &image)
     /*图像拼接*/
     cv::Mat temp1, result;
     if (maxVal >= thresholdv && maxLoc.y > 0) { //只有度量值大于阈值才认为是匹配
-        result = cv::Mat::zeros(cvSize(image.cols, image.rows + m_curImg.rows - maxLoc.y - TEMPLATE_HEIGHT), image.type());
+        result = cv::Mat::zeros(cv::Size(image.cols, image.rows + m_curImg.rows - maxLoc.y - TEMPLATE_HEIGHT), image.type());
         temp1 = m_curImg(cv::Rect(0, maxLoc.y + TEMPLATE_HEIGHT, m_curImg.cols, m_curImg.rows - maxLoc.y - TEMPLATE_HEIGHT));
         if (temp1.empty()) {
             qCWarning(dsrApp) << "Failed to extract template region for upward splicing";
@@ -460,8 +460,8 @@ bool PixMergeThread::splicePictureDown(const cv::Mat &image)
     m_downCount++;
     /*转灰度图像*/
     cv::Mat image1_gray, image2_gray;
-    cvtColor(m_curImg, image1_gray, CV_BGR2GRAY);
-    cvtColor(image, image2_gray, CV_BGR2GRAY);
+    cvtColor(m_curImg, image1_gray, cv::COLOR_BGR2GRAY);
+    cvtColor(image, image2_gray, cv::COLOR_BGR2GRAY);
     //imwrite("m_curImg.png",m_curImg);
     //imwrite("image.png",image);
     /*
@@ -472,9 +472,9 @@ bool PixMergeThread::splicePictureDown(const cv::Mat &image)
     /*结果矩阵图像,大小，数据类型*/
     cv::Mat res(image1_gray.rows - temp.rows + 1, image2_gray.cols - temp.cols + 1, CV_32FC1);
     /*模板匹配，采用归一化相关系数匹配*/
-    matchTemplate(image1_gray, temp, res, CV_TM_CCOEFF_NORMED);
+    matchTemplate(image1_gray, temp, res, cv::TM_CCOEFF_NORMED);
     /*结果矩阵阈值化处理*/
-    threshold(res, res, 0.8, 1, CV_THRESH_TOZERO);
+    threshold(res, res, 0.8, 1, cv::THRESH_TOZERO);
     double minVal, maxVal, thresholdv = 0.8;
 
     /*查找最大值及位置*/
@@ -483,7 +483,7 @@ bool PixMergeThread::splicePictureDown(const cv::Mat &image)
     /*图像拼接*/
     cv::Mat temp1, result;
     if (maxVal >= thresholdv && maxLoc.y > 0) { //只有度量值大于阈值才认为是匹配
-        result = cv::Mat::zeros(cvSize(m_curImg.cols, maxLoc.y + image.rows), m_curImg.type());
+        result = cv::Mat::zeros(cv::Size(m_curImg.cols, maxLoc.y + image.rows), m_curImg.type());
         temp1 = m_curImg(cv::Rect(0, 0, m_curImg.cols, maxLoc.y));
         if (temp1.empty()) {
             qCWarning(dsrApp) << "Failed to extract template region for downward splicing";

@@ -260,6 +260,24 @@ void /*__attribute__ ((destructor))*/ gviewencoder_fini()
  */
 static int encoder_check_audio_sample_fmt(AVCodec *codec, enum AVSampleFormat sample_fmt)
 {
+#if LIBAVCODEC_VER_AT_LEAST(61, 13)
+	/* FFmpeg 7.1 起用 avcodec_get_supported_config() 取代 AVCodec::sample_fmts，FFmpeg 8 已删除该字段 */
+	const enum AVSampleFormat *p = NULL;
+	int n = 0;
+
+	if (avcodec_get_supported_config(NULL, codec, AV_CODEC_CONFIG_SAMPLE_FORMAT, 0,
+	                                 (const void **)&p, &n) < 0)
+		return 0;
+	/* NULL 表示编码器未声明限制，任意格式都可用 */
+	if (!p)
+		return 1;
+	for (int i = 0; i < n; i++)
+	{
+		if (p[i] == sample_fmt)
+			return 1;
+	}
+	return 0;
+#else
 	const enum AVSampleFormat *p = codec->sample_fmts;
 
 	while (*p != AV_SAMPLE_FMT_NONE)
@@ -269,6 +287,7 @@ static int encoder_check_audio_sample_fmt(AVCodec *codec, enum AVSampleFormat sa
 		p++;
 	}
 	return 0;
+#endif
 }
 
 /*

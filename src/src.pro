@@ -130,8 +130,18 @@ TARGET = deepin-screen-recorder
 
 # Include paths
 INCLUDEPATH += . \
-            /usr/include/gstreamer-1.0 \
-            /usr/include/opencv_mobile
+            /usr/include/gstreamer-1.0
+
+# Debian/deepin 使用 opencv-mobile；没有它的发行版（如 Arch）改用 pkg-config 找到的系统 OpenCV
+exists(/usr/include/opencv_mobile) {
+    INCLUDEPATH += /usr/include/opencv_mobile
+    OPENCV_LIBS = -lopencv_small
+} else {
+    packagesExist(opencv5): OPENCV_PKG = opencv5
+    else: OPENCV_PKG = opencv4
+    QMAKE_CXXFLAGS += $$system(pkg-config --cflags $$OPENCV_PKG)
+    OPENCV_LIBS = $$system(pkg-config --libs $$OPENCV_PKG)
+}
 
 INCLUDEPATH += ../3rdparty/libcam/libcam/ \
                ../3rdparty/libcam/libcam_v4l2core/ \
@@ -413,7 +423,7 @@ LIBS += -Wl,--no-as-needed \
 INCLUDEPATH += /usr/include/libdrm
 
 contains(DEFINES, OCR_SCROLL_FLAGE_ON) {
-    LIBS += -lopencv_small
+    LIBS += $$OPENCV_LIBS
 }
 
 # Installation paths
