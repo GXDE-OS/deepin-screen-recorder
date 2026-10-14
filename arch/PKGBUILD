@@ -1,0 +1,61 @@
+# Maintainer: CharOfString <root@charofstring.cc>
+pkgname=deepin-screen-recorder-git
+pkgver=7.0.2
+pkgrel=1
+pkgdesc='Screen recorder and screenshot tool for GXDE'
+arch=('x86_64' 'aarch64')
+url="https://github.com/GXDE-OS/deepin-screen-recorder"
+license=('GPL-3.0-or-later')
+# libudev、libv4l2、FFmpeg、PortAudio、libusb 按 src.pro 强制链接，GStreamer 等在运行时通过 dlopen 加载
+# libudev, libv4l2, FFmpeg, PortAudio and libusb are linked in on purpose by
+# src.pro; GStreamer and others are loaded with dlopen at runtime.
+depends=('dtk6core-git' 'dtk6gui-git' 'dtk6widget-git' 'qt6-base' 'qt6-multimedia' 'qt6-svg' 'wayland'
+         'opencv' 'gstreamer' 'gst-plugins-base-libs' 'gst-plugins-good' 'ffmpeg' 'ffmpegthumbnailer'
+         'portaudio' 'v4l-utils' 'libusb' 'systemd-libs' 'libx11' 'libxext' 'libxtst' 'libxfixes'
+         'libxinerama' 'mesa' 'glib2' 'hicolor-icon-theme' 'libgcc' 'libstdc++' 'glibc')
+# src.pro 从 /etc/os-version 判断是否启用 OCR 与滚动截图，与 Debian 的 deepin-desktop-base 一样由
+# gxde-desktop-base-git 提供
+# src.pro reads /etc/os-version to decide whether OCR and scrolling
+# screenshots are enabled; gxde-desktop-base-git ships it, as
+# deepin-desktop-base does for Debian.
+makedepends=('git' 'pkgconf' 'qt6-tools' 'qt6-wayland' 'gxde-desktop-base-git')
+optdepends=('gxde-ocr-git: text recognition in screenshots')
+provides=('deepin-screen-recorder' 'deepin-screenshot')
+conflicts=('deepin-screen-recorder' 'deepin-screenshot' 'gxde-screen-recorder-git')
+replaces=('deepin-screenshot')
+source=()
+sha512sums=()
+
+# 直接使用 PKGBUILD 所在的 git 仓库作为源码 ・ Build from the git checkout this PKGBUILD lives in.
+_srcroot() {
+  git -C "$startdir" rev-parse --show-toplevel
+}
+
+prepare() {
+  # qmake 运行时会用 lupdate 改写已跟踪的 .ts 文件，因此在 $srcdir 中的副本里构建，不改动仓库
+  # qmake runs lupdate, which rewrites the tracked .ts files, so build from a
+  # copy in $srcdir and leave the checkout untouched.
+  rm -rf "$srcdir/$pkgname"
+  mkdir "$srcdir/$pkgname"
+  tar -C "$(_srcroot)" --exclude=./.git -cf - . | tar -C "$srcdir/$pkgname" -xf -
+}
+
+build() {
+  # 与 debian/rules 相同 ・ Same as debian/rules.
+  mkdir -p build
+  cd build
+  qmake6 "$srcdir/$pkgname/screen_shot_recorder.pro" \
+    VERSION="$pkgver" \
+    PREFIX=/usr \
+    LIB_INSTALL_DIR=/usr/lib \
+    VERSION_UPSTREAM="$pkgver" \
+    DEFINES+="VERSION=$pkgver" \
+    QMAKE_CFLAGS_RELEASE="$CFLAGS" \
+    QMAKE_CXXFLAGS_RELEASE="$CXXFLAGS" \
+    QMAKE_LFLAGS_RELEASE="$LDFLAGS"
+  make
+}
+
+package() {
+  make -C build INSTALL_ROOT="$pkgdir" install
+}
