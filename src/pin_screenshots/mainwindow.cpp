@@ -85,6 +85,7 @@ void MainWindow::initMainWindow()
     // 工具栏设置
     m_toolBar = new ToolBarWidget(this); //初始化
     connect(m_toolBar, SIGNAL(sendOcrButtonClicked()), this, SLOT(onOpenOCR()));
+    connect(m_toolBar, SIGNAL(sendTableButtonClicked()), this, SLOT(onOpenTableRecognition()));  // 贴图工具栏：表格识别
     connect(m_toolBar, SIGNAL(sendSaveButtonClicked()), this, SLOT(saveToClipboard()));  // 保存到剪贴板
     connect(m_toolBar, &ToolBarWidget::signalSaveToLocalButtonClicked, this, &MainWindow::onSave);
     connect(m_toolBar, SIGNAL(sendCloseButtonClicked()), this, SLOT(onExit()));
@@ -165,6 +166,135 @@ bool MainWindow::openImageAndName(const QImage &image, const QString &name, cons
     qCDebug(dsrApp) << "Tool bar position updated.";
     return true;
 }
+// 表格识别
+bool MainWindow::openImageForTable(const QImage &image, const QString &name, const QPoint &point)
+{
+    qCDebug(dsrApp) << "Opening image for table recognition. Name:" << name << ", Point:" << point;
+    openImageAndName(image, name, point);
+    m_isTableRecognizeMode = true;
+    setTableOverlayActive(true);
+    // 识别进度是独立置顶浮层：必须等贴图窗口真正映射出来之后再创建，
+    // 否则浮层会先映射、被后映射的贴图窗口压在下面。
+    if (isVisible() && windowHandle() && windowHandle()->isVisible()) {
+        startTableRecognition();
+    } else {
+        m_tableRecognizePending = true;
+    }
+    return true;
+}
+
+void MainWindow::startTableRecognition()
+{
+    setTableOverlayActive(true);
+
+    if (!m_tableRecognizingWidget) {
+        m_tableRecognizingWidget = new TableRecognizingWidget(this);
+    }
+    m_tableRecognizingWidget->setBackdropImage(m_image);
+    m_tableRecognizingWidget->startOn(this);
+
+    if (!m_tableRecognizerLoader) {
+        m_tableRecognizerLoader = new TableRecognizerLoader(this);
+        connect(m_tableRecognizerLoader, &TableRecognizerLoader::recognitionFinished,
+                this, &MainWindow::onTableRecognitionFinished);
+    }
+
+    if (!m_tableRecognizerLoader->recognize(m_image)) {
+        qCWarning(dsrApp) << "failed to start table recognition";
+    }
+}
+
+void MainWindow::onTableRecognitionFinished(bool success, const QString &html,
+                                            Dtk::TableRecognizer::TableError error)
+{
+    qCDebug(dsrApp) << "table recognition finished. success:" << success
+                    << "error:" << static_cast<int>(error);
+    if (m_tableRecognizingWidget)
+        m_tableRecognizingWidget->stop();
+
+    if (success) {
+        // 贴图窗口是置顶的无边框窗口，顶层对话框会被遮挡，这里使用窗口内浮层。
+        if (!m_tableResultDialog) {
+            m_tableResultDialog = new TableResultDialog(html, m_image, this);
+            connect(m_tableResultDialog, &TableResultDialog::dismissed, this, [this]() {
+                setTableOverlayActive(false);
+            });
+        } else {
+            // 同一个贴图窗口内二次识别会复用该弹窗，必须同步刷新结果，
+            // 否则“复制为Excel格式”复制的还是上一次的表格。
+            m_tableResultDialog->setResultHtml(html);
+        }
+        m_tableResultDialog->setBackdropImage(m_image);
+        m_tableResultDialog->showOverlay();
+        return;
+    }
+
+    // 只依据库的错误码选择文案，不解析库的 errorMessage。
+    switch (error) {
+    // 空白/纯色图可能被结构模型误判出单元格，但 OCR 没有任何文字。对用户而言
+    // 这仍是没有可用表格，与真正的 NoTableDetected 共用同一提示，避免落到通用失败文案。
+    case Dtk::TableRecognizer::TableError::NoTextDetected:
+    case Dtk::TableRecognizer::TableError::NoTableDetected:
+        showTableToast(tr("Failed to recognize: no table content detected"), tr("Got it"), false);
+        break;
+    case Dtk::TableRecognizer::TableError::Timeout:
+        showTableToast(tr("The table is too large, recognition timed out"), tr("Got it"), false);
+        break;
+    case Dtk::TableRecognizer::TableError::Busy:
+        showTableToast(tr("Recognition is already running, please wait"), tr("Got it"), false);
+        break;
+    default:
+        showTableToast(tr("Recognition failed, please try again"), tr("Got it"), false);
+        break;
+    }
+}
+
+void MainWindow::showTableToast(const QString &message, const QString &actionText, bool closable)
+{
+    cleanupTableToast();
+    m_tableToast = new TableRecognizeToast(message, actionText, closable, TableRecognizeToast::Error, this);
+    connect(m_tableToast, &TableRecognizeToast::closed, this, [this]() {
+        setTableOverlayActive(false);
+    });
+    m_tableToast->setBackdropImage(m_image);
+    m_tableToast->popupIn(this);
+}
+
+void MainWindow::cleanupTableToast()
+{
+    if (m_tableToast) {
+        m_tableToast->hide();
+        m_tableToast->deleteLater();
+        m_tableToast = nullptr;
+    }
+}
+
+void MainWindow::setTableOverlayActive(bool active)
+{
+    m_tableOverlayActive = active;
+    if (!m_toolBar)
+        return;
+
+    if (active) {
+        if (m_hideToolbarTimer)
+            m_hideToolbarTimer->stop();
+        m_toolBar->hide();
+        return;
+    }
+
+    checkToolbarVisibility();
+}
+
+void MainWindow::raiseTableOverlays()
+{
+    // 识别进度/提示条是独立置顶浮层：主窗口映射或重新激活后要把它们举回来，
+    // 否则会被后映射出来的贴图窗口盖住。
+    if (m_tableRecognizingWidget && m_tableRecognizingWidget->isVisible())
+        m_tableRecognizingWidget->raise();
+    if (m_tableToast && m_tableToast->isVisible())
+        m_tableToast->raise();
+}
+
 // 开启OCR
 void MainWindow::onOpenOCR()
 {
@@ -178,6 +308,26 @@ void MainWindow::onOpenOCR()
     }
     m_ocrInterface->openImageAndName(m_image, m_imageName);
     qCDebug(dsrApp) << "Opened image with OCR interface.";
+}
+
+// 贴图工具栏“表格识别”按钮：对当前贴图内容重新识别
+void MainWindow::onOpenTableRecognition()
+{
+    qCDebug(dsrApp) << "onOpenTableRecognition called, re-run table recognition on current pin image.";
+    m_isTableRecognizeMode = true;
+    setTableOverlayActive(true);
+
+    // 上一次的结果弹窗/提示条若还停留在屏幕上，先收起，避免与新一次的识别浮层叠加
+    if (m_tableResultDialog && m_tableResultDialog->isVisible())
+        m_tableResultDialog->hide();
+    cleanupTableToast();
+
+    // 与 openImageForTable 相同：先确保贴图窗口已映射，再创建独立置顶的识别浮层
+    if (isVisible() && windowHandle() && windowHandle()->isVisible()) {
+        startTableRecognition();
+    } else {
+        m_tableRecognizePending = true;
+    }
 }
 
 // 贴图保存
@@ -397,6 +547,7 @@ void MainWindow::onSave()
 // 退出
 void MainWindow::onExit()
 {
+    cleanupTableToast();
     //每次关闭贴图时重设isChangeSavePath
     Settings::instance()->setIsChangeSavePath(false);
     qCDebug(dsrApp) << "Exiting application.";
@@ -576,6 +727,18 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
+
+    // 表格识别浮层/提示条跟随窗口位置重新定位（尺寸与窗口大小无关）
+    if (m_tableRecognizingWidget && m_tableRecognizingWidget->isVisible()) {
+        m_tableRecognizingWidget->repositionOn(this);
+    }
+    if (m_tableToast && m_tableToast->isVisible()) {
+        m_tableToast->popupIn(this);
+    }
+    if (m_tableResultDialog && m_tableResultDialog->isVisible()) {
+        // 弹窗是尺寸固定的独立浮层，只重新定位，不跟随窗口拉伸
+        m_tableResultDialog->showOverlay();
+    }
     
     // 如果不是由于鼠标左键按下引起的大小变化，则不处理
     if (!isLeftPressDown) {
@@ -889,6 +1052,12 @@ void MainWindow::sendNotify(QString savePath, bool bSaveState)
 
 void MainWindow::updateToolBarPosition()
 {
+    if (m_tableOverlayActive) {
+        if (m_toolBar && m_toolBar->isVisible())
+            m_toolBar->hide();
+        return;
+    }
+
     //获取贴图界面右下角的点
     QPoint brPoint = mapToGlobal(this->rect().bottomRight());
     int x = 0, y = 0;
@@ -941,6 +1110,12 @@ void MainWindow::checkToolbarVisibility()
 {
     m_hideToolbarTimer->stop();
 
+    if (m_tableOverlayActive) {
+        if (m_toolBar && m_toolBar->isVisible())
+            m_toolBar->hide();
+        return;
+    }
+
     if (isLeftPressDown) {
         if (m_toolBar && m_toolBar->isVisible()) {
             m_toolBar->hide();
@@ -991,6 +1166,32 @@ void MainWindow::checkToolbarVisibility()
 void MainWindow::showEvent(QShowEvent *event)
 {
     DWidget::showEvent(event);
+
+    // 贴图窗口在 X11 下是 BypassWindowManagerHint 的置顶窗口，浮层若先于它映射
+    // 会被盖住；这里在主窗口真正映射出来（以及之后每次重新激活）时补一次置顶。
+    if (!m_tableOverlayRaiseHooked) {
+        m_tableOverlayRaiseHooked = true;
+        if (!windowHandle())
+            createWinId();
+        if (windowHandle()) {
+            connect(windowHandle(), &QWindow::visibleChanged, this, [this](bool visible) {
+                if (!visible)
+                    return;
+                // 贴图窗口映射出来之后才启动识别：进度浮层必须后于贴图窗口
+                // 创建，并在 startOn() 中重新映射一次以刷新合成器顶层顺序。
+                if (m_tableRecognizePending) {
+                    m_tableRecognizePending = false;
+                    startTableRecognition();
+                }
+                raiseTableOverlays();
+            });
+            connect(windowHandle(), &QWindow::activeChanged, this, [this]() {
+                raiseTableOverlays();
+            });
+        }
+    }
+    raiseTableOverlays();
+
     if (!PUtils::isTreelandMode || !m_toolBar) {
         return;
     }
@@ -1031,6 +1232,9 @@ void MainWindow::leaveEvent(QEvent *event)
 
 void MainWindow::startToolbarHideTimer()
 {
+    if (m_tableOverlayActive)
+        return;
+
     // 鼠标离开时，启动延迟隐藏定时器
     if (!isLeftPressDown) {
         m_hideToolbarTimer->start();

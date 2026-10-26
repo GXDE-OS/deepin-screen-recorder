@@ -50,10 +50,11 @@ public Q_SLOTS: // METHODS
         qDebug() << "PinScreenShotsInterface: "  << __FUNCTION__;
         QByteArray data;
         QBuffer buf(&data);
-        if (image.save(&buf, "PNG")) {
-            data = qCompress(data, 9);
-            data = data.toBase64();
+        if (!image.save(&buf, "PNG")) {
+            return QDBusPendingReply<>();
         }
+        data = qCompress(data, 9);
+        data = data.toBase64();
         return call(QStringLiteral("openImage"), QVariant::fromValue(data));
     }
 
@@ -69,11 +70,33 @@ public Q_SLOTS: // METHODS
         qDebug() << "PinScreenShotsInterface: "  << __FUNCTION__;
         QByteArray data;
         QBuffer buf(&data);
-        if (image.save(&buf, "PNG")) {
-            data = qCompress(data, 9);
-            data = data.toBase64();
+        if (!image.save(&buf, "PNG")) {
+            return QDBusPendingReply<>();
         }
+        data = qCompress(data, 9);
+        data = data.toBase64();
         return asyncCall(QStringLiteral("openImageAndName"), QVariant::fromValue(data), imageName, point);
+    }
+
+    /*
+    * @bref:openImageAndNameForTable 传递图片给贴图程序进行表格识别
+    * @param: image 图片
+    * @param: imageName 图片名称
+    * @param: point 截图区域左上角坐标
+    * @return: QDBusPendingReply
+    * @note:
+    */
+    inline QDBusPendingReply<> openImageAndNameForTable(const QImage &image, const QString &imageName, const QPoint &point)
+    {
+        qDebug() << "PinScreenShotsInterface: "  << __FUNCTION__;
+        QByteArray data;
+        QBuffer buf(&data);
+        if (!image.save(&buf, "PNG")) {
+            return QDBusPendingReply<>();
+        }
+        data = qCompress(data, 9);
+        data = data.toBase64();
+        return asyncCall(QStringLiteral("openImageAndNameForTable"), QVariant::fromValue(data), imageName, point);
     }
 
 Q_SIGNALS: // SIGNALS

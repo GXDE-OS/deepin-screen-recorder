@@ -72,25 +72,130 @@ if [ -x "$SSR_BIN" ]; then
         /^[A-Za-z0-9_]+.*\.$/{s=$0; sub(/\.$/, "", s)}
         /^  [A-Za-z0-9_]+/{gsub(/^ +/, ""); print s"."$0}')
     ssr_ok=0; ssr_bad=0
+    # 逐用例生成 JUnit XML 报告（供 CI 统计用例数）；崩/hang 用例无 XML，合并时标记为 error。
+    mkdir -p "$SSR_DIR/report_individual"
+    : > "$SSR_DIR/ssr_results.tsv"
     # 用 offscreen：native(dxcb)平台下大量 GUI 用例(MainWindow 构造/paint/cursor 路径)
     # 会 ASan abort，逐用例隔离运行时整用例丢覆盖。offscreen 为纯软件平台，用例稳定运行。
     for t in "${SSR_TESTS[@]}"; do
+        safe_name="${t//[^A-Za-z0-9_]/_}"
+        xml_path="report_individual/${safe_name}.xml"
         ( cd "$SSR_DIR" && DISPLAY=:0 QT_QPA_PLATFORM=offscreen QT_LOGGING_RULES="*=false" \
           ASAN_OPTIONS=fast_unwind_on_malloc=1:detect_leaks=0 \
-          timeout "$SSR_TEST_TIMEOUT" ./ut_screen_shot_recorder --gtest_filter="$t" >/dev/null 2>&1 )
-        case $? in 0|1) ssr_ok=$((ssr_ok+1));; *) ssr_bad=$((ssr_bad+1));; esac
+          timeout "$SSR_TEST_TIMEOUT" ./ut_screen_shot_recorder --gtest_filter="$t" \
+          --gtest_output=xml:"$xml_path" >/dev/null 2>&1 )
+        rc=$?
+        case $rc in 0|1) ssr_ok=$((ssr_ok+1));; *) ssr_bad=$((ssr_bad+1));; esac
+        printf '%s\t%d\n' "$t" "$rc" >> "$SSR_DIR/ssr_results.tsv"
     done
     echo "[INFO] ssr 逐用例：$ssr_ok 正常退出，$ssr_bad 崩/hang 跳过（共 ${#SSR_TESTS[@]} 个）。"
+
+    # 合并逐用例 XML 报告为单一 JUnit XML（供 CI 统计全部用例数）。
+    # 崩/hang 用例无 XML，按退出码标记为 error，确保用例总数完整。
+    python3 - "$SSR_DIR/report_individual" "$SSR_DIR/ssr_results.tsv" \
+             "$OUT/report/report_ut_screen_shot_recorder.xml" <<'PYEOF'
+import os, sys
+from xml.etree import ElementTree as ET
+
+indiv_dir, results_path, out_path = sys.argv[1], sys.argv[2], sys.argv[3]
+
+# Read per-test exit codes
+exit_codes = {}
+with open(results_path) as f:
+    for line in f:
+        parts = line.rstrip('\n').split('\t')
+        if len(parts) == 2:
+            exit_codes[parts[0]] = int(parts[1])
+
+# Collect per-test XML results (pass/fail with detail)
+xml_results = {}
+if os.path.isdir(indiv_dir):
+    for fn in os.listdir(indiv_dir):
+        if not fn.endswith('.xml'):
+            continue
+        try:
+            tree = ET.parse(os.path.join(indiv_dir, fn))
+        except ET.ParseError:
+            continue
+        for tc in tree.iter('testcase'):
+            full = f"{tc.get('classname','')}.{tc.get('name','')}"
+            fails = tc.findall('failure')
+            if fails:
+                xml_results[full] = ('fail', tc.get('time','0'), fails[0].get('message',''))
+            elif tc.findall('error'):
+                xml_results[full] = ('error', tc.get('time','0'), '')
+            else:
+                xml_results[full] = ('pass', tc.get('time','0'), '')
+
+# Build merged JUnit XML: all tests from exit_codes, enriched by XML where available
+suites = {}
+for full_name, rc in exit_codes.items():
+    if '.' not in full_name:
+        continue
+    suite, tname = full_name.rsplit('.', 1)
+    if full_name in xml_results:
+        st, tm, msg = xml_results[full_name]
+    elif rc == 0:
+        st, tm, msg = 'pass', '0', ''
+    elif rc == 1:
+        st, tm, msg = 'fail', '0', 'gtest assertion failure'
+    else:
+        st, tm, msg = 'error', '0', f'crashed/hang (exit {rc})'
+    suites.setdefault(suite, []).append((tname, st, tm, msg))
+
+root = ET.Element('testsuites')
+total = sum(len(ts) for ts in suites.values())
+total_fail = sum(1 for ts in suites.values() for _, st, _, _ in ts if st == 'fail')
+total_err = sum(1 for ts in suites.values() for _, st, _, _ in ts if st == 'error')
+root.set('tests', str(total)); root.set('failures', str(total_fail))
+root.set('errors', str(total_err)); root.set('disabled', '0')
+root.set('name', 'ut_screen_shot_recorder')
+
+for sname, tests in sorted(suites.items()):
+    ts = ET.SubElement(root, 'testsuite')
+    ts.set('name', sname); ts.set('tests', str(len(tests)))
+    ts.set('failures', str(sum(1 for _, st, _, _ in tests if st == 'fail')))
+    ts.set('errors', str(sum(1 for _, st, _, _ in tests if st == 'error')))
+    ts.set('disabled', '0')
+    for tname, st, tm, msg in tests:
+        tc = ET.SubElement(ts, 'testcase')
+        tc.set('name', tname); tc.set('classname', sname)
+        tc.set('status', 'run'); tc.set('time', tm)
+        if st == 'fail':
+            ET.SubElement(tc, 'failure').set('message', msg)
+        elif st == 'error':
+            ET.SubElement(tc, 'error').set('message', msg)
+
+ET.ElementTree(root).write(out_path, encoding='UTF-8', xml_declaration=True)
+print(f"[INFO] 合并 ssr 报告：{total} 用例，{total_fail} 失败，{total_err} 错误 -> {out_path}")
+PYEOF
 else
     echo "[WARN] ssr 二进制不存在，跳过其运行（仅 recordtime 覆盖）。"
 fi
 
-# 2) 编译 + 运行 ut_record_time（真实覆盖率）
-"$HERE/ut_dde_dock_plugins/build_run_ut.sh"
+# 2) 编译 + 运行 dock 插件测试（ut_record_time + ut_shot_start + ut_shot_start_record）
+# 各子模块脚本独立构建/运行/生成 .info，不再各自 genhtml/cp 到 build-ut/html/
+# （由本主脚本统一合并 .info 后生成一份整体 HTML 报告）
+for mod in ut_record_time ut_shot_start ut_shot_start_record; do
+    echo "[INFO] 运行 dock 插件子模块：$mod"
+    ( cd "$HERE" && ./ut_dde_dock_plugins/"$mod"/build_run_ut.sh ) || echo "[WARN] $mod 运行失败，继续后续模块。"
+done
 
-# 3) 聚合覆盖率（ssr 基线 + ssr 运行时 + recordtime）
+# 2.5) 编译 + 运行 ut_pin_screenshots（贴图模块单元测试）
+( cd "$HERE" && ./ut_pin_screenshots/build_run_ut.sh ) || echo "[WARN] ut_pin_screenshots 运行失败，继续。"
+
+# 3) 聚合覆盖率（所有模块 .info 合并为一份统一报告）
+#
+# 各子模块在 build-ut/ 下已生成自己的 .info 文件，此处收集并合并。
+# 对每个模块：基线(--capture --initial, 全 0) + 运行时(--capture, 真实)
+# 合并后未执行文件留 0%，已执行按真实。
+
 RT_DIR="$HERE/ut_dde_dock_plugins/ut_record_time/build-ut"
+SS_DIR="$HERE/ut_dde_dock_plugins/ut_shot_start/build-ut"
+SSR_DOCK_DIR="$HERE/ut_dde_dock_plugins/ut_shot_start_record/build-ut"
+PIN_DIR="$HERE/ut_pin_screenshots/build-ut"
 
+# ---- 收集 ssr 主程序覆盖率 ----
 lcov --capture --initial -d "$SSR_DIR" -o "$OUT/ssr_base.info" 2>/dev/null \
     || echo "[WARN] 未能生成 ssr 零覆盖基线。"
 lcov --capture -d "$SSR_DIR" -o "$OUT/ssr_rt.info" 2>/dev/null \
@@ -105,27 +210,70 @@ elif [ -f "$OUT/ssr_base.info" ]; then
     cp "$OUT/ssr_base.info" "$OUT/ssr_real.info"
 fi
 
-# recordtime 真实覆盖率
+# ---- 收集 recordtime 覆盖率 ----
 if [ -f "$RT_DIR/coverage.info" ]; then
     cp "$RT_DIR/coverage.info" "$OUT/rt.info"
 else
     lcov --capture -d "$RT_DIR" -o "$OUT/rt.info" 2>/dev/null || true
 fi
-
-# 合并 ssr 真实 + recordtime
-if [ -f "$OUT/ssr_real.info" ] && [ -f "$OUT/rt.info" ]; then
-    lcov --add-tracefile "$OUT/ssr_real.info" --add-tracefile "$OUT/rt.info" -o "$OUT/coverage-merged.info" 2>/dev/null
-elif [ -f "$OUT/ssr_real.info" ]; then
-    cp "$OUT/ssr_real.info" "$OUT/coverage-merged.info"
+lcov --capture --initial -d "$RT_DIR" -o "$OUT/rt_base.info" 2>/dev/null || true
+if [ -f "$OUT/rt_base.info" ] && [ -f "$OUT/rt.info" ]; then
+    lcov --add-tracefile "$OUT/rt_base.info" --add-tracefile "$OUT/rt.info" -o "$OUT/rt_real.info" 2>/dev/null
 elif [ -f "$OUT/rt.info" ]; then
-    cp "$OUT/rt.info" "$OUT/coverage-merged.info"
-else
+    cp "$OUT/rt.info" "$OUT/rt_real.info"
+fi
+
+# ---- 收集 shot_start 覆盖率 ----
+if [ -f "$SS_DIR/ut_shot_start_coverage.info" ]; then
+    cp "$SS_DIR/ut_shot_start_coverage.info" "$OUT/shot_start.info"
+fi
+lcov --capture --initial -d "$SS_DIR" -o "$OUT/shot_start_base.info" 2>/dev/null || true
+if [ -f "$OUT/shot_start_base.info" ] && [ -f "$OUT/shot_start.info" ]; then
+    lcov --add-tracefile "$OUT/shot_start_base.info" --add-tracefile "$OUT/shot_start.info" -o "$OUT/shot_start_real.info" 2>/dev/null
+elif [ -f "$OUT/shot_start.info" ]; then
+    cp "$OUT/shot_start.info" "$OUT/shot_start_real.info"
+fi
+
+# ---- 收集 shot_start_record 覆盖率 ----
+if [ -f "$SSR_DOCK_DIR/ut_shot_start_record_coverage.info" ]; then
+    cp "$SSR_DOCK_DIR/ut_shot_start_record_coverage.info" "$OUT/shot_start_record.info"
+fi
+lcov --capture --initial -d "$SSR_DOCK_DIR" -o "$OUT/shot_start_record_base.info" 2>/dev/null || true
+if [ -f "$OUT/shot_start_record_base.info" ] && [ -f "$OUT/shot_start_record.info" ]; then
+    lcov --add-tracefile "$OUT/shot_start_record_base.info" --add-tracefile "$OUT/shot_start_record.info" -o "$OUT/shot_start_record_real.info" 2>/dev/null
+elif [ -f "$OUT/shot_start_record.info" ]; then
+    cp "$OUT/shot_start_record.info" "$OUT/shot_start_record_real.info"
+fi
+
+# ---- 收集 pin_screenshots 覆盖率 ----
+if [ -f "$PIN_DIR/ut_pin_screenshots_coverage.info" ]; then
+    cp "$PIN_DIR/ut_pin_screenshots_coverage.info" "$OUT/pin_screenshots.info"
+fi
+lcov --capture --initial -d "$PIN_DIR" -o "$OUT/pin_screenshots_base.info" 2>/dev/null || true
+if [ -f "$OUT/pin_screenshots_base.info" ] && [ -f "$OUT/pin_screenshots.info" ]; then
+    lcov --add-tracefile "$OUT/pin_screenshots_base.info" --add-tracefile "$OUT/pin_screenshots.info" -o "$OUT/pin_screenshots_real.info" 2>/dev/null
+elif [ -f "$OUT/pin_screenshots.info" ]; then
+    cp "$OUT/pin_screenshots.info" "$OUT/pin_screenshots_real.info"
+fi
+
+# ---- 全局合并：所有模块真实覆盖率 ----
+ALL_ARGS=()
+for f in "$OUT"/ssr_real.info "$OUT"/rt_real.info "$OUT"/shot_start_real.info \
+         "$OUT"/shot_start_record_real.info "$OUT"/pin_screenshots_real.info; do
+    [ -f "$f" ] && ALL_ARGS+=(--add-tracefile "$f")
+done
+
+if [ ${#ALL_ARGS[@]} -eq 0 ]; then
     echo "[ERROR] 无可用覆盖率数据。" >&2
     exit 1
 fi
 
-# 只保留 src/ 下源码（剔除 3rdparty/build 产物）
-lcov --extract "$OUT/coverage-merged.info" '*/src/*' -o "$OUT/coverage.info"
+lcov "${ALL_ARGS[@]}" -o "$OUT/coverage-merged.info" 2>/dev/null
+
+# 只保留 src/ + dde-dock-plugins/ + pin_screenshots/ 下源码（剔除 3rdparty/build 产物）
+lcov --extract "$OUT/coverage-merged.info" \
+    '*/src/*' '*/dde-dock-plugins/*' '*/pin_screenshots/*' \
+    -o "$OUT/coverage.info"
 
 # 剔除 Wayland 生成代码：QtWayland 生成的协议绑定(qwayland-*、protocols/)与
 # capture.cpp(Treeland 协议胶水)依赖真实 Wayland 合成器绑定，无头单测环境
@@ -146,11 +294,22 @@ lcov --remove "$OUT/coverage.info" \
     '*/src/dbusservice/dbusscreenshotservice.cpp' \
     -o "$OUT/coverage.info"
 
-genhtml -o "$OUT/html/src-overview" "$OUT/coverage.info"
+# 生成统一 HTML 报告（与 deepin-image-viewer 风格一致：单入口）
+genhtml -o "$OUT/html" "$OUT/coverage.info"
+mv "$OUT/html/index.html" "$OUT/html/cov_deepin-screen-recorder.html"
 
-echo "================ 覆盖率汇总（src/，已剔除 Wayland 生成代码）================"
+echo "================ 覆盖率汇总 ================================"
 lcov --summary "$OUT/coverage.info"
 echo "（已剔除：protocols/、qwayland-*、capture.cpp、*-protocol.*、main.cpp、waylandrecord/、waylandmousesimulator/waylandscrollmonitor、LPF_V4L2/majorimageprocessingthread、dbusscreenshotservice —— 需真实 Wayland 合成器/X11/摄像头设备，无法单测）"
-echo "HTML 报告：$OUT/html/src-overview/index.html"
+echo "HTML 报告：$OUT/html/cov_deepin-screen-recorder.html"
+
+# 生成摘要 JSON
+echo "==> Generating summary JSON: $OUT/ut-summary.json"
+
+export projectdir="$ROOT"
+export builddir=build-ut
+export reportdir=build-ut
+
+python3 "$HERE/gen-ut-summary.py"
 
 exit 0

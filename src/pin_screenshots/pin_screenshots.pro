@@ -41,6 +41,12 @@ QMAKE_LFLAGS += -g -Wall -Wl,--as-needed -pie -z noexecstack -z now
 # 添加 FORTIFY_SOURCE 保护
 DEFINES += _FORTIFY_SOURCE=2
 
+# 表格识别能力（dtkmultimedia 的 dtk6tablerecognizer）：按常规方式链接，
+# 由 pkg-config 提供头文件路径与库（dtk6tablerecognizer 的 .pc 里 Requires: dtk6ocr，
+# 所以 OCR 库会一并带进来）。构建期依赖 libdtk6tablerecognizer-dev，
+# 运行期依赖由 ${shlibs:Depends} 自动生成。
+PKGCONFIG += dtk6tablerecognizer
+
 SOURCES += \
     service/dbuspinscreenshotsadaptor.cpp \
     service/pinscreenshotsinterface.cpp \
@@ -56,6 +62,11 @@ SOURCES += \
     settings.cpp \
     ui/mainToolWidget.cpp \
     ddeshellsurface.cpp \
+    table/tablerecognizerloader.cpp \
+    ui/tableglasspanel.cpp \
+    ui/tablerecognizingwidget.cpp \
+    ui/tablerecognizetoast.cpp \
+    ui/tableresultdialog.cpp \
     ../utils/log.cpp \
     ../widgets/toolbutton.cpp \
     ../widgets/savebutton.cpp \
@@ -74,6 +85,11 @@ HEADERS += \
     ui/pinsavemenumanager.h \
     putils.h \
     settings.h \
+    table/tablerecognizerloader.h \
+    ui/tableglasspanel.h \
+    ui/tablerecognizingwidget.h \
+    ui/tablerecognizetoast.h \
+    ui/tableresultdialog.h \
     ui/mainToolWidget.h \
     ddeshellsurface.h \
     ../utils/log.h \

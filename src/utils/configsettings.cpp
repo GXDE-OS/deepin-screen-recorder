@@ -1,5 +1,5 @@
 // Copyright (C) 2020 ~ 2021 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -34,12 +34,17 @@ const QMap<QString, QMap<QString, QVariant>> ConfigSettings::m_defaultConfig = {
     // 模糊类型， 模糊、马赛克；模糊形状，矩形，圆形；模糊强度
     {"effect", {{"isBlur", false}, {"isOval", 0}, {"radius", 0}, {"line_width", 1}}},
     {"text", {{"color_index", 3}, {"fontsize", 0}}},
+    // 序号标注工具，颜色与线宽（线宽对应序号圆圈大小档位）
+    {"sequence", {{"color_index", 3}, {"line_width", 1}}},
+    // 圆角截图：开启状态由 radius>0 表示；ratio_type 表示尺寸/比例下拉模式，
+    // remember 表示下次启动是否应用 fixed_width/fixed_height。
+    {"rounded", {{"radius", 0}, {"ratio_type", 0}, {"remember", false}, {"remember_ratio", false}, {"fixed_width", 0}, {"fixed_height", 0}}},
     // 几何图形类型，矩形或椭圆
     {"shape", {{"current", "rectangle"}}},
     // 截图保存选项，格式，保存位置选项
     //save_dir: 普通路径
     //save_dir_change: 指定路径是否需要改变
-    {"shot", {{"format", 0}, {"save_op", 0}, {"save_cursor", 0}, {"save_dir", ""},  {"save_dir_change", false}, {"border_index", 0}, {"save_ways", 0}, {"save_ask_dir", ""}, {"ai_assistant_used", false}}},
+    {"shot", {{"format", 0}, {"save_op", 0}, {"save_cursor", 0}, {"save_dir", ""},  {"save_dir_change", false}, {"border_index", 0}, {"save_ways", 0}, {"save_ask_dir", ""}, {"ai_assistant_used", false}, {"location_state", 0}}},
     // 录屏保存选项
     // curor 0 不录制鼠标，及不录制鼠标点击,1 录制鼠标,2 录制鼠标点击,3 录制鼠标，及录制鼠标点击,
     // audio 0 不录制任何音频,1 麦克风音频, 2 录制系统音频,3 录制混音,

@@ -18,9 +18,15 @@
 #include "show_buttons.h"
 #include "widgets/shapeswidget.h"
 #include "widgets/toptips.h"
+#include "widgets/fineadjusttips.h"
 #include <functional>
+
+QT_BEGIN_NAMESPACE
+class QShortcut;
+QT_END_NAMESPACE
 #include "widgets/toolbar.h"
 #include "widgets/sidebar.h"
+#include "widgets/roundedcornerwidget.h"
 #include "widgets/keybuttonwidget.h"
 #include "widgets/zoomIndicator.h"
 #include "widgets/camerawidget.h"
@@ -137,14 +143,15 @@ class MainWindow : public QMainWindow
 
 public:
     /**
-     * @brief 截图录屏工具存在的功能类型(0: record, 1: shot , 2: scrollshot , 3: ocr , 4: pinscreenshots)
+     * @brief 截图录屏工具存在的功能类型(0: record, 1: shot , 2: scrollshot , 3: ocr , 4: pinscreenshots , 5: tablerecogn)
      */
     enum status {
         record = 0,
         shot,
         scrollshot,
         ocr,
-        pinscreenshots
+        pinscreenshots,
+        tablerecogn
     };
     //滚动截图的滚动模式
     /**
@@ -532,6 +539,11 @@ public slots:
     void onAiAssistantSelected(int func);
     void prepareScreenshot();
     void hideScreenshotTips();
+
+    /**
+     * @brief 刷新像素级微调快捷键提示面板（模式、位置、遮挡与置灰状态）
+     */
+    void updateFineAdjustTips();
     void captureScreenshotImage();
     void finishScreenshot();
     bool saveAction(const QPixmap &pix);
@@ -730,8 +742,6 @@ public slots:
     void onSourceFailed(uint32_t reason);
 
 protected:
-    void showEvent(QShowEvent *event) override;
-
     /**
      * @brief eventFilter
      * @param object
@@ -818,6 +828,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event) override;
 
     int getAction(QEvent *event);
+    int getAction(const QPoint &pos);
 
 
     /**
@@ -826,11 +837,31 @@ protected:
      * 将背景图进行裁剪，并将编辑的内容绘制到图片上
      */
     QPixmap paintImage();
+    /**
+     * @brief 背景图（整屏物理像素）对应的矩形
+     */
+    QRect backgroundPhysicalRect() const;
+    /**
+     * @brief 当前选区是否仍来自窗口识别（含顶层窗口截图）
+     *
+     * 手工拖动/缩放选区、多屏缩放重映射后会失效，此时截图必须退回手工框选换算。
+     */
+    bool isWindowIdentifiedSelection() const;
+    /**
+     * @brief 计算从背景图中裁剪截图区域的物理像素矩形
+     *
+     * 选区来自窗口识别时使用窗管上报的窗口真实范围作为起点与尺寸，排除窗管补的边框、
+     * 保留标题栏，成图即窗口内容；其余情况按逻辑坐标 × DPR 换算，
+     * 尺寸沿用既有约定（宽 -2、高 -1 逻辑像素）。
+     */
+    QRect shotTargetRectPhysical() const;
     void paintEvent(QPaintEvent *event) override;
-    void resizeBottom(QMouseEvent *event);
-    void resizeLeft(QMouseEvent *event);
-    void resizeRight(QMouseEvent *event);
-    void resizeTop(QMouseEvent *event);
+    void showEvent(QShowEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void resizeBottom(const QPoint &pos);
+    void resizeLeft(const QPoint &pos);
+    void resizeRight(const QPoint &pos);
+    void resizeTop(const QPoint &pos);
     /**
      * @brief 更新光标样式
      * @param event
@@ -848,6 +879,34 @@ protected:
     void hideAllWidget();
     void adjustLayout(QVBoxLayout *layout, int layoutWidth, int layoutHeight);
     void initShapeWidget(QString type);
+    /**
+     * @brief 退出当前标注工具，恢复为仅可选择/编辑已有标注的普通状态
+     */
+    void resetCurrentShotTool();
+    /**
+     * @brief 标注模式下是否命中选区边框拖拽点，命中则开始/继续调整截图区域大小
+     * @param event 原始鼠标事件
+     * @param mainPos 主窗口坐标系下的光标位置
+     * @return 是否已消费该事件
+     */
+    bool handleEditModeSelectionResize(QMouseEvent *event, const QPoint &mainPos);
+    /**
+     * @brief 应用标注模式下的选区拖拽调整（复用框选阶段的 resize 逻辑）
+     */
+    void applyEditModeSelectionResize(const QPoint &mainPos);
+    /**
+     * @brief 标注模式下用 Ctrl/Ctrl+Shift + 方向键调整截图区域大小
+     * @return 是否已处理该按键
+     */
+    bool handleEditModeSelectionResizeKey(QKeyEvent *keyEvent);
+    /**
+     * @brief 同步 ShapesWidget 到当前选区，并可保持已画标注的屏幕绝对位置
+     */
+    void syncShapesWidgetGeometry(bool keepAnnotationsInPlace);
+    /**
+     * @brief 选区边框拖拽动作对应的鼠标样式
+     */
+    int resizeCursorShape(int action) const;
     int getRecordInputType(bool selectedMic, bool selectedSystemAudio);
     /**
      * @brief initBackground 初始化截图背景，启动截图时调用
@@ -1004,6 +1063,19 @@ private:
      * @brief 所有窗口的名称，与windowRects一一对应
      */
     QList<QString> windowNames;
+    /**
+     * @brief 所有窗口的物理像素几何信息，与windowRects一一对应
+     *
+     * 非合成（最佳性能）模式下窗管会给窗口补 1 物理像素边框，
+     * frameGeometry() 得到的外框会把边框外的像素带进截图，这里保存窗口真实范围。
+     */
+    QList<Utils::WindowPhysicalGeometry> windowPhysicalGeometries;
+    /**
+     * @brief 当前选区来自窗口识别时，记录该窗口的物理像素几何信息
+     *
+     * 仅当它与当前选区一致时才会用于裁剪，避免手工框选后误用旧数据。
+     */
+    Utils::WindowPhysicalGeometry m_selectedWindowPhysicalGeometry;
     int ddeDockLayerIndex = -1;
     ShowButtons *m_showButtons = nullptr;
     //QTimer *flashTrayIconTimer = nullptr;
@@ -1036,6 +1108,14 @@ private:
      * @brief 是否画骨架点
      */
     bool drawDragPoint = false;
+    /**
+     * @brief 标注模式下是否正在拖拽选区边框调整截图区域大小
+     */
+    bool m_editModeResizing = false;
+    /**
+     * @brief 标注模式下是否已把光标切换为边框缩放样式
+     */
+    bool m_editModeResizeCursorActive = false;
     /**
      * @brief 是否第一次拖动鼠标
      */
@@ -1205,6 +1285,10 @@ private:
      */
     TopTips *m_sizeTips = nullptr;
     /**
+     * @brief 左下角像素级微调快捷键提示
+     */
+    FineAdjustTips *m_fineAdjustTips = nullptr;
+    /**
      * @brief 滚动截图时图片的大小
      */
     TopTips *m_scrollShotSizeTips = nullptr;
@@ -1261,6 +1345,8 @@ private:
      * @brief 功能类型  0: record, 1: shot , 2: scrollshot , 3: ocr , 4: pinscreenshots
      */
     unsigned int m_functionType = status::shot;  //0: record, 1: shot , 2: scrollshot
+    bool m_hasExited = false;   // onExit re-entrance guard (instance-level, reset per session)
+    bool m_isSaving = false;    // screenshot save re-entrance guard (instance-level)
     /**
      * @brief 此坐标用来记录截图和录屏切换时一级工具栏右上角的坐标
      *  确保切换功能后一级工具栏能够右对齐
@@ -1285,6 +1371,48 @@ private:
     int m_screenWidth = 0;  //屏幕宽度
     int m_screenHeight = 0; //屏幕高度
     SideBar *m_sideBar = nullptr; //截图功能侧边栏功能
+    RoundedCornerWidget *m_roundedCornerWidget = nullptr; //选区右上角圆角/尺寸比例工具组
+    qreal m_lockedRatio = 0.0; //拖拽开始时记录的选区宽高比（锁定比例用）
+    int m_radiusPreviewRadius = 0; //上一次圆角预览半径，用于计算需要重绘的四角区域
+    // 保存截图的回车快捷方式：焦点在圆角/尺寸比例面板的输入框时要临时禁用，
+    // 否则 QShortcut 会先于输入框吃掉回车，导致“输入尺寸回车直接结束截图”。
+    QShortcut *m_returnSaveShortcut = nullptr;
+    QShortcut *m_enterSaveShortcut = nullptr;
+
+    /**
+     * @brief 当前焦点是否位于圆角/尺寸比例面板的文本输入框内
+     */
+    bool isRoundedPanelEditorFocused() const;
+
+    /**
+     * @brief 圆角工具组尺寸/比例面板修改了选区尺寸
+     */
+    void onRoundedSelectionSizeChanged(int width, int height);
+
+    /**
+     * @brief 圆角工具组比例面板修改了锁定比例
+     */
+    void onRoundedRatioChanged(int width, int height);
+
+    /**
+     * @brief 让当前选区立即符合指定宽高比
+     */
+    void applyRatioToCurrentSelection(qreal ratio);
+
+    /**
+     * @brief 新建选区拖动过程中按锁定比例约束记录区域
+     */
+    void applyLockedRatioToNewSelection(const QPoint &currentPos);
+
+    /**
+     * @brief 应用上次勾选“下次截图保持”的尺寸或比例
+     */
+    void applyRememberedSelectionSetting();
+
+    /**
+     * @brief 锁定比例后，拖拽选区时按固定宽高比等比调整
+     */
+    void applyLockedRatioToSelection();
     /**
      * @brief 在一级工具栏按下鼠标左键的时，此时记录下二级菜单的位置
      */

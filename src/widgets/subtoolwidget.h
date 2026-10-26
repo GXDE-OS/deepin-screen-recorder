@@ -74,6 +74,8 @@ public:
 
     void setOcrScreenshotEnable(const bool &state);
 
+    void setTableScreenshotEnable(const bool &state);
+
     void setButEnableOnLockScreen(const bool &state);
     /**
      * @brief getShotOptionRect 获取选项菜单的位置及大小
@@ -123,6 +125,7 @@ public slots:
     void setRecordLaunchMode(const unsigned int funType);
     void setVideoButtonInitFromSub();
     void shapeClickedFromWidget(QString shape);
+    void clearShotToolSelection();
     void setMicroPhoneEnable(bool status);
     void setCameraDeviceEnable(bool status);
 
@@ -153,6 +156,10 @@ private:
     ToolButton *m_ocrButton = nullptr;
     ToolButton *m_ocrScrollButton = nullptr;
     /**
+     * @brief 表格识别工具栏按钮
+     */
+    ToolButton *m_tableButton = nullptr;
+    /**
      * @brief 贴图工具栏按钮
      */
     ToolButton *m_pinButton = nullptr;
@@ -182,6 +189,10 @@ private:
      * @brief 截图功能中文本编辑工具按钮
      */
     ToolButton *m_textButton = nullptr;
+    /**
+     * @brief 截图功能中序号标注工具按钮
+     */
+    ToolButton *m_sequenceButton = nullptr;
     /**
      * @brief 录屏功能中摄像头工具按钮
      */
@@ -221,6 +232,7 @@ private:
     QAction *m_microphoneAction = nullptr;
     QAction *m_sysAudioAction = nullptr;
     QButtonGroup *m_shotBtnGroup = nullptr;
+    QAbstractButton *m_activeShotTool = nullptr;
 
     /**
      * @brief m_saveToSpecialPathMenu 截图选项: 保存到指定位置的菜单

@@ -315,7 +315,7 @@ clique no ícone da bandeja ou pressione o atalho novamente</translation>
     </message>
     <message>
         <source>Full screenshot</source>
-        <translation>Capturar a tela inteira</translation>
+        <translation>Capturar tela inteira</translation>
     </message>
     <message>
         <source>Start scrollshot</source>

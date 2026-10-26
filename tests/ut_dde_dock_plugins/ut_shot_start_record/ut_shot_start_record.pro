@@ -29,7 +29,9 @@ equals(TSAN_TOOL_ENABLE, true ){
 
 HEADERS += \
     ut_mock_pluginproxyinterface.h \
+    ../../../src/dbus_name.h \
     ../../../src/dde-dock-plugins/shotstartrecord/recordiconwidget.h \
+    ../../../src/dde-dock-plugins/shotstartrecord/recordiconwidget_interface.h \
     ../../../src/dde-dock-plugins/shotstartrecord/shotstartrecordplugin.h \
     ../../../src/dde-dock-plugins/shotstartrecord/tipswidget.h \
     ../../../src/dde-dock-plugins/shotstartrecord/quickpanelwidget.h \
@@ -37,14 +39,19 @@ HEADERS += \
 
 SOURCES += \
     main.cpp \
+    ../../../src/dbus_name.cpp \
     ../../../src/dde-dock-plugins/shotstartrecord/recordiconwidget.cpp \
+    ../../../src/dde-dock-plugins/shotstartrecord/recordiconwidget_interface.cpp \
     ../../../src/dde-dock-plugins/shotstartrecord/shotstartrecordplugin.cpp \
     ../../../src/dde-dock-plugins/shotstartrecord/tipswidget.cpp \
     ../../../src/dde-dock-plugins/shotstartrecord/quickpanelwidget.cpp \
     ../../../src/dde-dock-plugins/shotstartrecord/commoniconbutton.cpp \
     ut_tipswidget.cpp \
     ut_shotstartrecordplugin.cpp \
-    ut_recordiconwidget.cpp
+    ut_recordiconwidget.cpp \
+    ut_recordiconwidget_interface.cpp \
+    ut_commoniconbutton_cov.cpp \
+    ut_shot_start_record_cov2.cpp
 
 INCLUDEPATH += /usr/include/dde-dock
 include(../../../3rdparty/googletest/gtest_dependency.pri)

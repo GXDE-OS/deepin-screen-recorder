@@ -206,6 +206,7 @@ HEADERS += main_window.h \
     widgets/zoomIndicator.h \
     widgets/textedit.h \
     widgets/toptips.h \
+    widgets/fineadjusttips.h \
     widgets/toolbar.h \
     widgets/shapeswidget.h \
     widgets/toolbutton.h \
@@ -214,6 +215,7 @@ HEADERS += main_window.h \
     widgets/keybuttonwidget.h \
     widgets/sidebar.h \
     widgets/shottoolwidget.h \
+    widgets/roundedcornerwidget.h \
     widgets/colortoolwidget.h \
     widgets/shapetoolwidget.h \
     widgets/savebutton.h \
@@ -274,6 +276,13 @@ lessThan(QT_MAJOR_VERSION, 6) {
 }
 
 # Sources
+HEADERS += utils/cpuvendor.h
+SOURCES += utils/cpuvendor.cpp
+equals(QT_MAJOR_VERSION, 6) {
+    HEADERS += utils/ximageconverter.h
+    SOURCES += utils/ximageconverter.cpp
+}
+
 SOURCES += main.cpp \
     capture.cpp \
     main_window.cpp \
@@ -300,6 +309,7 @@ SOURCES += main.cpp \
     utils_interface.cpp \
     wayland-treeland-capture-unstable-v1-protocol.c \
     widgets/toptips.cpp \
+    widgets/fineadjusttips.cpp \
     widgets/shapeswidget.cpp \
     widgets/textedit.cpp \
     widgets/zoomIndicator.cpp \
@@ -309,6 +319,7 @@ SOURCES += main.cpp \
     widgets/keybuttonwidget.cpp \
     widgets/sidebar.cpp \
     widgets/shottoolwidget.cpp \
+    widgets/roundedcornerwidget.cpp \
     widgets/colortoolwidget.cpp \
     widgets/shapetoolwidget.cpp \
     widgets/savebutton.cpp \

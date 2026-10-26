@@ -40,6 +40,8 @@ public:
 
     void setOcrScreenshotsEnable(const bool &state);
 
+    void setTableScreenshotsEnable(const bool &state);
+
     void setButEnableOnLockScreen(const bool &state);
     /**
      * @brief getShotOptionRect 获取选项菜单的位置及大小
@@ -62,6 +64,7 @@ public:
     QPoint getAiButtonGlobalCenter() const;
 
     void setHideToolbar(bool hidetoolbar);
+    void clearShotToolSelection();
 signals:
     void buttonChecked(QString shapeType);
     void closed();
@@ -128,7 +131,10 @@ public:
 
     void setOcrScreenshotsEnable(const bool &state);
 
+    void setTableScreenshotsEnable(const bool &state);
+
     void setButEnableOnLockScreen(const bool &state);
+    void clearShotToolSelection();
 
     /**
      * @brief 根据当前传入的按钮形状获取当前按钮坐标的x值
@@ -185,6 +191,7 @@ protected:
 #elif (QT_VERSION_MAJOR == 6)
     void enterEvent(QEnterEvent *e) Q_DECL_OVERRIDE;
 #endif
+    void leaveEvent(QEvent *e) Q_DECL_OVERRIDE;
     bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;

@@ -57,8 +57,12 @@ ToolBarWidget::ToolBarWidget(MainWindow *pMainwindow, DWidget *parent, bool hide
     // m_subTool->setVisible(false);
     //关闭按钮
     m_closeButton = new ToolButton(this);
+    m_closeButton->setObjectName("CloseButton");
+    m_closeButton->setAccessibleName("CloseButton");
     m_closeButton->setCheckable(false);
     m_confirmButton = new ToolButton(this);
+    m_confirmButton->setObjectName("ConfirmButton");
+    m_confirmButton->setAccessibleName("ConfirmButton");
     m_confirmButton->setCheckable(false);
 
     m_closeButton->setIconSize(QSize(36, 36));
@@ -139,6 +143,12 @@ void ToolBarWidget::setOcrScreenshotsEnable(const bool &state)
     m_subTool->setOcrScreenshotEnable(state);
 }
 
+void ToolBarWidget::setTableScreenshotsEnable(const bool &state)
+{
+    qCDebug(dsrApp) << "ToolBarWidget::setTableScreenshotsEnable called with state:" << state;
+    m_subTool->setTableScreenshotEnable(state);
+}
+
 void ToolBarWidget::setButEnableOnLockScreen(const bool &state)
 {
     qCDebug(dsrApp) << "ToolBarWidget::setButEnableOnLockScreen called with state:" << state;
@@ -177,7 +187,7 @@ void ToolBarWidget::setRecordLaunchFromMain(const unsigned int funType)
 void ToolBarWidget::setRecordButtonDisable()
 {
     qCDebug(dsrApp) << "ToolBarWidget::setRecordButtonDisable called.";
-   // m_subTool->setRecordButtonDisable();
+    m_subTool->setRecordButtonDisable();
 }
 
 void ToolBarWidget::setVideoInitFromMain()
@@ -196,6 +206,13 @@ void ToolBarWidget::setCameraDeviceEnable(bool status)
 {
     qCDebug(dsrApp) << "ToolBarWidget::setCameraDeviceEnable called with status:" << status;
     m_subTool->setCameraDeviceEnable(status);
+}
+
+void ToolBarWidget::clearShotToolSelection()
+{
+    if (m_subTool) {
+        m_subTool->clearShotToolSelection();
+    }
 }
 
 void ToolBarWidget::changeShotToolEvent(const QString &func)
@@ -277,6 +294,12 @@ void ToolBar::enterEvent(QEnterEvent *e)
 }
 #endif
 
+void ToolBar::leaveEvent(QEvent *e)
+{
+    QApplication::restoreOverrideCursor();
+    DLabel::leaveEvent(e);
+}
+
 bool ToolBar::eventFilter(QObject *obj, QEvent *event)
 {
     return DLabel::eventFilter(obj, event);
@@ -347,6 +370,13 @@ void ToolBar::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
+void ToolBar::clearShotToolSelection()
+{
+    if (m_toolbarWidget) {
+        m_toolbarWidget->clearShotToolSelection();
+    }
+}
+
 void ToolBar::setScrollShotDisabled(const bool state)
 {
     if (!m_toolbarWidget) {
@@ -365,6 +395,13 @@ void ToolBar::setOcrScreenshotsEnable(const bool &state)
 {
     if (m_toolbarWidget)
         m_toolbarWidget->setOcrScreenshotsEnable(state);
+}
+
+void ToolBar::setTableScreenshotsEnable(const bool &state)
+{
+    if (m_toolbarWidget) {
+        m_toolbarWidget->setTableScreenshotsEnable(state);
+    }
 }
 
 void ToolBar::setButEnableOnLockScreen(const bool &state)

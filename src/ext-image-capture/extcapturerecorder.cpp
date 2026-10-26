@@ -149,7 +149,7 @@ bool ExtCaptureRecorder::startRecording(QScreen *screen, bool includeCursor,
 
 void ExtCaptureRecorder::stopRecording()
 {
-    if (m_state != Recording && m_state != Starting && m_state != Stopping) {
+    if (m_state != Recording && m_state != Starting && m_state != Stopping && m_state != Error) {
         return;
     }
 
@@ -176,6 +176,8 @@ void ExtCaptureRecorder::stopRecording()
     if (m_frameBuffer) {
         m_frameBuffer->setGetFrame(false);
     }
+
+    setState(Stopped);
 }
 
 ExtCaptureRecorder::RecordState ExtCaptureRecorder::state() const
@@ -190,7 +192,7 @@ int ExtCaptureRecorder::frameCount() const
 
 qint64 ExtCaptureRecorder::recordingDuration() const
 {
-    if (m_startTime == 0) {
+    if (m_state != Recording || m_startTime == 0) {
         return 0;
     }
     

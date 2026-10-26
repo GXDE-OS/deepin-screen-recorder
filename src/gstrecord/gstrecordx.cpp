@@ -1,5 +1,5 @@
 // Copyright (C) 2020 ~ now Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -68,6 +68,7 @@ void GstRecordX::initMemberVariables()
 {
     qCDebug(dsrApp) << "initMemberVariables called.";
     m_pipeline = nullptr;
+    m_gloop = nullptr;
     m_audioType = AudioType::None;
     m_videoType = VideoType::webm;
     m_sysDevcieName = "";
@@ -510,6 +511,7 @@ void GstRecordX::stopPipeline()
     qCDebug(dsrApp) << "Pipeline state set to NULL";
     Q_UNUSED(ret);
     gstInterface::m_gst_object_unref(m_pipeline);
+    m_pipeline = nullptr;
     qCInfo(dsrApp) << "Pipeline stopped and cleaned up";
 }
 
@@ -542,8 +544,8 @@ GstRecordX::~GstRecordX()
     qCDebug(dsrApp) << "GstRecordX destructor called.";
     if (m_pipeline) {
         qCInfo(dsrApp) << "Cleaning up GStreamer pipeline";
+        gstInterface::m_gst_object_unref(m_pipeline);
         m_pipeline = nullptr;
-        delete m_pipeline;
     }
     qCDebug(dsrApp) << "GstRecordX destructor finished.";
 }

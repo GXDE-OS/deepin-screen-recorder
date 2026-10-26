@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -92,6 +92,8 @@ void SubToolWidget::initRecordLabel()
 
     //添加显示键盘按钮
     m_keyBoardButton = new ToolButton();
+    m_keyBoardButton->setObjectName("KeyBoardButton");
+    m_keyBoardButton->setAccessibleName("KeyBoardButton");
     Utils::setAccessibility(m_keyBoardButton, AC_SUBTOOLWIDGET_KEYBOARD_BUTTON);
     m_keyBoardButton->setIconSize(TOOL_ICON_SIZE);
     installTipHint(m_keyBoardButton, tr("Show keystroke (K)"));
@@ -116,6 +118,8 @@ void SubToolWidget::initRecordLabel()
     //添加摄像头显示按钮
     m_cameraButton = new ToolButton();
     m_cameraButton->setDisabled(!hasVideoInput());
+    m_cameraButton->setObjectName("CameraButton");
+    m_cameraButton->setAccessibleName("CameraButton");
     Utils::setAccessibility(m_cameraButton, AC_SUBTOOLWIDGET_CAMERA_BUTTON);
     m_cameraButton->setIconSize(TOOL_ICON_SIZE);
     installTipHint(m_cameraButton, tr("Turn on camera (C)"));
@@ -140,6 +144,8 @@ void SubToolWidget::initRecordLabel()
 
 
     m_shotButton = new ToolButton();
+    m_shotButton->setObjectName("ShotButton");
+    m_shotButton->setAccessibleName("ShotButton");
     m_shotButton->setCheckable(false);
     Utils::setAccessibility(m_shotButton, AC_SUBTOOLWIDGET_SHOT_BUTTON);
     m_shotButton->setIconSize(TOOL_ICON_SIZE);
@@ -161,6 +167,8 @@ void SubToolWidget::initRecordLabel()
 
     //添加录屏选项按钮
     m_optionButton = new ToolButton();
+    m_optionButton->setObjectName("OptionButton");
+    m_optionButton->setAccessibleName("OptionButton");
     m_optionButton->setCheckable(false);
     m_optionButton->setIconSize(QSize(24,24));
     m_optionButton->setFixedSize(TOOL_BUTTON_SIZE);
@@ -211,6 +219,8 @@ void SubToolWidget::initRecordOption()
     t_mouseInfoGroup->setExclusive(false);
     t_saveGroup->setExclusive(true);
     m_recordOptionMenu = new DMenu(this);
+    m_recordOptionMenu->setObjectName("RecordOptionMenu");
+    m_recordOptionMenu->setAccessibleName("RecordOptionMenu");
     m_recordOptionMenu->installEventFilter(this);
     DFontSizeManager::instance()->bind(m_recordOptionMenu, DFontSizeManager::T6);
     // 保存格式
@@ -237,7 +247,11 @@ void SubToolWidget::initRecordOption()
     audio->setFont(titleActionFont);
     //QAction *notAudio = new QAction(tr("Not Audio"), m_recordOptionMenu);
     m_microphoneAction = new QAction(tr("Microphone"), m_recordOptionMenu);
+    m_microphoneAction->setObjectName("MicrophoneAction");
     m_sysAudioAction = new QAction(tr("System audio"), m_recordOptionMenu);
+    m_sysAudioAction->setObjectName("SysAudioAction");
+    Utils::setAccessibility(m_microphoneAction, "microphoneAction");
+    Utils::setAccessibility(m_sysAudioAction, "sysAudioAction");
     // 选项
     QAction *mouseInfo = new QAction(tr("Options"), m_recordOptionMenu);
     mouseInfo->setFont(titleActionFont);
@@ -566,12 +580,15 @@ void SubToolWidget::initShotLabel()
     qCDebug(dsrApp) << "SubToolWidget::initShotLabel called (initializing screenshot toolbar UI).";
     m_shotSubTool = new DLabel(this);
     m_shotBtnGroup = new QButtonGroup(this);
+    m_shotBtnGroup->setObjectName("ShotBtnGroup");
     m_shotBtnGroup->setExclusive(true);
 
     QList<ToolButton *> btnList;
 
     //添加几何图形按钮
     m_gioButton = new ToolButton();
+    m_gioButton->setObjectName("GioButton");
+    m_gioButton->setAccessibleName("GioButton");
     m_gioButton->setIconSize(TOOL_ICON_SIZE);
     m_gioButton->setIcon(QIcon::fromTheme("gioshape"));
     Utils::setAccessibility(m_gioButton, AC_SUBTOOLWIDGET_GIO_BUTTON);
@@ -582,6 +599,8 @@ void SubToolWidget::initShotLabel()
 
     //添加直线按钮
     m_lineButton = new ToolButton();
+    m_lineButton->setObjectName("LineButton");
+    m_lineButton->setAccessibleName("LineButton");
     m_lineButton->setIconSize(TOOL_ICON_SIZE);
     installTipHint(m_lineButton, tr("Line (L)\nPress and hold Shift to draw a vertical or horizontal line"));
     m_lineButton->setIcon(QIcon::fromTheme("line-normal"));
@@ -592,6 +611,8 @@ void SubToolWidget::initShotLabel()
 
     //添加箭头按钮
     m_arrowButton = new ToolButton();
+    m_arrowButton->setObjectName("ArrowButton");
+    m_arrowButton->setAccessibleName("ArrowButton");
     m_arrowButton->setIconSize(TOOL_ICON_SIZE);
     installTipHint(m_arrowButton, tr("Arrow (X)\nPress and hold Shift to draw a vertical or horizontal arrow"));
     m_arrowButton->setIcon(QIcon::fromTheme("Arrow-normal"));
@@ -602,6 +623,8 @@ void SubToolWidget::initShotLabel()
 
     //添加画笔按钮
     m_penButton = new ToolButton();
+    m_penButton->setObjectName("PenButton");
+    m_penButton->setAccessibleName("PenButton");
     m_penButton->setIconSize(TOOL_ICON_SIZE);
     installTipHint(m_penButton, tr("Pencil (P)"));
     m_penButton->setIcon(QIcon::fromTheme("Combined Shape-normal"));
@@ -612,6 +635,8 @@ void SubToolWidget::initShotLabel()
 
     //添加模糊按钮
     m_mosaicButton = new ToolButton();
+    m_mosaicButton->setObjectName("MosaicButton");
+    m_mosaicButton->setAccessibleName("MosaicButton");
     m_mosaicButton->setIconSize(TOOL_ICON_SIZE);
     installTipHint(m_mosaicButton, tr("Blur (B)"));
     m_mosaicButton->setIcon(QIcon::fromTheme("Mosaic_normal"));
@@ -623,6 +648,8 @@ void SubToolWidget::initShotLabel()
 
     //添加文字按钮
     m_textButton = new ToolButton();
+    m_textButton->setObjectName("TextButton");
+    m_textButton->setAccessibleName("TextButton");
     m_textButton->setIconSize(TOOL_ICON_SIZE);
     m_textButton->setIcon(QIcon::fromTheme("text"));
     installTipHint(m_textButton, tr("Text (T)"));
@@ -631,14 +658,26 @@ void SubToolWidget::initShotLabel()
     m_textButton->setFixedSize(TOOL_BUTTON_SIZE);
     btnList.append(m_textButton);
 
+    //添加序号标注按钮
+    m_sequenceButton = new ToolButton();
+    m_sequenceButton->setIconSize(TOOL_ICON_SIZE);
+    m_sequenceButton->setIcon(QIcon::fromTheme("sequence"));
+    installTipHint(m_sequenceButton, tr("Sequence number (Alt+S)"));
+    Utils::setAccessibility(m_sequenceButton, AC_SUBTOOLWIDGET_SEQUENCE_BUTTON);
+    m_shotBtnGroup->addButton(m_sequenceButton);
+    m_sequenceButton->setFixedSize(TOOL_BUTTON_SIZE);
+    btnList.append(m_sequenceButton);
+
     //添加滚动截图按钮
     m_scrollShotButton = new ToolButton();
+    m_scrollShotButton->setObjectName("ScrollShotButton");
+    m_scrollShotButton->setAccessibleName("ScrollShotButton");
     m_scrollShotButton->setCheckable(false);
     m_scrollShotButton->setIconSize(TOOL_ICON_SIZE);
     m_scrollShotButton->setIcon(QIcon::fromTheme("scrollShot"));
     Utils::setAccessibility(m_scrollShotButton, AC_SUBTOOLWIDGET_SCROLLSHOT_BUTTON);
     m_scrollShotButton->setFixedSize(TOOL_BUTTON_SIZE);
-    installTipHint(m_scrollShotButton, tr("Scrollshot (Alt+I）"));
+    installTipHint(m_scrollShotButton, tr("Scrollshot (Alt+I)"));
 #ifdef  OCR_SCROLL_FLAGE_ON
     // TODO: 仅x11下开启，后续处理，目前还有问题
     if (!(Utils::isTreelandMode))
@@ -651,31 +690,51 @@ void SubToolWidget::initShotLabel()
     });
     //添加ocr图文识别按钮
     m_ocrButton = new ToolButton();
+    m_ocrButton->setObjectName("OcrButton");
+    m_ocrButton->setAccessibleName("OcrButton");
     m_ocrButton->setCheckable(false);
     m_ocrButton->setIconSize(TOOL_ICON_SIZE);
     m_ocrButton->setIcon(QIcon::fromTheme("ocr-normal"));
     Utils::setAccessibility(m_ocrButton, AC_SUBTOOLWIDGET_OCR_BUTTON);
     m_ocrButton->setFixedSize(TOOL_BUTTON_SIZE);
-    installTipHint(m_ocrButton, tr("Extract text (Alt+O）"));
+    installTipHint(m_ocrButton, tr("Extract text (Alt+O)"));
     connect(m_ocrButton, &DPushButton::clicked, this, [ = ] {
         qCDebug(dsrApp) << "OCR按钮按下！";
         emit changeShotToolFunc("ocr");
+    });
+
+    //添加表格识别按钮（位于文字识别与贴图之间）
+    m_tableButton = new ToolButton();
+    m_tableButton->setObjectName("TableButton");
+    m_tableButton->setAccessibleName("TableButton");
+    m_tableButton->setCheckable(false);
+    m_tableButton->setIconSize(TOOL_ICON_SIZE);
+    m_tableButton->setIcon(QIcon::fromTheme("table-recognition"));
+    Utils::setAccessibility(m_tableButton, AC_SUBTOOLWIDGET_TABLE_BUTTON);
+    m_tableButton->setFixedSize(TOOL_BUTTON_SIZE);
+    installTipHint(m_tableButton, tr("Table recognition (Alt+T)"));
+    connect(m_tableButton, &DPushButton::clicked, this, [ = ] {
+        qCDebug(dsrApp) << "table recognition button clicked.";
+        emit changeShotToolFunc("tableRecogn");
     });
 
 #ifdef  OCR_SCROLL_FLAGE_ON
     // TODO: 仅x11下开启，后续处理，目前treeland下仍有崩溃情况
     //if (!(Utils::isTreelandMode))
         btnList.append(m_ocrButton);
+        btnList.append(m_tableButton);
 #endif
 
     //添加贴图按钮
     m_pinButton = new ToolButton();
+    m_pinButton->setObjectName("PinButton");
+    m_pinButton->setAccessibleName("PinButton");
     m_pinButton->setCheckable(false);
     m_pinButton->setIconSize(TOOL_ICON_SIZE);
     m_pinButton->setIcon(QIcon::fromTheme("pinscreenshots"));
     Utils::setAccessibility(m_pinButton, AC_SUBTOOLWIDGET_PINSCREENSHOTS_BUTTON);
     m_pinButton->setFixedSize(TOOL_BUTTON_SIZE);
-    installTipHint(m_pinButton, tr("Pin screenshots (Alt+P）"));
+    installTipHint(m_pinButton, tr("Pin screenshots (Alt+P)"));
     connect(m_pinButton, &DPushButton::clicked, this, [ = ] {
         qCDebug(dsrApp) << "贴图按钮按下！";
         emit changeShotToolFunc("pinScreenshots");
@@ -683,6 +742,8 @@ void SubToolWidget::initShotLabel()
     btnList.append(m_pinButton);
 
     m_aiAssistantButton = new ToolButton();
+    m_aiAssistantButton->setObjectName("AiAssistantButton");
+    m_aiAssistantButton->setAccessibleName("AiAssistantButton");
     m_aiAssistantButton->setIconSize(SMALL_TOOL_ICON_SIZE);
     m_aiAssistantButton->setIcon(QIcon::fromTheme("ai_assistant"));
     bool aiAssistantUsed = ConfigSettings::instance()->getValue("shot", "ai_assistant_used").toBool();
@@ -695,12 +756,16 @@ void SubToolWidget::initShotLabel()
     Utils::setAccessibility(m_aiAssistantButton, AC_SUBTOOLWIDGET_AI_ASSISTANT_BUTTON);
     m_shotBtnGroup->addButton(m_aiAssistantButton);
     m_aiAssistantButton->setFixedSize(TOOL_BUTTON_SIZE);
-    installTipHint(m_aiAssistantButton, tr("AI Screenshot (A)"));
+    installTipHint(m_aiAssistantButton, tr("AI Screenshot (Alt+A)"));
     btnList.append(m_aiAssistantButton);
+    // 功能信号统一由 m_shotBtnGroup 的点击处理发出；这里仅处理使用状态。
+    // 这样再次点击 AI 按钮时，不会在收起二级工具栏后又立刻被重新展开。
     connect(m_aiAssistantButton, &ToolButton::clicked, this, [=] {
+        if (!m_aiAssistantButton->isChecked()) {
+            return;
+        }
         ConfigSettings::instance()->setValue("shot", "ai_assistant_used", true);
         m_aiAssistantButton->setShowRedDot(false);
-        emit changeShotToolFunc("aiassistant");
     });
 
     if(!DBusUtils::isAiAssistantAvailable())
@@ -708,6 +773,8 @@ void SubToolWidget::initShotLabel()
 
     // 撤销按钮
     m_cancelButton = new ToolButton();
+    m_cancelButton->setObjectName("CancelButton");
+    m_cancelButton->setAccessibleName("CancelButton");
     m_cancelButton->setUndoButtonFlag(true);
     m_cancelButton->setCheckable(false);
     m_cancelButton->setIconSize(TOOL_ICON_SIZE);
@@ -725,6 +792,8 @@ void SubToolWidget::initShotLabel()
 
     //切换到录屏按钮
     m_recorderButton = new ToolButton();
+    m_recorderButton->setObjectName("RecorderButton");
+    m_recorderButton->setAccessibleName("RecorderButton");
     m_recorderButton->setCheckable(false);
     m_recorderButton->setIconSize(TOOL_ICON_SIZE);
     m_recorderButton->setIcon(QIcon::fromTheme("recorder"));
@@ -743,6 +812,8 @@ void SubToolWidget::initShotLabel()
     });
 
     m_shotOptionButton = new ToolButton();
+    m_shotOptionButton->setObjectName("ShotOptionButton");
+    m_shotOptionButton->setAccessibleName("ShotOptionButton");
     m_shotOptionButton->setCheckable(false);
     m_shotOptionButton->setIconSize(QSize(24,24));
     m_shotOptionButton->setFixedSize(TOOL_BUTTON_SIZE);
@@ -774,6 +845,7 @@ void SubToolWidget::initShotLabel()
         m_shotOptionButton->hide();
         m_scrollShotButton->hide(); //隐藏滚动截图按钮
         m_ocrButton->hide(); //隐藏ocr按钮
+        m_tableButton->hide(); //隐藏表格识别按钮
         m_pinButton->hide(); //隐藏pin按钮
         m_aiAssistantButton->hide(); //隐藏AI助手按钮
     }
@@ -819,31 +891,44 @@ void SubToolWidget::initShotLabel()
 
     connect(m_shotBtnGroup, &QButtonGroup::buttonClicked,
     [ = ](QAbstractButton *button) {
-        Q_UNUSED(button);
-        if (m_gioButton->isChecked()) {
+        // 选项、保存等非 checkable 按钮也属于该按钮组，不能参与标注工具切换。
+        if (!button || !button->isCheckable()) {
+            return;
+        }
+
+        // 互斥 QButtonGroup 不会因为再次点击当前按钮而取消选中，因此需要显式
+        // 记录当前工具并在这里实现“再次点击收起二级工具栏”的交互。
+        if (button == m_activeShotTool) {
+            m_shotBtnGroup->setExclusive(false);
+            button->setChecked(false);
+            m_shotBtnGroup->setExclusive(true);
+            m_activeShotTool = nullptr;
+            emit changeShotToolFunc(QString());
+            return;
+        }
+
+        m_activeShotTool = button;
+
+        if (button == m_gioButton) {
             // 当几何图形按钮被点击时，发送"gio"信号，而不是直接发送具体形状
             // 这样SideBarWidget可以正确识别这是几何图形按钮被点击的事件
             qCDebug(dsrApp) << "Geometry button clicked, sending gio signal";
             emit changeShotToolFunc("gio");
-        }
-        if (m_lineButton->isChecked()) {
+        } else if (button == m_lineButton) {
             emit changeShotToolFunc("line");
-        }
-
-        if (m_arrowButton->isChecked()) {
+        } else if (button == m_arrowButton) {
             emit changeShotToolFunc("arrow");
-        }
-
-        if (m_penButton->isChecked()) {
+        } else if (button == m_penButton) {
             emit changeShotToolFunc("pen");
-        }
-        if (m_textButton->isChecked()) {
+        } else if (button == m_textButton) {
             emit changeShotToolFunc("text");
-        }
-        if (m_mosaicButton->isChecked()) {
+        } else if (button == m_sequenceButton) {
+            emit changeShotToolFunc("sequence");
+        } else if (button == m_mosaicButton) {
             emit changeShotToolFunc("effect");
+        } else if (button == m_aiAssistantButton) {
+            emit changeShotToolFunc("aiassistant");
         }
-
     });
 
     initShotOption();
@@ -929,6 +1014,9 @@ void SubToolWidget::updateSaveButtonTip()
                           << "tipText=" << tipText;
     }
     
+    if (!tipText.isEmpty()) {
+        tipText += QStringLiteral(" (Ctrl+S)");
+    }
     qCWarning(dsrApp) << "updateSaveButtonTip: 最终tipText=" << tipText;
     installTipHint(m_saveLocalDirButton, tipText);
     qCWarning(dsrApp) << "========== updateSaveButtonTip 结束 ==========";
@@ -943,6 +1031,8 @@ void SubToolWidget::initShotOption()
     t_formatGroup->setExclusive(true);
 
     m_optionMenu = new DMenu(this);
+    m_optionMenu->setObjectName("OptionMenu");
+    m_optionMenu->setAccessibleName("OptionMenu");
     m_optionMenu->installEventFilter(this);
     //系统级别为 T6 的字体大小, 默认是14 px
     DFontSizeManager::instance()->bind(m_optionMenu, DFontSizeManager::T6);
@@ -964,6 +1054,8 @@ void SubToolWidget::initShotOption()
     
     // 创建自定义位置子菜单
     // m_saveToSpecialPathMenu = new DMenu(specifiedLocationMenu);
+    // m_saveToSpecialPathMenu->setObjectName("SaveToSpecialPathMenu");
+    // m_saveToSpecialPathMenu->setAccessibleName("SaveToSpecialPathMenu");
     // m_saveToSpecialPathMenu->installEventFilter(this);
     // m_saveToSpecialPathMenu->setTitle(tr("Custom Location"));
     // m_saveToSpecialPathMenu->setToolTipsVisible(true);
@@ -978,10 +1070,12 @@ void SubToolWidget::initShotOption()
     
     // 上次保存位置
     // m_saveToSpecialPathAction = new QAction(m_saveToSpecialPathMenu);
+    // m_saveToSpecialPathAction->setObjectName("SaveToSpecialPathAction");
     // m_saveToSpecialPathAction->setCheckable(true);
     
     // 保存时更新位置
     // m_changeSaveToSpecialPath = new QAction(m_saveToSpecialPathMenu);
+    // m_changeSaveToSpecialPath->setObjectName("ChangeSaveToSpecialPath");
     // m_changeSaveToSpecialPath->setCheckable(true);
     
     // if (specialPath.isEmpty() || !QFileInfo::exists(specialPath)) {
@@ -1377,7 +1471,10 @@ void SubToolWidget::initShotOption()
         ConfigSettings::instance()->setValue("shot", "save_cursor", m_saveCursorAction->isChecked() ? 1 : 0);
     });
 
-    connect(ImageBorderHelper::instance(), &ImageBorderHelper::updateBorderState, [ = ](bool hasBorderChecked) {
+    // pass "this" as the context object so the connection is disconnected
+    // automatically when this widget is destroyed; otherwise the singleton
+    // sender outlives the lambda and dereferences dangling QAction pointers
+    connect(ImageBorderHelper::instance(), &ImageBorderHelper::updateBorderState, this, [ = ](bool hasBorderChecked) {
         noBorderAction->setChecked(!hasBorderChecked);
         
         // 当有边框被选中时，选中对应的顶级菜单
@@ -1458,6 +1555,8 @@ void SubToolWidget::initScrollLabel()
 
     // AI 助手（滚动截图工具栏首位）
     m_aiAssistantScrollButton = new ToolButton();
+    m_aiAssistantScrollButton->setObjectName("AiAssistantScrollButton");
+    m_aiAssistantScrollButton->setAccessibleName("AiAssistantScrollButton");
     m_aiAssistantScrollButton->setIconSize(SMALL_TOOL_ICON_SIZE);
     m_aiAssistantScrollButton->setIcon(QIcon::fromTheme("ai_assistant"));
     // 设置常驻的 AI Icon 角标
@@ -1467,7 +1566,7 @@ void SubToolWidget::initScrollLabel()
     
     Utils::setAccessibility(m_aiAssistantScrollButton, AC_SUBTOOLWIDGET_AI_ASSISTANT_BUTTON);
     m_aiAssistantScrollButton->setFixedSize(TOOL_BUTTON_SIZE);
-    installTipHint(m_aiAssistantScrollButton, tr("AI Screenshot (A)"));
+    installTipHint(m_aiAssistantScrollButton, tr("AI Screenshot (Alt+A)"));
     scrollBtnGroup->addButton(m_aiAssistantScrollButton);
     btnList.append(m_aiAssistantScrollButton);
     connect(m_aiAssistantScrollButton, &ToolButton::clicked, this, [=]{
@@ -1478,9 +1577,11 @@ void SubToolWidget::initScrollLabel()
 
     //文字识别按钮
     m_ocrScrollButton = new ToolButton();
+    m_ocrScrollButton->setObjectName("OcrScrollButton");
+    m_ocrScrollButton->setAccessibleName("OcrScrollButton");
     Utils::setAccessibility(m_ocrScrollButton, AC_SUBTOOLWIDGET_KEYBOARD_BUTTON);
     m_ocrScrollButton->setIconSize(TOOL_ICON_SIZE);
-    installTipHint(m_ocrScrollButton,  tr("Extract Text"));
+    installTipHint(m_ocrScrollButton,  tr("Extract Text (Alt+O)"));
     m_ocrScrollButton->setIcon(QIcon::fromTheme("ocr-normal"));
     m_ocrScrollButton->setFixedSize(TOOL_BUTTON_SIZE);
     btnList.append(m_ocrScrollButton);
@@ -1490,13 +1591,15 @@ void SubToolWidget::initScrollLabel()
 
     //滚动截图选项
     m_scrollOptionButton = new ToolButton();
+    m_scrollOptionButton->setObjectName("ScrollOptionButton");
+    m_scrollOptionButton->setAccessibleName("ScrollOptionButton");
     m_scrollOptionButton->setCheckable(false);
     m_scrollOptionButton->setIconSize(QSize(24,24));
     m_scrollOptionButton->setFixedSize(TOOL_BUTTON_SIZE);
     m_scrollOptionButton->setIcon(QIcon::fromTheme("setting"));
 
     Utils::setAccessibility(m_scrollOptionButton, AC_SUBTOOLWIDGET_RECORD_OPTION_BUT);
-    installTipHint(m_scrollOptionButton, tr("Settings"));
+    installTipHint(m_scrollOptionButton, tr("Settings (F3)"));
     
     btnList.append(m_scrollOptionButton);
 
@@ -1556,6 +1659,8 @@ void SubToolWidget::initScrollLabel()
     t_formatGroup->setExclusive(true);
 
     m_scrollOptionMenu = new DMenu(this);
+    m_scrollOptionMenu->setObjectName("ScrollOptionMenu");
+    m_scrollOptionMenu->setAccessibleName("ScrollOptionMenu");
     m_scrollOptionMenu->installEventFilter(this);
     DFontSizeManager::instance()->bind(m_scrollOptionMenu, DFontSizeManager::T6);
 
@@ -1578,6 +1683,8 @@ void SubToolWidget::initScrollLabel()
     
     // 创建自定义位置子菜单
     // m_scrollSaveToSpecialPathMenu = new DMenu(specifiedLocationMenu);
+    // m_scrollSaveToSpecialPathMenu->setObjectName("ScrollSaveToSpecialPathMenu");
+    // m_scrollSaveToSpecialPathMenu->setAccessibleName("ScrollSaveToSpecialPathMenu");
     // m_scrollSaveToSpecialPathMenu->installEventFilter(this);
     // m_scrollSaveToSpecialPathMenu->setTitle(tr("Custom Location"));
     // m_scrollSaveToSpecialPathMenu->setToolTipsVisible(true);
@@ -1592,10 +1699,12 @@ void SubToolWidget::initScrollLabel()
     
     // 上次保存位置
     // m_scrollSaveToSpecialPathAction = new QAction(m_scrollSaveToSpecialPathMenu);
+    // m_scrollSaveToSpecialPathAction->setObjectName("ScrollSaveToSpecialPathAction");
     // m_scrollSaveToSpecialPathAction->setCheckable(true);
     
     // 保存时更新位置
     // m_scrollChangeSaveToSpecialPath = new QAction(tr("Set a path on save"), m_scrollSaveToSpecialPathMenu);
+    // m_scrollChangeSaveToSpecialPath->setObjectName("ScrollChangeSaveToSpecialPath");
     // m_scrollChangeSaveToSpecialPath->setCheckable(true);
     
     // 如果有保存路径，显示上次保存位置
@@ -1900,6 +2009,11 @@ void SubToolWidget::setOcrScreenshotEnable(const bool &state)
     m_ocrButton->setEnabled(state);
 }
 
+void SubToolWidget::setTableScreenshotEnable(const bool &state)
+{
+    m_tableButton->setEnabled(state);
+}
+
 void SubToolWidget::setButEnableOnLockScreen(const bool &state)
 {
     m_textButton->setEnabled(state);
@@ -1909,7 +2023,7 @@ void SubToolWidget::setButEnableOnLockScreen(const bool &state)
 
 int SubToolWidget::getFuncSubToolX(QString &shape)
 {
-    int x = 0;
+    int x = -1;
 //    qCDebug(dsrApp) << __FUNCTION__ << "m_rectButton->x() : " << m_rectButton->x();
 //    qCDebug(dsrApp) << __FUNCTION__ << "m_circleButton->x() : " << m_circleButton->x();
 //    qCDebug(dsrApp) << __FUNCTION__ << "m_lineButton->x() : " << m_lineButton->x();
@@ -1926,6 +2040,8 @@ int SubToolWidget::getFuncSubToolX(QString &shape)
             x = m_penButton->x();
         } else if (shape == "text") {
             x = m_textButton->x();
+        } else if (shape == "sequence") {
+            x = m_sequenceButton->x();
         } else if (shape == "aiassistant") {
             // 根据当前模式选择对应的 AI 按钮（普通/滚动）
             if (currentWidget() == m_scrollSubTool && m_aiAssistantScrollButton) {
@@ -1975,7 +2091,7 @@ bool SubToolWidget::eventFilter(QObject *watched, QEvent *event)
                 if (nullptr != m_saveToSpecialPathMenu && action == m_saveToSpecialPathMenu->menuAction()) {
                     return QStackedWidget::eventFilter(watched, event);
                 }
-                if (nullptr != m_scrollSaveToSpecialPathMenu && action == m_saveToSpecialPathMenu->menuAction()) {
+                if (nullptr != m_scrollSaveToSpecialPathMenu && action == m_scrollSaveToSpecialPathMenu->menuAction()) {
                     return QStackedWidget::eventFilter(watched, event);
                 }
                 action->activate(QAction::Trigger);
@@ -2035,7 +2151,7 @@ void SubToolWidget::switchContent(QString shapeType)
 }
 void SubToolWidget::setRecordButtonDisable()
 {
-   // m_recorderButton->setDisabled(true);
+    m_recorderButton->setDisabled(true);
 }
 
 void SubToolWidget::setRecordLaunchMode(const unsigned int funType)
@@ -2077,17 +2193,26 @@ void SubToolWidget::shapeClickedFromWidget(QString shape)
         } else if (shape == "ocr") {
             if (!m_ocrButton->isChecked())
                 m_ocrButton->click();
+        } else if (shape == "tableRecogn") {
+            m_tableButton->click();
         } else if (shape == "gio" || shape == "rect" || shape == "circ" || shape == "rectangle" || shape == "oval") {
             if (!m_gioButton->isChecked())
                 m_gioButton->click();
         } else if (shape == "line") {
-            m_lineButton->click();
+            if (!m_lineButton->isChecked())
+                m_lineButton->click();
         } else if (shape == "arrow") {
-            m_arrowButton->click();
+            if (!m_arrowButton->isChecked())
+                m_arrowButton->click();
         } else if (shape == "pen") {
-            m_penButton->click();
+            if (!m_penButton->isChecked())
+                m_penButton->click();
         } else if (shape == "text") {
-            m_textButton->click();
+            if (!m_textButton->isChecked())
+                m_textButton->click();
+        } else if (shape == "sequence") {
+            if (!m_sequenceButton->isChecked())
+                m_sequenceButton->click();
         } else if (shape == "option") {
             if (m_currentType == "shot" || currentWidget() == m_shotSubTool) {
                 if (m_optionMenu->isHidden()) {
@@ -2111,7 +2236,8 @@ void SubToolWidget::shapeClickedFromWidget(QString shape)
         } else if (shape == "aiassistant") {
             qCWarning(dsrApp) << "AI assistant mode: showing AI assistant tool.";
             if (m_aiAssistantButton) {
-                m_aiAssistantButton->click();
+                if (!m_aiAssistantButton->isChecked())
+                    m_aiAssistantButton->click();
             } else {
                 emit changeShotToolFunc("aiassistant");
             }
@@ -2120,11 +2246,30 @@ void SubToolWidget::shapeClickedFromWidget(QString shape)
         } else if (shape == "camera") {
             m_cameraButton->click();
         } else if (shape == "effect") {
-            m_mosaicButton->click();
+            if (!m_mosaicButton->isChecked())
+                m_mosaicButton->click();
         } else  {
             qCDebug(dsrApp) << __FUNCTION__ << __LINE__ << "ERROR" << shape;
         }
     }
+}
+
+void SubToolWidget::clearShotToolSelection()
+{
+    if (!m_shotBtnGroup) {
+        return;
+    }
+
+    // 二级工具栏可能由再次点击、关闭按钮、模式切换等路径隐藏。
+    // 任何隐藏路径都要同步清掉横向工具的选中态，避免下次点击先执行“收起”。
+    m_shotBtnGroup->setExclusive(false);
+    for (QAbstractButton *button : m_shotBtnGroup->buttons()) {
+        if (button->isCheckable()) {
+            button->setChecked(false);
+        }
+    }
+    m_shotBtnGroup->setExclusive(true);
+    m_activeShotTool = nullptr;
 }
 
 void SubToolWidget::setMicroPhoneEnable(bool status)

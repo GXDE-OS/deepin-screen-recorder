@@ -1,5 +1,5 @@
 // Copyright (C) 2020 ~ 2021 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -16,6 +16,9 @@
 #include <QGestureEvent>
 #include <QMouseEvent>
 #include <QHash>
+#include <QLineEdit>
+
+class ToolTips;
 
 namespace Direction {
     const QString LEFT = "Left";
@@ -170,6 +173,20 @@ public slots:
     void deleteCurrentShape();
     //QString  getCurrentType();
     void microAdjust(QString direction);
+    /**
+     * @brief hasSelectedShape: 当前是否存在选中的标注
+     * 编辑态下用于区分 Ctrl+方向键等快捷键的作用对象（标注 / 截图区域）。
+     */
+    bool hasSelectedShape() const;
+    /**
+     * @brief isPressed: 当前是否正在拖拽/绘制标注
+     */
+    bool isPressed() const;
+    /**
+     * @brief translateAllShapes: 整体平移所有标注，保持其在屏幕上的绝对位置不变
+     * @param delta 平移量（标注局部坐标系）
+     */
+    void translateAllShapes(const QPointF &delta);
     void setShiftKeyPressed(bool isShift);
     void updateCursorShape();
     void menuSaveSlot();
@@ -189,6 +206,7 @@ public slots:
     bool isExistsText();
 protected:
     bool event(QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event);
     /**
      * @brief mousePressEvent: 重写鼠标按压事件
      * @param e
@@ -196,6 +214,7 @@ protected:
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *e);
     /**
      * @brief 可通过w/a/s/d及方向键改变标注内容位置及大小
      * @param e
@@ -240,21 +259,21 @@ private:
     QPointF m_movingPoint;
     qreal   m_lastAngle;
 
-    bool m_isRecording;
-    bool m_isMoving;
-    bool m_isSelected;
-    bool m_isPressed;
-    bool m_isHovered;
-    bool m_isRotated;
-    bool m_isArrowRotated;
-    bool m_isResize;
-    bool m_isShiftPressed;
-    bool m_editing;
+    bool m_isRecording = false;
+    bool m_isMoving = false;
+    bool m_isSelected = false;
+    bool m_isPressed = false;
+    bool m_isHovered = false;
+    bool m_isRotated = false;
+    bool m_isArrowRotated = false;
+    bool m_isResize = false;
+    bool m_isShiftPressed = false;
+    bool m_editing = false;
 
     /**
      * @brief m_isSelectedText: 是否选中文本框
      */
-    bool m_isSelectedText;
+    bool m_isSelectedText = false;
     ResizeDirection m_resizeDirection;
     ClickedKey m_clickedKey;
 
@@ -327,7 +346,29 @@ private:
     void paintEffectLine(QPainter &painter, QList<QPointF> lineFPoints, bool isMosaic, int radius, int lineWidth);
     void paintText(QPainter &painter, FourPoints rectFPoints);
     void paintText(QPainter &painter, FourPoints rectFPoints, const QString &text, int fontsize);
+    void paintSequence(QPainter &painter, FourPoints mainFPoints, int sequenceNumber, int colorIndex);
 
     bool m_isUnDo = false;
+
+    // 序号标注相关
+    QWidget *m_sequencePreview = nullptr; // 下一编号超过 99 时跟随光标的禁用角标（自绘）
+    QLineEdit *m_sequenceEdit = nullptr; // 双击就地编辑序号的输入框
+    int m_sequenceEditOrder = -1; // 当前编辑的序号在序列中的顺序号（hitOrder）
+    ToolTips *m_sequenceLimitTips = nullptr; // 超出最大编号范围时的提示（复用工程内的 DTK 工具提示）
+    QTimer *m_sequenceLimitTipsTimer = nullptr; // 超限气泡限时隐藏定时器（角标继续跟随）
+    int sequenceCount();
+    int sequenceNumberBeforeOrder(int order);
+    int sequenceNextNumber();
+    void renumberSequenceFrom(int startOrder, int firstNumber);
+    void resizeSelectedSequence(int lineWidthIndex);
+    bool m_sequenceToolEntry = false; // 进入序号工具时抑制恢复面板触发的误缩放
+    bool isLightSequenceColor(int colorIndex);
+    void updateSequencePreview(const QPointF &pos);
+    void moveSequenceLimitTips(const QPointF &pos);
+    void updateSequenceLimitTips(const QPointF &pos);
+    void showSequenceLimitTips(const QPointF &pos);
+    void hideSequenceLimitTips();
+    void commitSequenceEdit();
+    void cancelSequenceEdit();
 };
 #endif // SHAPESWIDGET_H

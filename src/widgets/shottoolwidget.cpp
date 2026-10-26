@@ -1,5 +1,5 @@
 // Copyright (C) 2020 ~ 2021 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -83,6 +83,7 @@ void ShotToolWidget::installTipHint(QWidget *w, const QString &hintstr)
 //初始化模糊功能工具栏
 void ShotToolWidget::initEffectLabel()
 {
+    if (m_effectSubTool) return;
     qCDebug(dsrApp) << "ShotToolWidget::initEffectLabel called.";
     m_effectSubTool = new DLabel(this);
     DBlurEffectWidget *t_blurArea = new DBlurEffectWidget(this);
@@ -129,7 +130,7 @@ void ShotToolWidget::initEffectLabel()
     rectBut->setFixedSize(TOOL_BUTTON_SIZE);
     rectBut->setIconSize(TOOL_ICON_SIZE);
     rectBut->setIcon(QIcon::fromTheme(QString("rectangle-normal")));
-    installTipHint(rectBut, tr("Rectangle\nPress and hold Shift to draw a square"));
+    installTipHint(rectBut, tr("Rectangle (R)\nPress and hold Shift to draw a square"));
     shapBtnGroup->addButton(rectBut);
     
     // 创建椭圆按钮
@@ -137,14 +138,14 @@ void ShotToolWidget::initEffectLabel()
     ovalBut->setFixedSize(TOOL_BUTTON_SIZE);
     ovalBut->setIconSize(TOOL_ICON_SIZE);
     ovalBut->setIcon(QIcon::fromTheme(QString("oval-normal")));
-    installTipHint(ovalBut, tr("Ellipse\nPress and hold Shift to draw a circle"));
+    installTipHint(ovalBut, tr("Ellipse (O)\nPress and hold Shift to draw a circle"));
     shapBtnGroup->addButton(ovalBut);
     
     ToolButton *penBut = new ToolButton(this);
     penBut->setFixedSize(TOOL_BUTTON_SIZE);
     penBut->setIconSize(TOOL_ICON_SIZE);
     penBut->setIcon(QIcon::fromTheme(QString("effect_pen")));
-    installTipHint(penBut, tr("Brush\nPress and hold Shift to draw a straight line"));
+    installTipHint(penBut, tr("Brush (P)\nPress and hold Shift to draw a straight line"));
     shapBtnGroup->addButton(penBut);
 
     //模糊强度滑动条
@@ -358,6 +359,7 @@ void ShotToolWidget::initThicknessLabel()
     m_thicknessLabel = new DLabel(this);
     //粗细按钮组
     m_thicknessBtnGroup = new QButtonGroup(this);
+    m_thicknessBtnGroup->setObjectName("ThicknessBtnGroup");
     m_thicknessBtnGroup->setExclusive(true);
 
     //水平布局
@@ -406,8 +408,9 @@ void ShotToolWidget::switchContent(QString shapeType)
                                           (currentWidget() == m_effectSubTool ? "effect" : "unknown")));
     
     // 根据形状类型切换到相应的工具栏
-    if (shapeType == "rectangle" || shapeType == "oval" || shapeType == "gio" || 
-        shapeType == "line" || shapeType == "arrow" || shapeType == "pen") {
+    if (shapeType == "rectangle" || shapeType == "oval" || shapeType == "gio" ||
+        shapeType == "line" || shapeType == "arrow" || shapeType == "pen" ||
+        shapeType == "sequence") {
         
         qCDebug(dsrApp) << "Switching to thickness panel for shape:" << shapeType;
         if (m_textSubTool)

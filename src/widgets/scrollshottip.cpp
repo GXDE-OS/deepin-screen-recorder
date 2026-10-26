@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -9,6 +9,7 @@
 #include "utils/configsettings.h"
 #include "utils/tempfile.h"
 #include "utils/log.h"
+#include "../accessibility/acTextDefine.h"
 
 #include <DWidget>
 #include <DHiDPIHelper>
@@ -40,6 +41,8 @@ ScrollShotTip::ScrollShotTip(DWidget *parent) : DWidget(parent)
     this->setMinimumSize(100, TIP_HEIGHT);
 
     m_warmingIconButton = new DIconButton(this);
+    m_warmingIconButton->setObjectName("WarmingIconButton");
+    m_warmingIconButton->setAccessibleName("WarmingIconButton");
     m_warmingIconButton->setIcon(warmingImg);
     m_warmingIconButton->setIconSize(QSize(26, 26));
     m_warmingIconButton->setFlat(true);
@@ -55,6 +58,8 @@ ScrollShotTip::ScrollShotTip(DWidget *parent) : DWidget(parent)
 
     //帮助文字按钮
     m_scrollShotHelp = new DCommandLinkButton(tr("Get help."), this);
+    m_scrollShotHelp->setObjectName(AC_SCROLLSHOTTIP_HELP_BUTTON);
+    m_scrollShotHelp->setAccessibleName(AC_SCROLLSHOTTIP_HELP_BUTTON);
     m_scrollShotHelp->hide();
     QFontMetrics helpFontMetrics(m_scrollShotHelp->font());
    // m_scrollShotHelp->resize(helpFontMetrics.width(m_scrollShotHelp->text()), m_scrollShotHelp->height());
@@ -63,6 +68,8 @@ ScrollShotTip::ScrollShotTip(DWidget *parent) : DWidget(parent)
 
     //调整捕捉区域文字按钮
     m_scrollShotAdjust = new DCommandLinkButton(tr("adjust the capture area"), this) ;
+    m_scrollShotAdjust->setObjectName(AC_SCROLLSHOTTIP_ADJUST_BUTTON);
+    m_scrollShotAdjust->setAccessibleName(AC_SCROLLSHOTTIP_ADJUST_BUTTON);
     m_scrollShotAdjust->hide();
     QFontMetrics adjustFontMetrics(m_scrollShotAdjust->font());
     m_scrollShotAdjust->resize(helpFontMetrics.horizontalAdvance(m_scrollShotAdjust->text()), m_scrollShotAdjust->height());

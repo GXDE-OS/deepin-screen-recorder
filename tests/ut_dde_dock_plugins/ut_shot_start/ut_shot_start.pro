@@ -7,7 +7,7 @@ include(../../../3rdparty/stub_linux/stub.pri)
 
 TARGET = ut_shot_start
 
-QMAKE_CXXFLAGS += -g -Wno-error=deprecated-declarations -Wno-deprecated-declarations -Wall -fprofile-arcs -ftest-coverage -O0
+QMAKE_CXXFLAGS += -g -Wno-error=deprecated-declarations -Wno-deprecated-declarations -Wall -fprofile-arcs -ftest-coverage -O0 -fno-access-control
 QMAKE_LFLAGS += -g -Wall -fprofile-arcs -ftest-coverage  -O0
 
 #内存检测标签
@@ -29,7 +29,9 @@ equals(TSAN_TOOL_ENABLE, true ){
 
 HEADERS += \
     ut_mock_pluginproxyinterface.h \
+    ../../../src/dbus_name.h \
     ../../../src/dde-dock-plugins/shotstart/iconwidget.h \
+    ../../../src/dde-dock-plugins/shotstart/iconwidget_interface.h \
     ../../../src/dde-dock-plugins/shotstart/shotstartplugin.h \
     ../../../src/dde-dock-plugins/shotstart/tipswidget.h \
     ../../../src/dde-dock-plugins/shotstart/quickpanelwidget.h \
@@ -37,14 +39,19 @@ HEADERS += \
 
 SOURCES += \
     main.cpp \
+    ../../../src/dbus_name.cpp \
     ../../../src/dde-dock-plugins/shotstart/iconwidget.cpp \
+    ../../../src/dde-dock-plugins/shotstart/iconwidget_interface.cpp \
     ../../../src/dde-dock-plugins/shotstart/shotstartplugin.cpp \
     ../../../src/dde-dock-plugins/shotstart/tipswidget.cpp \
     ../../../src/dde-dock-plugins/shotstart/quickpanelwidget.cpp \
     ../../../src/dde-dock-plugins/shotstart/commoniconbutton.cpp \
     ut_iconwidget.cpp \
+    ut_iconwidget_interface.cpp \
+    ut_commoniconbutton_cov.cpp \
     ut_shotstartplugin.cpp \
-    ut_tipswidget.cpp
+    ut_tipswidget.cpp \
+    ut_shot_start_cov2.cpp
 
 INCLUDEPATH += /usr/include/dde-dock
 include(../../../3rdparty/googletest/gtest_dependency.pri)

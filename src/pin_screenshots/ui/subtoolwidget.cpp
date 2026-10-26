@@ -43,9 +43,22 @@ void SubToolWidget::initShotLable()
     m_ocrButton->setIconSize(QSize(36, 36));
     m_ocrButton->setFixedSize(36, 36);
     m_ocrButton->setIcon(QIcon::fromTheme("ocr-normal"));
-    m_ocrButton->setToolTip(tr("Extract Text"));
+    m_ocrButton->setToolTip(tr("Extract Text (Alt+O)"));
     connect(m_ocrButton, SIGNAL(clicked()), this, SIGNAL(signalOcrButtonClicked()));
     qCDebug(dsrApp) << "OCR button initialized";
+
+    // 表格识别按钮（与主窗口工具栏“表格识别”一致，用于在贴图窗口内重新识别）
+    m_tableButton = new ToolButton(this);
+    // 表格识别是瞬时动作，不应保持 checked 高亮状态。
+    m_tableButton->setCheckable(false);
+    m_tableButton->setObjectName(AC_SUBTOOLWIDGET_PIN_TABLE_BUT);
+    m_tableButton->setAccessibleName(AC_SUBTOOLWIDGET_PIN_TABLE_BUT);
+    m_tableButton->setIconSize(QSize(36, 36));
+    m_tableButton->setFixedSize(36, 36);
+    m_tableButton->setIcon(QIcon::fromTheme("table-recognition"));
+    m_tableButton->setToolTip(tr("Table recognition"));
+    connect(m_tableButton, SIGNAL(clicked()), this, SIGNAL(signalTableButtonClicked()));
+    qCDebug(dsrApp) << "Table recognition button initialized";
 
     // 选项按钮
     m_pinOptionButton = new ToolButton(this);
@@ -55,7 +68,7 @@ void SubToolWidget::initShotLable()
     m_pinOptionButton->setIcon(QIcon::fromTheme("setting"));
     m_pinOptionButton->setIconSize(QSize(24, 24));
     m_pinOptionButton->setFixedSize(QSize(36, 36));
-    m_pinOptionButton->setToolTip(tr("Options"));
+    m_pinOptionButton->setToolTip(tr("Options (F3)"));
     qCDebug(dsrApp) << "Options button initialized";
 
     m_saveLocalDirButton = new SaveButton();
@@ -82,6 +95,8 @@ void SubToolWidget::initShotLable()
 
     // 选项菜单
     m_optionMenu = new DMenu(this);
+    m_optionMenu->setObjectName("OptionMenu");
+    m_optionMenu->setAccessibleName("OptionMenu");
     qCDebug(dsrApp) << "Options menu created.";
     DFontSizeManager::instance()->bind(m_optionMenu, DFontSizeManager::T6);
     connect(m_optionMenu, &DMenu::aboutToShow, this, &SubToolWidget::updateOptionChecked);
@@ -149,6 +164,7 @@ void SubToolWidget::initShotLable()
     hLayout->setSizeConstraint(QLayout::SetFixedSize);
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->addWidget(m_ocrButton, 0,  Qt::AlignCenter);
+    hLayout->addWidget(m_tableButton, 0, Qt::AlignCenter);
     hLayout->addWidget(m_saveSeperatorBeg, 0, Qt::AlignCenter);
     hLayout->addWidget(m_pinOptionButton, 0, Qt::AlignCenter);
     hLayout->addWidget(m_saveLocalDirButton, 0, Qt::AlignCenter);
@@ -184,6 +200,8 @@ void SubToolWidget::initChangeSaveToSpecialAction(const QString specialPath)
     m_saveToSpecialPathAction->setCheckable(true);
     m_saveToSpecialPathMenu->insertAction(m_changeSaveToSpecialPath, m_saveToSpecialPathAction);
     m_saveGroup->addAction(m_saveToSpecialPathAction);
+    m_saveGroup->setObjectName("SaveGroup");
+    m_saveToSpecialPathAction->setObjectName("SaveToSpecialPathAction");
     m_SavePathActions.insert(FOLDER, m_saveToSpecialPathAction);
 }
 
@@ -232,6 +250,9 @@ void SubToolWidget::updateSaveButtonTip()
             break;
     }
 
+    if (!tipText.isEmpty()) {
+        tipText += QStringLiteral(" (Ctrl+S)");
+    }
     m_saveLocalDirButton->setToolTip(tipText);
 }
 

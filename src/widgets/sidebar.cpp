@@ -1,5 +1,5 @@
 // Copyright (C) 2020 ~ 2021 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -123,7 +123,6 @@ void SideBarWidget::initSideBarWidget()
     setMinimumSize(TOOLBAR_WIDGET_SIZE1);
 
     connect(m_shotTool, &ShotToolWidget::changeArrowAndLine, this, &SideBarWidget::changeArrowAndLineEvent);
-    connect(m_colorTool, &ColorToolWidget::colorChecked, m_shotTool, &ShotToolWidget::colorChecked);
     connect(m_shapeTool, &ShapeToolWidget::shapeSelected, m_shotTool, &ShotToolWidget::shapeSelected);
 }
 
@@ -152,6 +151,7 @@ void SideBarWidget::changeShotToolWidget(const QString &func)
         m_aiAssistantTool->hide();
         m_shotTool->show();
         m_colorTool->show();
+        m_currentFunc = func;
         
         
         // 无论是几何图形模式还是直接选择矩形/椭圆，都读取上次选中的形状
@@ -227,7 +227,8 @@ void SideBarWidget::changeShotToolWidget(const QString &func)
     else if(
         func == "line" ||
         func == "arrow" ||
-        func == "pen") {
+        func == "pen" ||
+        func == "sequence") {
         qCDebug(dsrApp) << "Resizing sidebar for line, arrow, or pen.";
         resize(TOOLBAR_WIDGET_SIZE1);
     } else if (func == "text") {
@@ -258,7 +259,8 @@ int SideBarWidget::getSideBarWidth(const QString &func)
             func == "oval" ||
             func == "line" ||
             func == "arrow" ||
-            func == "pen") {
+            func == "pen" ||
+            func == "sequence") {
         resize(TOOLBAR_WIDGET_SIZE1);
         width = TOOLBAR_WIDGET_SIZE1.width();
     } else if (func == "text") {
@@ -309,6 +311,7 @@ SideBar::~SideBar()
 void SideBar::changeShotToolFunc(const QString &func)
 {
     qCDebug(dsrApp) << "SideBar::changeShotToolFunc called with func:" << func;
+    if (!m_sidebarWidget) return;
     m_sidebarWidget->changeShotToolWidget(func);
     resize(m_sidebarWidget->size());
 }
@@ -316,6 +319,7 @@ void SideBar::changeShotToolFunc(const QString &func)
 int SideBar::getSideBarWidth(const QString &func)
 {
     qCDebug(dsrApp) << "SideBar::getSideBarWidth called with func:" << func;
+    if (!m_sidebarWidget) return 0;
     return m_sidebarWidget->getSideBarWidth(func);
 }
 
@@ -342,11 +346,13 @@ void SideBar::showAt(QPoint pos)
 
 void SideBar::showWidget(){
     qCDebug(dsrApp) << "SideBar::showWidget called.";
+    if (!m_sidebarWidget) return;
     m_sidebarWidget->show();
 }
 
 void SideBar::hideWidget(){
     qCDebug(dsrApp) << "SideBar::hideWidget called.";
+    if (!m_sidebarWidget) return;
     m_sidebarWidget->hide();
 }
 
@@ -375,6 +381,14 @@ void SideBar::setColorFunc(const QString &func)
     m_sidebarWidget->changeShotToolWidget(func);
 }
 */
+void SideBar::hideEvent(QHideEvent *event)
+{
+    // 不论侧栏是通过再次点击、关闭按钮、模式切换还是其它逻辑隐藏，
+    // 都通知主窗口回收一级横向工具的选中态。
+    emit closed();
+    DLabel::hideEvent(event);
+}
+
 void SideBar::paintEvent(QPaintEvent *e)
 {
     qCDebug(dsrApp) << "SideBar::paintEvent called.";
@@ -404,6 +418,13 @@ void SideBar::enterEvent(QEnterEvent *e)
     DLabel::enterEvent(e);
 }
 #endif
+
+void SideBar::leaveEvent(QEvent *e)
+{
+    qCDebug(dsrApp) << "SideBar::leaveEvent called.";
+    QApplication::restoreOverrideCursor();
+    DLabel::leaveEvent(e);
+}
 
 bool SideBar::eventFilter(QObject *obj, QEvent *event)
 {

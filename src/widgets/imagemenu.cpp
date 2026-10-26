@@ -25,6 +25,7 @@ ImageMenu::ImageMenu(ImageBorderHelper::BorderType type, QString title, QWidget 
     qCDebug(dsrApp) << "ImageMenu constructor entered with type:" << type << ", title:" << title;
     m_borderType = type;
     m_actionGroup = new QButtonGroup(this);
+    m_actionGroup->setObjectName("ActionGroup");
     m_actionGroup->setExclusive(false);
     if (m_borderType == ImageBorderHelper::BorderType::Prototype) {
         qCDebug(dsrApp) << "Initializing Prototype border type actions";
@@ -352,6 +353,10 @@ QPixmap ImageBorderHelper::getPixmapAddBorder(QPixmap pix)
     }
 
     BorderType type = static_cast<BorderType>(borderType >> 8);
+    if (m_borderhandle) {
+        delete m_borderhandle;
+        m_borderhandle = nullptr;
+    }
     if (type == BorderType::Prototype) {
         qCDebug(dsrApp) << "Creating PrototypeBorderProcess";
         m_borderhandle = new PrototypeBorderProcess(this);

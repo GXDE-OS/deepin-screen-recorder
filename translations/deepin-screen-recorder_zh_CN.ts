@@ -34,14 +34,44 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
+    <name>FineAdjustTips</name>
+    <message>
+        <source>Move the mouse pointer by 1 pixel</source>
+        <translation>将鼠标指针移动1像素</translation>
+    </message>
+    <message>
+        <source>Move the capture area by 1 pixel</source>
+        <translation>将截屏选区移动1像素</translation>
+    </message>
+    <message>
+        <source>Enlarge the capture area by 1 pixel</source>
+        <translation>将截屏选区扩大1像素</translation>
+    </message>
+    <message>
+        <source>Shrink the capture area by 1 pixel</source>
+        <translation>将截屏选区缩小1像素</translation>
+    </message>
+</context>
+<context>
+    <name>IconWidget</name>
+    <message>
+        <source>Screenshot</source>
+        <translation>截图</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>录屏</translation>
+    </message>
+</context>
+<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
-        <translation>关闭 Esc</translation>
+        <translation>关闭 (Esc)</translation>
     </message>
     <message>
         <source>Copy to clipboard (Enter)</source>
-        <translation>复制到剪贴板 Enter</translation>
+        <translation>复制到剪贴板 (Enter)</translation>
     </message>
 </context>
 <context>
@@ -126,6 +156,26 @@ or press the shortcut again to stop recording</source>
         <source>Screenshot finished and copy to clipboard</source>
         <translation>截图完成，文件已复制到剪贴板</translation>
     </message>
+    <message>
+        <source>Failed to recognize: no table content detected</source>
+        <translation>识别失败，未检测到表格内容</translation>
+    </message>
+    <message>
+        <source>Got it</source>
+        <translation>知道了</translation>
+    </message>
+    <message>
+        <source>The table is too large, recognition timed out</source>
+        <translation>表格过大，识别超时</translation>
+    </message>
+    <message>
+        <source>Recognition is already running, please wait</source>
+        <translation>正在识别中，请稍候</translation>
+    </message>
+    <message>
+        <source>Recognition failed, please try again</source>
+        <translation>识别失败，请重试</translation>
+    </message>
 </context>
 <context>
     <name>MenuController</name>
@@ -197,6 +247,29 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Open Folder</source>
         <translation>打开文件夹</translation>
+    </message>
+</context>
+<context>
+    <name>RoundedCornerWidget</name>
+    <message>
+        <source>Radius</source>
+        <translation>圆角</translation>
+    </message>
+    <message>
+        <source>Size / ratio</source>
+        <translation>尺寸/比例</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation>尺寸</translation>
+    </message>
+    <message>
+        <source>Ratio</source>
+        <translation>比例</translation>
+    </message>
+    <message>
+        <source>Keep the selected size or ratio for the next screenshot</source>
+        <translation>选中后，下次截图保持该尺寸/比例</translation>
     </message>
 </context>
 <context>
@@ -274,6 +347,10 @@ or press the shortcut again to stop recording</source>
         <source>Input text here</source>
         <translation>在此处添加文本</translation>
     </message>
+    <message>
+        <source>Maximum number range exceeded</source>
+        <translation>超出最大编号范围</translation>
+    </message>
 </context>
 <context>
     <name>Shortcut</name>
@@ -316,14 +393,6 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Save</source>
         <translation>保存</translation>
-    </message>
-    <message>
-        <source>Rectangle</source>
-        <translation>矩形</translation>
-    </message>
-    <message>
-        <source>Ellipse</source>
-        <translation>椭圆</translation>
     </message>
     <message>
         <source>Line</source>
@@ -430,36 +499,56 @@ or press the shortcut again to stop recording</source>
         <translation>贴图</translation>
     </message>
     <message>
-        <source>Start OCR</source>
-        <translation>快速启动图文识别</translation>
-    </message>
-    <message>
-        <source>Start scrollshot</source>
-        <translation>启动滚动截图</translation>
-    </message>
-    <message>
         <source>Arrow</source>
         <translation>箭头</translation>
+    </message>
+    <message>
+        <source>Geometric Tools</source>
+        <translation>几何工具</translation>
+    </message>
+    <message>
+        <source>Blur</source>
+        <translation>模糊</translation>
+    </message>
+    <message>
+        <source>Sequence number</source>
+        <translation>序号</translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation>表格识别</translation>
+    </message>
+    <message>
+        <source>AI Screenshot</source>
+        <translation>AI截图</translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
+        <translation>复制到剪贴板</translation>
+    </message>
+    <message>
+        <source>Quick start scrollshot</source>
+        <translation>快速启动滚动截图</translation>
     </message>
 </context>
 <context>
     <name>ShotToolWidget</name>
     <message>
-        <source>Rectangle
+        <source>Rectangle (R)
 Press and hold Shift to draw a square</source>
-        <translation>矩形
+        <translation>矩形 (R)
 按住Shift可画正方形</translation>
     </message>
     <message>
-        <source>Ellipse
+        <source>Ellipse (O)
 Press and hold Shift to draw a circle</source>
-        <translation>椭圆
+        <translation>椭圆 (O)
 按住Shift可画圆形</translation>
     </message>
     <message>
-        <source>Brush
+        <source>Brush (P)
 Press and hold Shift to draw a straight line</source>
-        <translation>笔刷
+        <translation>画笔 (P)
 按住Shift可画直线</translation>
     </message>
     <message>
@@ -479,35 +568,35 @@ Press and hold Shift to draw a straight line</source>
     <name>SubToolWidget</name>
     <message>
         <source>Show keystroke (K)</source>
-        <translation>显示按键 K</translation>
+        <translation>显示按键 (K)</translation>
     </message>
     <message>
         <source>Hide Keystroke (K)</source>
-        <translation>隐藏按键 K</translation>
+        <translation>隐藏按键 (K)</translation>
+    </message>
+    <message>
+        <source>Sequence number (Alt+S)</source>
+        <translation>序号标注 (Alt+S)</translation>
     </message>
     <message>
         <source>Show Keystroke (K)</source>
-        <translation>显示按键 K</translation>
+        <translation>显示按键 (K)</translation>
     </message>
     <message>
         <source>Turn on camera (C)</source>
-        <translation>开启摄像头 C</translation>
+        <translation>开启摄像头 (C)</translation>
     </message>
     <message>
         <source>Turn off camera (C)</source>
-        <translation>关闭摄像头 C</translation>
+        <translation>关闭摄像头 (C)</translation>
     </message>
     <message>
         <source>Screenshot</source>
         <translation>截图</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>设置</translation>
-    </message>
-    <message>
         <source>Settings (F3)</source>
-        <translation>设置 F3</translation>
+        <translation>设置 (F3)</translation>
     </message>
     <message>
         <source>Format</source>
@@ -570,6 +659,10 @@ Press and hold Shift to draw a straight line</source>
         <translation>选项</translation>
     </message>
     <message>
+        <source>Options (F3)</source>
+        <translation>选项 (F3)</translation>
+    </message>
+    <message>
         <source>Show pointer</source>
         <translation>显示光标</translation>
     </message>
@@ -592,42 +685,30 @@ Press and hold Shift to draw a straight line</source>
     <message>
         <source>Line (L)
 Press and hold Shift to draw a vertical or horizontal line</source>
-        <translation>直线（L）
+        <translation>直线 (L)
 按住Shift可画垂直线和水平线</translation>
     </message>
     <message>
         <source>Arrow (X)
 Press and hold Shift to draw a vertical or horizontal arrow</source>
-        <translation>箭头（X）
+        <translation>箭头 (X)
 按住Shift可画垂直和水平箭头</translation>
     </message>
     <message>
         <source>Pencil (P)</source>
-        <translation>画笔 P</translation>
+        <translation>画笔 (P)</translation>
     </message>
     <message>
         <source>Blur (B)</source>
-        <translation>模糊 B</translation>
+        <translation>模糊 (B)</translation>
     </message>
     <message>
         <source>Text (T)</source>
-        <translation>文字 T</translation>
-    </message>
-    <message>
-        <source>Scrollshot (Alt+I）</source>
-        <translation>滚动截图 Alt+I</translation>
-    </message>
-    <message>
-        <source>Extract text (Alt+O）</source>
-        <translation>识别文字 Alt+O</translation>
-    </message>
-    <message>
-        <source>Pin screenshots (Alt+P）</source>
-        <translation>贴图 Alt+P</translation>
+        <translation>文字 (T)</translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
-        <translation>撤销 Ctrl+Z</translation>
+        <translation>撤销 (Ctrl+Z)</translation>
     </message>
     <message>
         <source>Record</source>
@@ -670,8 +751,8 @@ Press and hold Shift to draw a vertical or horizontal arrow</source>
         <translation>样机</translation>
     </message>
     <message>
-        <source>Extract Text</source>
-        <translation>识别文字</translation>
+        <source>Extract Text (Alt+O)</source>
+        <translation>识别文字 (Alt+O)</translation>
     </message>
     <message>
         <source>Save to local</source>
@@ -700,8 +781,8 @@ Hold down Shift to draw squares or circles.</source>
         <translation>保存时选择位置</translation>
     </message>
     <message>
-        <source>AI Screenshot (A)</source>
-        <translation>AI截图 (A)</translation>
+        <source>AI Screenshot (Alt+A)</source>
+        <translation>AI截图 (Alt+A)</translation>
     </message>
     <message>
         <source>Save to Desktop</source>
@@ -711,20 +792,66 @@ Hold down Shift to draw squares or circles.</source>
         <source>Save to Pictures</source>
         <translation>保存到图片</translation>
     </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished">表格识别</translation>
+    </message>
+    <message>
+        <source>Scrollshot (Alt+I)</source>
+        <translation>滚动截图 (Alt+I)</translation>
+    </message>
+    <message>
+        <source>Extract text (Alt+O)</source>
+        <translation>识别文字 (Alt+O)</translation>
+    </message>
+    <message>
+        <source>Table recognition (Alt+T)</source>
+        <translation>表格识别 (Alt+T)</translation>
+    </message>
+    <message>
+        <source>Pin screenshots (Alt+P)</source>
+        <translation>贴图 (Alt+P)</translation>
+    </message>
+</context>
+<context>
+    <name>TableRecognizingWidget</name>
+    <message>
+        <source>Table recognition in progress...</source>
+        <translation>表格识别中…</translation>
+    </message>
+</context>
+<context>
+    <name>TableResultDialog</name>
+    <message>
+        <source>Table recognition</source>
+        <translation>表格识别</translation>
+    </message>
+    <message>
+        <source>Table recognized successfully!</source>
+        <translation>表格已识别成功！</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Copy as Excel format</source>
+        <translation>复制为Excel格式</translation>
+    </message>
 </context>
 <context>
     <name>ToolBarWidget</name>
     <message>
         <source>Close (Esc)</source>
-        <translation>关闭 Esc</translation>
+        <translation>关闭 (Esc)</translation>
     </message>
     <message>
         <source>Copy to clipboard (Enter)</source>
-        <translation>复制到剪贴板 Enter</translation>
+        <translation>复制到剪贴板 (Enter)</translation>
     </message>
     <message>
         <source>OK (Enter)</source>
-        <translation>确认 Enter</translation>
+        <translation>确认 (Enter)</translation>
     </message>
 </context>
 <context>
@@ -743,6 +870,13 @@ Hold down Shift to draw squares or circles.</source>
     <message>
         <source>Exit</source>
         <translation>退出</translation>
+    </message>
+</context>
+<context>
+    <name>ZoomIndicator</name>
+    <message>
+        <source>Press Ctrl+c to copy color</source>
+        <translation>按Ctrl+c复制色值</translation>
     </message>
 </context>
 </TS>
