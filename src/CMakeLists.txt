@@ -171,4 +171,4 @@ pkg_check_modules(3rd_lib REQUIRED
 target_include_directories(${PROJECT_NAME} PUBLIC ${3rd_lib_INCLUDE_DIRS} )
 target_link_libraries(${PROJECT_NAME} ${3rd_lib_LIBRARIES} ${LINK_DIR} )
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets/deepin-screen-recorder DESTINATION /usr/share/deepin-manual/manual-assets/application)
+#install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets/deepin-screen-recorder DESTINATION /usr/share/deepin-manual/manual-assets/application)
