@@ -12,14 +12,14 @@ license=('GPL-3.0-or-later')
 depends=('dtk6core-git' 'dtk6gui-git' 'dtk6widget-git' 'qt6-base' 'qt6-multimedia' 'qt6-svg' 'wayland'
          'opencv' 'gstreamer' 'gst-plugins-base-libs' 'gst-plugins-good' 'ffmpeg' 'ffmpegthumbnailer'
          'portaudio' 'v4l-utils' 'libusb' 'systemd-libs' 'libx11' 'libxext' 'libxtst' 'libxfixes'
-         'libxinerama' 'mesa' 'glib2' 'hicolor-icon-theme' 'libgcc' 'libstdc++' 'glibc')
+         'libxinerama' 'mesa' 'glib2' 'hicolor-icon-theme' 'libgcc' 'libstdc++' 'glibc' 'dtkmultimedia-git')
 # src.pro 从 /etc/os-version 判断是否启用 OCR 与滚动截图，与 Debian 的 deepin-desktop-base 一样由
 # gxde-desktop-base-git 提供
 # src.pro reads /etc/os-version to decide whether OCR and scrolling
 # screenshots are enabled; gxde-desktop-base-git ships it, as
 # deepin-desktop-base does for Debian.
 makedepends=('git' 'pkgconf' 'qt6-tools' 'qt6-wayland' 'libxcb' 'xcb-util' 'libxcursor' 'libdrm'
-             'gxde-desktop-base-git')
+             'gxde-desktop-base-git' 'dtkmultimedia-git')
 optdepends=('gxde-ocr-git: text recognition in screenshots')
 provides=('deepin-screen-recorder' 'deepin-screenshot')
 conflicts=('deepin-screen-recorder' 'deepin-screenshot' 'gxde-screen-recorder-git')
