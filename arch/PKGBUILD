@@ -1,6 +1,6 @@
 # Maintainer: CharOfString <root@charofstring.cc>
 pkgname=deepin-screen-recorder-git
-pkgver=7.0.2
+pkgver=7.0.3
 pkgrel=1
 pkgdesc='Screen recorder and screenshot tool for GXDE'
 arch=('x86_64' 'aarch64')
