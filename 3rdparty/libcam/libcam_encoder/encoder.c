@@ -1943,8 +1943,7 @@ void encoder_close(encoder_context_t *encoder_ctx)
 				enc_video_ctx->flushed_buffers = 1;
 			}
 
-            getLoadLibsInstance()->m_avcodec_close(video_codec_data->codec_context);
-                free(video_codec_data->codec_context);
+            getLoadLibsInstance()->m_avcodec_free_context(&video_codec_data->codec_context);
 
             getAvutil()->m_av_dict_free(&(video_codec_data->private_options));
 
@@ -1977,8 +1976,7 @@ void encoder_close(encoder_context_t *encoder_ctx)
 		{
             getLoadLibsInstance()->m_avcodec_flush_buffers(audio_codec_data->codec_context);
 
-            getLoadLibsInstance()->m_avcodec_close(audio_codec_data->codec_context);
-			free(audio_codec_data->codec_context);
+            getLoadLibsInstance()->m_avcodec_free_context(&audio_codec_data->codec_context);
 
 			if(audio_codec_data->frame)
                 getAvutil()->m_av_frame_free(&audio_codec_data->frame);

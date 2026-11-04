@@ -33,8 +33,6 @@ typedef int (*uos_avcodec_get_context_defaults3)(AVCodecContext *s, const AVCode
 typedef int (*uos_avcodec_open2)(AVCodecContext *avctx, const AVCodec *codec, AVDictionary **options);
 //void avcodec_flush_buffers(AVCodecContext *avctx);
 typedef void (*uos_avcodec_flush_buffers)(AVCodecContext *avctx);
-//int avcodec_close(AVCodecContext *avctx);
-typedef int (*uos_avcodec_close)(AVCodecContext *avctx);
 //int avcodec_parameters_from_context(AVCodecParameters *par,const AVCodecContext *codec);
 typedef int (*uos_avcodec_parameters_from_context)(AVCodecParameters *par, const AVCodecContext *codec);
 //int avcodec_parameters_to_context(AVCodecContext *codec, const AVCodecParameters *par);
@@ -102,7 +100,6 @@ typedef struct _LoadLibs {
     uos_avcodec_get_context_defaults3 m_avcodec_get_context_defaults3;
     uos_avcodec_open2 m_avcodec_open2;
     uos_avcodec_flush_buffers m_avcodec_flush_buffers;
-    uos_avcodec_close m_avcodec_close;
     uos_avcodec_parameters_from_context m_avcodec_parameters_from_context;
     uos_avcodec_parameters_to_context m_avcodec_parameters_to_context;
     uos_avcodec_send_packet m_avcodec_send_packet;

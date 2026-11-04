@@ -107,8 +107,6 @@ static LoadLibs *newClass(void)
     PrintError();
     pLibs->m_avcodec_flush_buffers = (uos_avcodec_flush_buffers)dlsym(handle, "avcodec_flush_buffers");
     PrintError();
-    pLibs->m_avcodec_close = (uos_avcodec_close)dlsym(handle, "avcodec_close");
-    PrintError();
     pLibs->m_avcodec_parameters_from_context = (uos_avcodec_parameters_from_context)dlsym(handle, "avcodec_parameters_from_context");
     PrintError();
     pLibs->m_avcodec_parameters_to_context = (uos_avcodec_parameters_to_context)dlsym(handle, "avcodec_parameters_to_context");
