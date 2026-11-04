@@ -1440,8 +1440,7 @@ int jpeg_init_decoder(int width, int height)
 #endif
 	{
 		fprintf(stderr, "V4L2_CORE: (mjpeg decoder) couldn't open codec\n");
-        getLoadLibsInstance()->m_avcodec_close(codec_data->context);
-		free(codec_data->context);
+        getLoadLibsInstance()->m_avcodec_free_context(&codec_data->context);
 		free(codec_data);
 		free(jpeg_ctx);
 		jpeg_ctx = NULL;
@@ -1564,9 +1563,7 @@ void jpeg_close_decoder()
 
 	codec_data_t *codec_data = (codec_data_t *) jpeg_ctx->codec_data;
 
-    getLoadLibsInstance()->m_avcodec_close(codec_data->context);
-
-	free(codec_data->context);
+    getLoadLibsInstance()->m_avcodec_free_context(&codec_data->context);
 
 #if LIBAVCODEC_VER_AT_LEAST(55,28)
     getAvutil()->m_av_frame_free(&codec_data->picture);
