@@ -116,7 +116,7 @@ public slots:
      * @brief 表格识别结束
      */
     void onTableRecognitionFinished(bool success, const QString &html,
-                                    Dtk::TableRecognizer::TableError error);
+                                    TableRecognizerLoader::Error error);
 
     void saveToClipboard();
     /**

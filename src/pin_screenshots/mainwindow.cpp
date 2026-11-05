@@ -205,7 +205,7 @@ void MainWindow::startTableRecognition()
 }
 
 void MainWindow::onTableRecognitionFinished(bool success, const QString &html,
-                                            Dtk::TableRecognizer::TableError error)
+                                            TableRecognizerLoader::Error error)
 {
     qCDebug(dsrApp) << "table recognition finished. success:" << success
                     << "error:" << static_cast<int>(error);
@@ -233,14 +233,14 @@ void MainWindow::onTableRecognitionFinished(bool success, const QString &html,
     switch (error) {
     // 空白/纯色图可能被结构模型误判出单元格，但 OCR 没有任何文字。对用户而言
     // 这仍是没有可用表格，与真正的 NoTableDetected 共用同一提示，避免落到通用失败文案。
-    case Dtk::TableRecognizer::TableError::NoTextDetected:
-    case Dtk::TableRecognizer::TableError::NoTableDetected:
+    case TableRecognizerLoader::Error::NoTextDetected:
+    case TableRecognizerLoader::Error::NoTableDetected:
         showTableToast(tr("Failed to recognize: no table content detected"), tr("Got it"), false);
         break;
-    case Dtk::TableRecognizer::TableError::Timeout:
+    case TableRecognizerLoader::Error::Timeout:
         showTableToast(tr("The table is too large, recognition timed out"), tr("Got it"), false);
         break;
-    case Dtk::TableRecognizer::TableError::Busy:
+    case TableRecognizerLoader::Error::Busy:
         showTableToast(tr("Recognition is already running, please wait"), tr("Got it"), false);
         break;
     default:

@@ -54,8 +54,10 @@ Shortcut::Shortcut(QObject *parent)
     toolsGroup.groupItems << ShortcutItem(tr("Scrollshot"), "Alt+I")
                           << ShortcutItem(tr("Extract text"), "Alt+O");
 #endif
-    toolsGroup.groupItems << ShortcutItem(tr("Table recognition"), "Alt+T")
-                          << ShortcutItem(tr("Pin screenshots"), "Alt+P")
+#ifdef TABLE_RECOGNIZER_ON
+    toolsGroup.groupItems << ShortcutItem(tr("Table recognition"), "Alt+T");
+#endif
+    toolsGroup.groupItems << ShortcutItem(tr("Pin screenshots"), "Alt+P")
                           << ShortcutItem(tr("AI Screenshot"), "Alt+A")
                           << ShortcutItem(tr("Undo"), "Ctrl+Z")
                           << ShortcutItem(tr("Options"), "F3")

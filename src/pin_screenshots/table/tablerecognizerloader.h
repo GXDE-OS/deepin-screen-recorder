@@ -10,24 +10,47 @@
 #include <QObject>
 #include <QString>
 
-// 表格识别能力由 dtkmultimedia 的 dtk6tablerecognizer 提供，走常规链接
-// （见 pin_screenshots.pro 的 PKGCONFIG += dtk6tablerecognizer）。
-// 头文件由构建依赖 libdtk6tablerecognizer-dev 提供，缺失时构建直接失败；
-// 运行期依赖由打包时的 ${shlibs:Depends} 自动生成。
-#include <dtablerecognizer.h>
+// 表格识别能力由 dtkmultimedia 的 dtk6tablerecognizer 提供，走常规链接。
+// 该库并非所有架构都有（例如 i386 / riscv64），pin_screenshots.pro 检测到它时才链接
+// 并定义 TABLE_RECOGNIZER_ON；否则本类退化为“不可用”，界面上也不提供表格识别入口。
+// 头文件里不直接引用库的类型，调用方无需关心库是否存在。
+#ifdef TABLE_RECOGNIZER_ON
+namespace Dtk {
+namespace TableRecognizer {
+class DTableRecognizer;
+}
+}
+#endif
 
 /**
  * @brief 表格识别能力（dtkmultimedia）的封装
  *
- * 直接持有 Dtk::TableRecognizer::DTableRecognizer；识别结束后把结果和库给出的
- * 错误码（DTableResult::error）交给展示层，展示层只依据错误码选择提示文案，
- * 不对 errorMessage 做任何字符串匹配。
+ * 识别结束后把结果和错误码交给展示层，展示层只依据错误码选择提示文案，
+ * 不对库的 errorMessage 做任何字符串匹配。
  */
 class TableRecognizerLoader : public QObject
 {
     Q_OBJECT
 public:
+    // 与 Dtk::TableRecognizer::TableError 一一对应，另加库缺失时的 Unavailable。
+    enum class Error {
+        None,
+        InvalidImage,
+        NoTableDetected,
+        NoTextDetected,
+        Timeout,
+        Busy,
+        OcrEngineUnavailable,
+        OcrFailed,
+        InternalError,
+        Unavailable, // 构建时没有 dtk6tablerecognizer
+    };
+    Q_ENUM(Error)
+
     explicit TableRecognizerLoader(QObject *parent = nullptr);
+
+    // 当前构建是否带有表格识别能力
+    static bool isAvailable();
 
     /**
      * @brief 异步识别表格
@@ -38,11 +61,12 @@ public:
     bool recognize(const QImage &image, int timeoutMs = 25000);
 
 Q_SIGNALS:
-    void recognitionFinished(bool success, const QString &html,
-                             Dtk::TableRecognizer::TableError error);
+    void recognitionFinished(bool success, const QString &html, TableRecognizerLoader::Error error);
 
 private:
+#ifdef TABLE_RECOGNIZER_ON
     Dtk::TableRecognizer::DTableRecognizer *m_recognizer = nullptr;
+#endif
 };
 
 #endif // TABLERECOGNIZERLOADER_H

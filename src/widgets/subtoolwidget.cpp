@@ -722,7 +722,10 @@ void SubToolWidget::initShotLabel()
     // TODO: 仅x11下开启，后续处理，目前treeland下仍有崩溃情况
     //if (!(Utils::isTreelandMode))
         btnList.append(m_ocrButton);
+#ifdef TABLE_RECOGNIZER_ON
+        // 没有 dtk6tablerecognizer 的架构（i386 / riscv64）不提供表格识别
         btnList.append(m_tableButton);
+#endif
 #endif
 
     //添加贴图按钮
@@ -2194,7 +2197,9 @@ void SubToolWidget::shapeClickedFromWidget(QString shape)
             if (!m_ocrButton->isChecked())
                 m_ocrButton->click();
         } else if (shape == "tableRecogn") {
+#ifdef TABLE_RECOGNIZER_ON
             m_tableButton->click();
+#endif
         } else if (shape == "gio" || shape == "rect" || shape == "circ" || shape == "rectangle" || shape == "oval") {
             if (!m_gioButton->isChecked())
                 m_gioButton->click();

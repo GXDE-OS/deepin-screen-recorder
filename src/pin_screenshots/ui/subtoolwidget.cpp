@@ -8,6 +8,7 @@
 #include "settings.h"
 #include "../../utils/log.h"
 #include "pinsavemenumanager.h"
+#include "../table/tablerecognizerloader.h"
 
 #include <QActionGroup>
 #include <QFileInfo>
@@ -58,6 +59,9 @@ void SubToolWidget::initShotLable()
     m_tableButton->setIcon(QIcon::fromTheme("table-recognition"));
     m_tableButton->setToolTip(tr("Table recognition"));
     connect(m_tableButton, SIGNAL(clicked()), this, SIGNAL(signalTableButtonClicked()));
+    // 构建时没有 dtk6tablerecognizer（如 i386 / riscv64）就不提供表格识别入口
+    if (!TableRecognizerLoader::isAvailable())
+        m_tableButton->hide();
     qCDebug(dsrApp) << "Table recognition button initialized";
 
     // 选项按钮

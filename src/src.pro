@@ -79,6 +79,14 @@ if ( !equals(SYS_EDITION, "") || equals(SYS_VERSION, 2500) || greaterThan(SYS_VE
     }
 }
 
+# dtk6tablerecognizer is NOT available on some architecture of GXDE.
+# In the case do a performance degrade: not providing table recognization & not to link this lib
+packagesExist(dtk6tablerecognizer) {
+    DEFINES += TABLE_RECOGNIZER_ON
+} else {
+    message("dtk6tablerecognizer not found, table recognition entry disabled")
+}
+
 # 基础 Qt 模块配置
 equals(QT_MAJOR_VERSION, 6) {
     QT += core gui widgets network dbus multimedia multimediawidgets concurrent svg \

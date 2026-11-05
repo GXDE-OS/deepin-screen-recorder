@@ -22,6 +22,7 @@ INCLUDEPATH += . ../../src/ \
             ../../../src/ext-image-capture/
 DEFINES += DDE_START_FLAGE_ON
 DEFINES += OCR_SCROLL_FLAGE_ON
+packagesExist(dtk6tablerecognizer): DEFINES += TABLE_RECOGNIZER_ON
 DEFINES += ENABLE_UNIT_TEST
 contains(DEFINES, KF5_WAYLAND_FLAGE_ON) {
     LIBS += -lKWaylandClient
