@@ -1,5 +1,5 @@
 # Maintainer: CharOfString <root@charofstring.cc>
-pkgname=deepin-screen-recorder-git
+pkgname=gxde-deepin-screen-recorder
 pkgver=7.0.3
 pkgrel=3
 pkgdesc='Screen recorder and screenshot tool for GXDE'
@@ -9,21 +9,22 @@ license=('GPL-3.0-or-later')
 # libudev、libv4l2、FFmpeg、PortAudio、libusb 按 src.pro 强制链接，GStreamer 等在运行时通过 dlopen 加载
 # libudev, libv4l2, FFmpeg, PortAudio and libusb are linked in on purpose by
 # src.pro; GStreamer and others are loaded with dlopen at runtime.
-depends=('dtk6core-git' 'dtk6gui-git' 'dtk6widget-git' 'qt6-base' 'qt6-multimedia' 'qt6-svg' 'wayland'
+depends=('gxde-dtk6core' 'gxde-dtk6gui' 'gxde-dtk6widget' 'qt6-base' 'qt6-multimedia' 'qt6-svg' 'wayland'
          'opencv' 'gstreamer' 'gst-plugins-base-libs' 'gst-plugins-good' 'ffmpeg' 'ffmpegthumbnailer'
          'portaudio' 'v4l-utils' 'libusb' 'systemd-libs' 'libx11' 'libxext' 'libxtst' 'libxfixes'
-         'libxinerama' 'mesa' 'glib2' 'hicolor-icon-theme' 'libgcc' 'libstdc++' 'glibc' 'dtktablerecognizer-git')
+         'libxinerama' 'mesa' 'glib2' 'hicolor-icon-theme' 'libgcc' 'libstdc++' 'glibc' 'dtktablerecognizer')
 # src.pro 从 /etc/os-version 判断是否启用 OCR 与滚动截图，与 Debian 的 deepin-desktop-base 一样由
-# gxde-desktop-base-git 提供
+# gxde-desktop-base 提供
 # src.pro reads /etc/os-version to decide whether OCR and scrolling
-# screenshots are enabled; gxde-desktop-base-git ships it, as
+# screenshots are enabled; gxde-desktop-base ships it, as
 # deepin-desktop-base does for Debian.
 makedepends=('git' 'pkgconf' 'qt6-tools' 'qt6-wayland' 'libxcb' 'xcb-util' 'libxcursor' 'libdrm'
-             'gxde-desktop-base-git' 'dtktablerecognizer-git')
-optdepends=('gxde-ocr-git: text recognition in screenshots')
-provides=('deepin-screen-recorder' 'deepin-screenshot')
-conflicts=('deepin-screen-recorder' 'deepin-screenshot' 'gxde-screen-recorder-git')
-replaces=('deepin-screenshot')
+             'gxde-desktop-base' 'dtktablerecognizer')
+optdepends=('gxde-ocr: text recognition in screenshots')
+provides=('deepin-screen-recorder' 'deepin-screenshot' "deepin-screen-recorder-git=$pkgver")
+conflicts=('deepin-screen-recorder' 'deepin-screenshot' 'gxde-screen-recorder-git'
+           'deepin-screen-recorder-git')
+replaces=('deepin-screenshot' 'deepin-screen-recorder-git')
 source=()
 sha512sums=()
 
