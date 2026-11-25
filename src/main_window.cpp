@@ -67,6 +67,7 @@ extern "C" {
 #include <QShortcut>
 #include <QDBusInterface>
 #include <QDBusConnection>
+#include <QDBusConnectionInterface>
 #include <QDBusMessage>
 #include <QDBusPendingCallWatcher>
 
@@ -3054,8 +3055,15 @@ void MainWindow::save2Clipboard(const QPixmap &pix)
     }
     if (Utils::is3rdInterfaceStart == false) {
         const int minor = DSysInfo::minorVersion().toInt();
-        const bool hasClipboardDaemon = minor >= 1070
+        bool hasClipboardDaemon = minor >= 1070
             || DSysInfo::uosEditionType() == DSysInfo::UosCommunity;
+        if (hasClipboardDaemon) {
+            QDBusConnectionInterface *busIface = QDBusConnection::sessionBus().interface();
+            if (!busIface || !busIface->isServiceRegistered(CLIPBOARD_NAME).value()) {
+                qCInfo(dsrApp) << "Clipboard service" << CLIPBOARD_NAME << "is not running, skip waiting for dataComing";
+                hasClipboardDaemon = false;
+            }
+        }
         if (hasClipboardDaemon) {
             // 连接 dde-clipboard-daemon 的 dataComing 信号，用于确认数据已被剪贴板服务接管
             const QString ClipboardSignal = QStringLiteral("dataComing");
