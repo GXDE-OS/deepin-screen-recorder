@@ -1,3 +1,9 @@
+deepin-screen-recorder (7.0.3-gxde4) UNRELEASED; urgency=medium
+
+  * 修复截图完成时在通知出现前剪切板内无截图的问题
+
+ -- CharOfString <root@charofstring.cc>  Wed, 25 Nov 2026 05:14:23 -0600
+
 deepin-screen-recorder (7.0.3-gxde3) UNRELEASED; urgency=medium
 
   * 在dtkmultimedia/onnx运行时不可用时关闭表格识别功能，不链接不可用的库，以求CI能通过
