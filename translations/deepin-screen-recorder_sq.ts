@@ -34,6 +34,25 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     </message>
 </context>
 <context>
+    <name>FineAdjustTips</name>
+    <message>
+        <source>Move the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the mouse pointer by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enlarge the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -109,6 +128,26 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     <message>
         <source>Scrollshot</source>
         <translation>Foto ekrani me rrëshqitje</translation>
+    </message>
+    <message>
+        <source>Failed to recognize: no table content detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Got it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The table is too large, recognition timed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition is already running, please wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition failed, please try again</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pin Screenshots</source>
@@ -200,6 +239,29 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     </message>
 </context>
 <context>
+    <name>RoundedCornerWidget</name>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size / ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep the selected size or ratio for the next screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SaveMenuManager</name>
     <message>
         <source>Each inquiry</source>
@@ -274,6 +336,10 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
         <source>Input text here</source>
         <translation>Futni tekst këtu</translation>
     </message>
+    <message>
+        <source>Maximum number range exceeded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Shortcut</name>
@@ -318,14 +384,6 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
         <translation>Ruaje</translation>
     </message>
     <message>
-        <source>Rectangle</source>
-        <translation>Drejtkëndësh</translation>
-    </message>
-    <message>
-        <source>Ellipse</source>
-        <translation>Elips</translation>
-    </message>
-    <message>
         <source>Line</source>
         <translation>Vijë</translation>
     </message>
@@ -344,6 +402,34 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
     <message>
         <source>Undo</source>
         <translation>Zhbëje</translation>
+    </message>
+    <message>
+        <source>Quick start scrollshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometric Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sequence number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Increase height up</source>
@@ -430,14 +516,6 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
         <translation>Fiksoni foto ekrani</translation>
     </message>
     <message>
-        <source>Start OCR</source>
-        <translation>Nis OCR</translation>
-    </message>
-    <message>
-        <source>Start scrollshot</source>
-        <translation>Fillo foto ekrani me rrëshqitje</translation>
-    </message>
-    <message>
         <source>Arrow</source>
         <translation>Shigjetë</translation>
     </message>
@@ -445,22 +523,19 @@ klikoni ikonën e panelit, ose rishtypni shkurtoren</translation>
 <context>
     <name>ShotToolWidget</name>
     <message>
-        <source>Rectangle
+        <source>Rectangle (R)
 Press and hold Shift to draw a square</source>
-        <translation>Drejtkëndësh
-Shtypni dhe mbani të shtypur tastin Shift që të vizatohet një kuadrat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ellipse
+        <source>Ellipse (O)
 Press and hold Shift to draw a circle</source>
-        <translation>Elips
-Shtypni dhe mbani të shtypur tastin Shift që të vizatohet një rreth</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Brush
+        <source>Brush (P)
 Press and hold Shift to draw a straight line</source>
-        <translation>Penel
-Shtypni dhe mbani të shtypur tastin Shift që të vizatohet një vijë e drejtë</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Adjust blur strength (Scroll to adjust it)</source>
@@ -500,10 +575,6 @@ Shtypni dhe mbani të shtypur tastin Shift që të vizatohet një vijë e drejt�
     <message>
         <source>Screenshot</source>
         <translation>Foto ekrani</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Rregullime</translation>
     </message>
     <message>
         <source>Settings (F3)</source>
@@ -614,16 +685,8 @@ Shtypni dhe mbani të shtypur tastin Shift, që të vizatohet një shigjetë ver
         <translation>Tekst (T)</translation>
     </message>
     <message>
-        <source>Scrollshot (Alt+I）</source>
-        <translation>Foto ekrani me rrëshqitje (Alt+I）</translation>
-    </message>
-    <message>
-        <source>Extract text (Alt+O）</source>
-        <translation>Përfto tekstin (Alt+O）</translation>
-    </message>
-    <message>
-        <source>Pin screenshots (Alt+P）</source>
-        <translation>Fiksoni foto ekrani (Alt+P）</translation>
+        <source>Extract Text (Alt+O)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
@@ -632,6 +695,14 @@ Shtypni dhe mbani të shtypur tastin Shift, që të vizatohet një shigjetë ver
     <message>
         <source>Record</source>
         <translation>Regjistro</translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options (F3)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change the path on save</source>
@@ -670,14 +741,34 @@ Shtypni dhe mbani të shtypur tastin Shift, që të vizatohet një shigjetë ver
         <translation>Pajisje</translation>
     </message>
     <message>
-        <source>Extract Text</source>
-        <translation>Përfto Tekst</translation>
-    </message>
-    <message>
         <source>Geometric Tools (R)
 Hold down Shift to draw squares or circles.</source>
         <translation>Mjete Geometrike (R)
 Mbani të shtypur tastin Shift që të vizatohet një drejtkëndësh ose një rreth.</translation>
+    </message>
+    <message>
+        <source>Sequence number (Alt+S)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scrollshot (Alt+I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extract text (Alt+O)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition (Alt+T)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pin screenshots (Alt+P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot (Alt+A)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save to local</source>
@@ -700,16 +791,38 @@ Mbani të shtypur tastin Shift që të vizatohet një drejtkëndësh ose një rr
         <translation>Zgjidhni vendndodhjen gjatë ruajtjes</translation>
     </message>
     <message>
-        <source>AI Screenshot (A)</source>
-        <translation>Foto ekrani AI (A)</translation>
-    </message>
-    <message>
         <source>Save to Desktop</source>
         <translation>Ruaje te Desktop</translation>
     </message>
     <message>
         <source>Save to Pictures</source>
         <translation>Ruaje te Foto</translation>
+    </message>
+</context>
+<context>
+    <name>TableRecognizingWidget</name>
+    <message>
+        <source>Table recognition in progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TableResultDialog</name>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognized successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy as Excel format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -743,6 +856,13 @@ Mbani të shtypur tastin Shift që të vizatohet një drejtkëndësh ose një rr
     <message>
         <source>Exit</source>
         <translation>Dil</translation>
+    </message>
+</context>
+<context>
+    <name>ZoomIndicator</name>
+    <message>
+        <source>Press Ctrl+c to copy color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

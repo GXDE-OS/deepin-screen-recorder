@@ -34,6 +34,25 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     </message>
 </context>
 <context>
+    <name>FineAdjustTips</name>
+    <message>
+        <source>Move the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the mouse pointer by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enlarge the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -109,6 +128,26 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     <message>
         <source>Scrollshot</source>
         <translation>Tangkap tatal</translation>
+    </message>
+    <message>
+        <source>Failed to recognize: no table content detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Got it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The table is too large, recognition timed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition is already running, please wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition failed, please try again</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pin Screenshots</source>
@@ -200,6 +239,29 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     </message>
 </context>
 <context>
+    <name>RoundedCornerWidget</name>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size / ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep the selected size or ratio for the next screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SaveMenuManager</name>
     <message>
         <source>Each inquiry</source>
@@ -274,6 +336,10 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
         <source>Input text here</source>
         <translation>Masukkan teks di sini</translation>
     </message>
+    <message>
+        <source>Maximum number range exceeded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Shortcut</name>
@@ -318,14 +384,6 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
         <translation>Simpan</translation>
     </message>
     <message>
-        <source>Rectangle</source>
-        <translation>Petak</translation>
-    </message>
-    <message>
-        <source>Ellipse</source>
-        <translation>Elips</translation>
-    </message>
-    <message>
         <source>Line</source>
         <translation>Garisan</translation>
     </message>
@@ -344,6 +402,34 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
     <message>
         <source>Undo</source>
         <translation>Buat Asal</translation>
+    </message>
+    <message>
+        <source>Quick start scrollshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometric Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sequence number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Increase height up</source>
@@ -430,14 +516,6 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
         <translation>Cemat tangkap layar</translation>
     </message>
     <message>
-        <source>Start OCR</source>
-        <translation>Mula OCR</translation>
-    </message>
-    <message>
-        <source>Start scrollshot</source>
-        <translation>Mula tangkap tatal</translation>
-    </message>
-    <message>
         <source>Arrow</source>
         <translation>Anak Panah</translation>
     </message>
@@ -445,22 +523,19 @@ atau klik pintasan sekali lagi untuk hentikan rakaman</translation>
 <context>
     <name>ShotToolWidget</name>
     <message>
-        <source>Rectangle
+        <source>Rectangle (R)
 Press and hold Shift to draw a square</source>
-        <translation>Segi Empat
-Tekan dan tahan kekunci Shift untuk membentuk sebuah petak</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ellipse
+        <source>Ellipse (O)
 Press and hold Shift to draw a circle</source>
-        <translation>Elips
-Tekan dan tahan kekunci Shift untuk membentuk sebuah bulatan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Brush
+        <source>Brush (P)
 Press and hold Shift to draw a straight line</source>
-        <translation>Berus
-Tekan dan tahan kekunci Shift untuk membentuk satu garisan lurus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Adjust blur strength (Scroll to adjust it)</source>
@@ -500,10 +575,6 @@ Tekan dan tahan kekunci Shift untuk membentuk satu garisan lurus</translation>
     <message>
         <source>Screenshot</source>
         <translation>Tangkap Layar</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Tetapan</translation>
     </message>
     <message>
         <source>Settings (F3)</source>
@@ -614,16 +685,8 @@ Tekan dan tahan kekunci Shift untuk melukis anak panah menegak atau mengufuk</tr
         <translation>Teks (T)</translation>
     </message>
     <message>
-        <source>Scrollshot (Alt+I）</source>
-        <translation>Tangkapbertatal (Alt+I)</translation>
-    </message>
-    <message>
-        <source>Extract text (Alt+O）</source>
-        <translation>Ekstrak teks (Alt+O)</translation>
-    </message>
-    <message>
-        <source>Pin screenshots (Alt+P）</source>
-        <translation>Cemat tangkap layar (Alt+P)</translation>
+        <source>Extract Text (Alt+O)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
@@ -632,6 +695,14 @@ Tekan dan tahan kekunci Shift untuk melukis anak panah menegak atau mengufuk</tr
     <message>
         <source>Record</source>
         <translation>Rakam</translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options (F3)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change the path on save</source>
@@ -670,14 +741,34 @@ Tekan dan tahan kekunci Shift untuk melukis anak panah menegak atau mengufuk</tr
         <translation>Peranti</translation>
     </message>
     <message>
-        <source>Extract Text</source>
-        <translation>Ekstrak Teks</translation>
-    </message>
-    <message>
         <source>Geometric Tools (R)
 Hold down Shift to draw squares or circles.</source>
         <translation>Alat Geometri (R)
 Tahan Shift untuk melukis segi empat sama atau bulatan.</translation>
+    </message>
+    <message>
+        <source>Sequence number (Alt+S)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scrollshot (Alt+I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extract text (Alt+O)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition (Alt+T)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pin screenshots (Alt+P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot (Alt+A)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save to local</source>
@@ -700,16 +791,38 @@ Tahan Shift untuk melukis segi empat sama atau bulatan.</translation>
         <translation>Tetapkan laluan ketika simpan</translation>
     </message>
     <message>
-        <source>AI Screenshot (A)</source>
-        <translation>Tangkap Layar AI (A)</translation>
-    </message>
-    <message>
         <source>Save to Desktop</source>
         <translation>Simpan ke Atas Meja</translation>
     </message>
     <message>
         <source>Save to Pictures</source>
         <translation>Simpan ke Gambar</translation>
+    </message>
+</context>
+<context>
+    <name>TableRecognizingWidget</name>
+    <message>
+        <source>Table recognition in progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TableResultDialog</name>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognized successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy as Excel format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -743,6 +856,13 @@ Tahan Shift untuk melukis segi empat sama atau bulatan.</translation>
     <message>
         <source>Exit</source>
         <translation>Keluar</translation>
+    </message>
+</context>
+<context>
+    <name>ZoomIndicator</name>
+    <message>
+        <source>Press Ctrl+c to copy color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

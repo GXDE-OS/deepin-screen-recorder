@@ -34,6 +34,25 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
     </message>
 </context>
 <context>
+    <name>FineAdjustTips</name>
+    <message>
+        <source>Move the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the mouse pointer by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enlarge the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -119,6 +138,26 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
         <translation>seleziona-area</translation>
     </message>
     <message>
+        <source>Failed to recognize: no table content detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Got it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The table is too large, recognition timed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition is already running, please wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition failed, please try again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Pin Screenshots</source>
         <translation>Blocca screenshot</translation>
     </message>
@@ -200,6 +239,29 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
     </message>
 </context>
 <context>
+    <name>RoundedCornerWidget</name>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size / ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep the selected size or ratio for the next screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SaveMenuManager</name>
     <message>
         <source>Each inquiry</source>
@@ -274,6 +336,10 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
         <source>Input text here</source>
         <translation>Inserisci qui il testo</translation>
     </message>
+    <message>
+        <source>Maximum number range exceeded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Shortcut</name>
@@ -318,14 +384,6 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
         <translation>Istantanea schermo intero</translation>
     </message>
     <message>
-        <source>Start scrollshot</source>
-        <translation>Avvia screenshot continuo</translation>
-    </message>
-    <message>
-        <source>Start OCR</source>
-        <translation>Avvia OCR</translation>
-    </message>
-    <message>
         <source>Exit</source>
         <translation>Esci</translation>
     </message>
@@ -340,14 +398,6 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
     <message>
         <source>Pin screenshots</source>
         <translation>Blocca screenshot</translation>
-    </message>
-    <message>
-        <source>Rectangle</source>
-        <translation>Rettangolo</translation>
-    </message>
-    <message>
-        <source>Ellipse</source>
-        <translation>Ellisse</translation>
     </message>
     <message>
         <source>Line</source>
@@ -376,6 +426,34 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
     <message>
         <source>Undo</source>
         <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Quick start scrollshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometric Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sequence number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Options</source>
@@ -445,22 +523,19 @@ o utilizza nuovamente la scorciatoia da tastiera per terminare la registrazione<
 <context>
     <name>ShotToolWidget</name>
     <message>
-        <source>Rectangle
+        <source>Rectangle (R)
 Press and hold Shift to draw a square</source>
-        <translation>Rettangolo
-Tieni premuto Maiusc per disegnare un quadrato</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ellipse
+        <source>Ellipse (O)
 Press and hold Shift to draw a circle</source>
-        <translation>Ellisse
-Tieni premuto Maiusc per disegnare un cerchio</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Brush
+        <source>Brush (P)
 Press and hold Shift to draw a straight line</source>
-        <translation>Spazzola
-Tieni premuto Maiusc per tracciare una linea retta</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Adjust blur strength (Scroll to adjust it)</source>
@@ -478,10 +553,6 @@ Tieni premuto Maiusc per tracciare una linea retta</translation>
 <context>
     <name>SubToolWidget</name>
     <message>
-        <source>Extract Text</source>
-        <translation>Estrai testo</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Opzioni</translation>
     </message>
@@ -498,6 +569,30 @@ Tieni premuto Maiusc per tracciare una linea retta</translation>
         <translation>Formato</translation>
     </message>
     <message>
+        <source>Sequence number (Alt+S)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scrollshot (Alt+I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extract text (Alt+O)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition (Alt+T)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pin screenshots (Alt+P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot (Alt+A)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>PNG</source>
         <translation>PNG</translation>
     </message>
@@ -508,6 +603,14 @@ Tieni premuto Maiusc per tracciare una linea retta</translation>
     <message>
         <source>BMP</source>
         <translation>BMP</translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options (F3)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change the path on save</source>
@@ -560,10 +663,6 @@ Tieni premuto Maiusc per tracciare una linea retta</translation>
     <message>
         <source>Screenshot</source>
         <translation>Screenshot</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Impostazioni</translation>
     </message>
     <message>
         <source>Settings (F3)</source>
@@ -626,16 +725,8 @@ Tieni premuto Maiusc per disegnare una freccia verticale o orizzontale</translat
         <translation>Testo(T)</translation>
     </message>
     <message>
-        <source>Scrollshot (Alt+I）</source>
-        <translation>Pergamena (Alt+I）</translation>
-    </message>
-    <message>
-        <source>Extract text (Alt+O）</source>
-        <translation>Estrai testo (Alt+O）</translation>
-    </message>
-    <message>
-        <source>Pin screenshots (Alt+P）</source>
-        <translation>Blocca screenshot (Alt+P)</translation>
+        <source>Extract Text (Alt+O)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
@@ -679,10 +770,6 @@ Hold down Shift to draw squares or circles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>AI Screenshot (A)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save to local</source>
         <translation type="unfinished"></translation>
     </message>
@@ -708,6 +795,32 @@ Hold down Shift to draw squares or circles.</source>
     </message>
     <message>
         <source>Specified Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TableRecognizingWidget</name>
+    <message>
+        <source>Table recognition in progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TableResultDialog</name>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognized successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy as Excel format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -742,6 +855,13 @@ Hold down Shift to draw squares or circles.</source>
     <message>
         <source>Exit</source>
         <translation>Esci</translation>
+    </message>
+</context>
+<context>
+    <name>ZoomIndicator</name>
+    <message>
+        <source>Press Ctrl+c to copy color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

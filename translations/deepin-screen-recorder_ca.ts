@@ -34,6 +34,25 @@ o premeu la drecera de nou per aturar la gravació.</translation>
     </message>
 </context>
 <context>
+    <name>FineAdjustTips</name>
+    <message>
+        <source>Move the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the mouse pointer by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enlarge the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -109,6 +128,26 @@ o premeu la drecera de nou per aturar la gravació.</translation>
     <message>
         <source>Scrollshot</source>
         <translation>Captura de desplaçament</translation>
+    </message>
+    <message>
+        <source>Failed to recognize: no table content detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Got it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The table is too large, recognition timed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition is already running, please wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition failed, please try again</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pin Screenshots</source>
@@ -200,6 +239,29 @@ o premeu la drecera de nou per aturar la gravació.</translation>
     </message>
 </context>
 <context>
+    <name>RoundedCornerWidget</name>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size / ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep the selected size or ratio for the next screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SaveMenuManager</name>
     <message>
         <source>Each inquiry</source>
@@ -274,6 +336,10 @@ o premeu la drecera de nou per aturar la gravació.</translation>
         <source>Input text here</source>
         <translation>Introduïu el text aquí</translation>
     </message>
+    <message>
+        <source>Maximum number range exceeded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Shortcut</name>
@@ -318,14 +384,6 @@ o premeu la drecera de nou per aturar la gravació.</translation>
         <translation>Desa</translation>
     </message>
     <message>
-        <source>Rectangle</source>
-        <translation>Rectangle</translation>
-    </message>
-    <message>
-        <source>Ellipse</source>
-        <translation>El·lipse</translation>
-    </message>
-    <message>
         <source>Line</source>
         <translation>Línia</translation>
     </message>
@@ -344,6 +402,34 @@ o premeu la drecera de nou per aturar la gravació.</translation>
     <message>
         <source>Undo</source>
         <translation>Desfés</translation>
+    </message>
+    <message>
+        <source>Quick start scrollshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometric Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sequence number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Increase height up</source>
@@ -430,14 +516,6 @@ o premeu la drecera de nou per aturar la gravació.</translation>
         <translation>Fixa les captures</translation>
     </message>
     <message>
-        <source>Start OCR</source>
-        <translation>Inicia el ROC</translation>
-    </message>
-    <message>
-        <source>Start scrollshot</source>
-        <translation>Inicia la captura de desplaçament</translation>
-    </message>
-    <message>
         <source>Arrow</source>
         <translation>Fletxa</translation>
     </message>
@@ -445,22 +523,19 @@ o premeu la drecera de nou per aturar la gravació.</translation>
 <context>
     <name>ShotToolWidget</name>
     <message>
-        <source>Rectangle
+        <source>Rectangle (R)
 Press and hold Shift to draw a square</source>
-        <translation>Rectangle
-Manteniu premuda la tecla Maj per dibuixar un quadrat.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ellipse
+        <source>Ellipse (O)
 Press and hold Shift to draw a circle</source>
-        <translation>El·lipse
-Manteniu premuda la tecla Maj per dibuixar un cercle.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Brush
+        <source>Brush (P)
 Press and hold Shift to draw a straight line</source>
-        <translation>Pinzell
-Manteniu premuda la tecla Maj per dibuixar una línia recta.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Adjust blur strength (Scroll to adjust it)</source>
@@ -500,10 +575,6 @@ Manteniu premuda la tecla Maj per dibuixar una línia recta.</translation>
     <message>
         <source>Screenshot</source>
         <translation>Captura de pantalla</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Configuració</translation>
     </message>
     <message>
         <source>Settings (F3)</source>
@@ -614,16 +685,8 @@ Manteniu premuda la tecla Maj per dibuixar una fletxa vertical o horitzontal.</t
         <translation>Text (T)</translation>
     </message>
     <message>
-        <source>Scrollshot (Alt+I）</source>
-        <translation>Captura de desplaçament (Alt+I)</translation>
-    </message>
-    <message>
-        <source>Extract text (Alt+O）</source>
-        <translation>Extreu text (Alt+O)</translation>
-    </message>
-    <message>
-        <source>Pin screenshots (Alt+P）</source>
-        <translation>Fixa les captures de pantalla (Alt+P)</translation>
+        <source>Extract Text (Alt+O)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
@@ -632,6 +695,14 @@ Manteniu premuda la tecla Maj per dibuixar una fletxa vertical o horitzontal.</t
     <message>
         <source>Record</source>
         <translation>Grava</translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options (F3)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change the path on save</source>
@@ -670,13 +741,33 @@ Manteniu premuda la tecla Maj per dibuixar una fletxa vertical o horitzontal.</t
         <translation>Dispositiu</translation>
     </message>
     <message>
-        <source>Extract Text</source>
-        <translation>Extreu-ne el text</translation>
-    </message>
-    <message>
         <source>Geometric Tools (R)
 Hold down Shift to draw squares or circles.</source>
         <translation>Manteniu premuda la tecla Maj per dibuixar quadrats o cercles.</translation>
+    </message>
+    <message>
+        <source>Sequence number (Alt+S)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scrollshot (Alt+I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extract text (Alt+O)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition (Alt+T)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pin screenshots (Alt+P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot (Alt+A)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save to local</source>
@@ -699,16 +790,38 @@ Hold down Shift to draw squares or circles.</source>
         <translation>Selecciona una ubicació quan es desa</translation>
     </message>
     <message>
-        <source>AI Screenshot (A)</source>
-        <translation>Resum (A)</translation>
-    </message>
-    <message>
         <source>Save to Desktop</source>
         <translation>Desa a l&apos;escriptori</translation>
     </message>
     <message>
         <source>Save to Pictures</source>
         <translation>Desa a les imatges</translation>
+    </message>
+</context>
+<context>
+    <name>TableRecognizingWidget</name>
+    <message>
+        <source>Table recognition in progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TableResultDialog</name>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognized successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy as Excel format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -742,6 +855,13 @@ Hold down Shift to draw squares or circles.</source>
     <message>
         <source>Exit</source>
         <translation>Surt</translation>
+    </message>
+</context>
+<context>
+    <name>ZoomIndicator</name>
+    <message>
+        <source>Press Ctrl+c to copy color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

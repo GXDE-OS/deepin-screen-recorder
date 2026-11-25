@@ -33,6 +33,25 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
+    <name>FineAdjustTips</name>
+    <message>
+        <source>Move the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the mouse pointer by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enlarge the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shrink the capture area by 1 pixel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainToolWidget</name>
     <message>
         <source>Close (Esc)</source>
@@ -108,6 +127,26 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Scrollshot</source>
         <translation>سىيرىلما سۈرەت تۇتۇش</translation>
+    </message>
+    <message>
+        <source>Failed to recognize: no table content detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Got it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The table is too large, recognition timed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition is already running, please wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recognition failed, please try again</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pin Screenshots</source>
@@ -199,6 +238,29 @@ or press the shortcut again to stop recording</source>
     </message>
 </context>
 <context>
+    <name>RoundedCornerWidget</name>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size / ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ratio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep the selected size or ratio for the next screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SaveMenuManager</name>
     <message>
         <source>Each inquiry</source>
@@ -273,6 +335,10 @@ or press the shortcut again to stop recording</source>
         <source>Input text here</source>
         <translation>بۇ يەرگە خەت قوشۇڭ</translation>
     </message>
+    <message>
+        <source>Maximum number range exceeded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Shortcut</name>
@@ -317,14 +383,6 @@ or press the shortcut again to stop recording</source>
         <translation>ساقلاش</translation>
     </message>
     <message>
-        <source>Rectangle</source>
-        <translation>تىك تۆت بۇلۇڭ</translation>
-    </message>
-    <message>
-        <source>Ellipse</source>
-        <translation>ئېللىپىس</translation>
-    </message>
-    <message>
         <source>Line</source>
         <translation>تۈز سىزىق</translation>
     </message>
@@ -343,6 +401,34 @@ or press the shortcut again to stop recording</source>
     <message>
         <source>Undo</source>
         <translation>ئەمەلدىن قالدۇرۇش</translation>
+    </message>
+    <message>
+        <source>Quick start scrollshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometric Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sequence number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Increase height up</source>
@@ -429,14 +515,6 @@ or press the shortcut again to stop recording</source>
         <translation>چاپلاق</translation>
     </message>
     <message>
-        <source>Start OCR</source>
-        <translation>سۈرەتتىكى خەتنى تونۇتۇشنى قوزغىتىش</translation>
-    </message>
-    <message>
-        <source>Start scrollshot</source>
-        <translation>سىيرىلما سۈرەت تۇتۇشنى قوزغىتىش</translation>
-    </message>
-    <message>
         <source>Arrow</source>
         <translation>ئوقيا</translation>
     </message>
@@ -444,22 +522,19 @@ or press the shortcut again to stop recording</source>
 <context>
     <name>ShotToolWidget</name>
     <message>
-        <source>Rectangle
+        <source>Rectangle (R)
 Press and hold Shift to draw a square</source>
-        <translation>تىك تۆت بۇلۇڭ
-Shift نى بېسىپ تۇرسىڭىز كۋادرات سىزغىلى بولىدۇ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ellipse
+        <source>Ellipse (O)
 Press and hold Shift to draw a circle</source>
-        <translation>ئېللىپىس
-Shift نى بېسىپ تۇرسىڭىز چەمبەر سىزغىلى بولىدۇ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Brush
+        <source>Brush (P)
 Press and hold Shift to draw a straight line</source>
-        <translation>قەلەم
-Shift نى بېسىپ تۇرسىڭىز تۈز سىزىق سىزغىلى بولىدۇ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Adjust blur strength (Scroll to adjust it)</source>
@@ -499,10 +574,6 @@ Shift نى بېسىپ تۇرسىڭىز تۈز سىزىق سىزغىلى بولى
     <message>
         <source>Screenshot</source>
         <translation>رەسىم تۇتۇش</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>تەڭشەك</translation>
     </message>
     <message>
         <source>Settings (F3)</source>
@@ -613,16 +684,8 @@ Shift نى بېسىپ تۇرسىڭىز تىك ۋە توغرىسىغا تۈز ك�
         <translation>تېكىست (T)</translation>
     </message>
     <message>
-        <source>Scrollshot (Alt+I）</source>
-        <translation>دومىلىما سۈرەت تۇتۇش (Alt+I）</translation>
-    </message>
-    <message>
-        <source>Extract text (Alt+O）</source>
-        <translation>تېكىستنى تونۇتۇش (Alt+O）</translation>
-    </message>
-    <message>
-        <source>Pin screenshots (Alt+P）</source>
-        <translation>رەسىم چاپلاش (Alt+P）</translation>
+        <source>Extract Text (Alt+O)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
@@ -631,6 +694,14 @@ Shift نى بېسىپ تۇرسىڭىز تىك ۋە توغرىسىغا تۈز ك�
     <message>
         <source>Record</source>
         <translation>سىنغا ئېلىش</translation>
+    </message>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options (F3)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change the path on save</source>
@@ -669,14 +740,34 @@ Shift نى بېسىپ تۇرسىڭىز تىك ۋە توغرىسىغا تۈز ك�
         <translation>سىزىم</translation>
     </message>
     <message>
-        <source>Extract Text</source>
-        <translation>تېكىستنى تونۇتۇش</translation>
-    </message>
-    <message>
         <source>Geometric Tools (R)
 Hold down Shift to draw squares or circles.</source>
         <translation>گېئومېتىرىيىلىك قورال (R)
 تۆت تەرەپ تەڭ تىك تۆت بۇلۇڭ ياكى چەمبەر سىزىش ئۈچۈن Shift كۇنۇپكىسىنى بېسىپ تۇرۇڭ.</translation>
+    </message>
+    <message>
+        <source>Sequence number (Alt+S)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scrollshot (Alt+I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extract text (Alt+O)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognition (Alt+T)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pin screenshots (Alt+P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI Screenshot (Alt+A)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save to local</source>
@@ -699,16 +790,38 @@ Hold down Shift to draw squares or circles.</source>
         <translation>ئورۇننى ساقلىغاندا يېڭىلاش</translation>
     </message>
     <message>
-        <source>AI Screenshot (A)</source>
-        <translation>AI تۇتۇش (A)</translation>
-    </message>
-    <message>
         <source>Save to Desktop</source>
         <translation>ئۈستەليۈز ساقلاش</translation>
     </message>
     <message>
         <source>Save to Pictures</source>
         <translation>رەسىم ساقلاش</translation>
+    </message>
+</context>
+<context>
+    <name>TableRecognizingWidget</name>
+    <message>
+        <source>Table recognition in progress...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TableResultDialog</name>
+    <message>
+        <source>Table recognition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table recognized successfully!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy as Excel format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -742,6 +855,13 @@ Hold down Shift to draw squares or circles.</source>
     <message>
         <source>Exit</source>
         <translation>چېكىنىش</translation>
+    </message>
+</context>
+<context>
+    <name>ZoomIndicator</name>
+    <message>
+        <source>Press Ctrl+c to copy color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
